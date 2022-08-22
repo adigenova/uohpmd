@@ -1,0 +1,124 @@
+\documentclass{beamer}
+\usetheme{metropolis}           % Use metropolis theme
+\usepackage{outlines}
+\usepackage{listings}
+\usepackage{pdfpages}
+%\usepackage{minted}
+%\usepackage{pygmentiz}
+
+
+\title{Procesamiento Masivo de Datos}
+\date{\today}
+\author{Alex Di Genova}
+\institute{Universidad de O'higgins}
+\begin{document}
+  \maketitle
+  
+  
+  
+  \begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Bienvenida curso de PMD}
+  \begin{frame}{Presentación}     
+   % \begin{itemize}
+\only<1>{
+  Alex Di Genova
+    \begin{outline}
+    \1 2003--2008 Ingeniero en Bioinformática. 
+    \1 2013-2017 Doctor en Sistemas Complejos.
+    \1 2017-2021 Postdoctorado en algoritmos y cáncer (Francia).
+    \1 2022 - Profesor Asistente UOH.
+    \2 Di Genoma Lab 
+    	\3 Combinamos el desarrollo de nuevos algoritmos, análisis de genomas y tecnologías ómicas de última generación para estudiar sistemas biológicos complejos.
+    \end{outline}
+   }
+   
+  \end{frame}
+ 
+  {
+\setbeamercolor{background canvas}{bg=}
+ \includepdf[pages=-]{img/wengan.pdf}
+}
+ 
+  \section{Planificación curso PMD}
+ \begin{frame}{Unidades}
+  \only<1>{
+    \begin{itemize}
+    	\item 4 Unidades (14 semanas)
+		\begin{itemize}
+			\item Distribución y Paralelismo (4 semanas)
+			\item Modelamiento de Procesamiento Distribuido (4 semanas)
+			\item Modelos de Almacenamiento Escalable (3 semanas) 
+			\item Bases de datos Distribuidas (3 semanas)
+		\end{itemize}
+	  \end{itemize}
+}
+ 
+
+
+  \end{frame}
+  
+  \begin{frame}{Evaluaciones}
+  \begin{outline}
+  	
+  	\1 Controles (70\%):
+	\2 Control 1:  Semana del 3 Octubre.
+	\2 Control 2:  Semana del 28 Noviembre.
+	\uncover<2->{
+	\1 Tareas (30\%):
+	\2 Tarea 1: Semana del 26 Septiembre.
+	\2 Tarea 2: Semana del 7 Noviembre. 
+	\2 Tarea 3: Semana del 28 Noviembre }
+  \end{outline}
+  \end{frame}
+  
+  \begin{frame}{Condiciones y Políticas de Evaluación}
+  \small
+  \begin{outline}
+   \1 El promedio de actividades complementarias se considerará como un tercer control (control III) y tendrá una ponderación de 30\%. El promedio de controles I,II y III con sus respectivas ponderaciones corresponderán a la nota final del curso. El curso será aprobado con una nota promedio igual o superior a 4,0.
+    
+ \uncover<2->{   \1 Estudiantes que se ausenten a un control tendrán la oportunidad de recuperarlo durante el periodo correspondiente al final del semestre. El control recuperativo es de carácter \textbf{acumulativo}, por lo tanto, contendrá contenido de las cuatro unidades del curso. Adicionalmente, alumnos que quieran remplazar una calificación en un control o actividades complementarias, también podrán rendir el control recuperativo.}
+    
+   \uncover<3->{ \1 Un/a estudiante que cometa plagio sobtendrá un 1,0 en la evaluación y el caso será informado a Escuela de Ingeniería.}
+\end{outline}
+
+  \end{frame}
+  
+  \begin{frame}{Materiales}
+  \begin{outline}
+  \1 Repositorio GitHub -- \url{https://github.com/adigenova/uohpmd}
+  \2 Clases
+  \2 Código 
+  \uncover<2->{ \1 Ucampus -- \url{https://ucampus.uoh.cl/uoh/2022/2/COM400}
+  \2 Comunicación (Consultas, noticias, evaluaciones)
+  \2 Planificacion }
+ \uncover<3->{  \1 Bibliografía 
+  \2 S. Tanenbaum, M. Van Steen. Distributed Systems: Principles and Paradigms (2nd Edition). Prentice Hall, 2006
+  \2 P. J. Sadalage, M. Fowler. NoSQL Distilled: A Brief Guide to the Emerging World of Polyglot Persistence. Addison-Wesley Professional, 2012 }
+  \end{outline}
+  \end{frame} 
+  
+  \begin{frame}{Resultados de Aprendizaje}
+  	\begin{outline}
+		\1 Conocer los principios fundamentales de diseño de sistemas distribuidos y paralelos
+		 \uncover<2->{ \1 Implementar comunicación entre máquinas (MPI, RMI)}
+		 \uncover<3->{ \1 Utilizar Nextflow/Hadoop para distribuir tareas computacionales básicas. }
+		 \uncover<4->{ \1 Conocer la taxonomía de modelos de datos NoSQL, sus lenguajes de consulta y construir una base de datos NO-SQL.}
+		 \uncover<5->{ \1 Construir una base de datos distribuida.}
+	\end{outline}
+  \end{frame}
+  
+
+  
+  
+    \begin{frame}{Consultas?}
+    \centering 
+    Consultas o comentarios?\\
+    Muchas Gracias.
+    
+    \end{frame}
+
+  
+\end{document}
