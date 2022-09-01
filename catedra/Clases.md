@@ -30,6 +30,19 @@ Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https
 
 El codigo visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Rust_C_basics.ipynb)
 
+## PMD-W2-C02 (01/09/2022)
+
+Procesamiento masivo de datos: Procesos y Hilos II
+
+### Slides
+
+Las slides de la clase Procesos y Hilos II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C02/PMD-W2-C02-threadsII.pdf)
+
+### Código
+
+El codigo visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
+
+
 
 
 
