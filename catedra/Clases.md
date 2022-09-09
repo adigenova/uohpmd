@@ -28,7 +28,7 @@ Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https
 
 ### Código
 
-El codigo visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Rust_C_basics.ipynb)
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Rust_C_basics.ipynb)
 
 ## PMD-W2-C02 (01/09/2022)
 
@@ -40,8 +40,29 @@ Las slides de la clase Procesos y Hilos II se encuentran disponibles [aqui](http
 
 ### Código
 
-El codigo visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
 
+
+## PMD-W3-C01 (05/09/2022)
+
+Procesamiento masivo de datos: Procesos y Hilos III
+
+### Slides
+
+Las slides de la clase Procesos y Hilos III se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C01/PMD-W3-C01-threadsIII.pdf)
+
+
+## PMD-W3-C02 (08/09/2022)
+
+Procesamiento masivo de datos: Hilos IV
+
+### Slides
+
+Las slides de la clase Hilos IV se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W3-C02-threadsIV.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
 
 
 
