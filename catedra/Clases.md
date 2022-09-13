@@ -64,6 +64,18 @@ Las slides de la clase Hilos IV se encuentran disponibles [aqui](https://github.
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
 
+## PMD-W4-C01 (12/09/2022)
+
+Procesamiento masivo de datos: OpenMP I
+
+### Slides
+
+Las slides de la clase OpenMP I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C01/PMD-W4-C01-OpenMP.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
+
 
 
 
