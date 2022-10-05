@@ -112,6 +112,18 @@ Las slides de la clase Modelo hibrido MPI/OpenMP  se encuentran disponibles [aqu
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/MPI_OPenMP.ipynb)
 
+## PMD-W6-C01 (03/10/2022)
+
+Procesamiento masivo de datos: Hadoop I
+
+### Slides
+
+Las slides de la clase Hadoop I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD-W6-C01-Hibrid.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
+
 
 
 
