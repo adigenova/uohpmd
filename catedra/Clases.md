@@ -118,7 +118,7 @@ Procesamiento masivo de datos: Hadoop I
 
 ### Slides
 
-Las slides de la clase Hadoop I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD-W6-C01-Hibrid.pdf)
+Las slides de la clase Hadoop I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD-W6-C01-Haadoop.pdf)
 
 ### Código
 
