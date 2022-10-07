@@ -124,6 +124,19 @@ Las slides de la clase Hadoop I se encuentran disponibles [aqui](https://github.
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
 
+## PMD-W6-C02 (06/10/2022)
+
+Procesamiento masivo de datos: Hadoop II
+
+### Slides
+
+Las slides de la clase Hadoop II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C02/PMD-W6-C02-HaadoopII.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
+
+
 
 
 
