@@ -136,6 +136,17 @@ Las slides de la clase Hadoop II se encuentran disponibles [aqui](https://github
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
 
+## PMD-W7-C01 (18/10/2022)
+
+Procesamiento masivo de datos: Nextflow I
+
+### Slides
+
+Las slides de la clase Nextflow I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C01/PMD_nextflow_17102022.pdf)
+
+
+## Control I 20/10/2022
+
 
 
 
