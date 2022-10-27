@@ -158,6 +158,7 @@ Las slides de la clase NoSQL I se encuentran disponibles [aqui](https://github.c
 
 ### Código
 
-El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
-El código visto en ayudantia se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NextflowI.ipynb)
+- El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
+
+- El código visto en ayudantia se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NextflowI.ipynb)
 
