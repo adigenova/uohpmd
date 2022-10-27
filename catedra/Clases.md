@@ -1,5 +1,5 @@
-
 # Bitácora del curso Procesamiento Masivo de Datos (PMD)
+
 Este documento describe el contenido visto en clases y tiene por objetivo ser un resumen de las cátedras.
 
 ## PMD-W1-C01 (22/08/2022)
@@ -41,7 +41,6 @@ Las slides de la clase Procesos y Hilos II se encuentran disponibles [aqui](http
 ### Código
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
-
 
 ## PMD-W3-C01 (05/09/2022)
 
@@ -149,5 +148,15 @@ Las slides de la clase Nextflow I se encuentran disponibles [aqui](https://githu
 
 
 
+## PMD-W7-C02 (27/10/2022)
 
+Procesamiento masivo de datos: NoSQL I
+
+### Slides
+
+Las slides de la clase NoSQL I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
 
