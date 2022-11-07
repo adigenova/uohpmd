@@ -162,3 +162,18 @@ Las slides de la clase NoSQL I se encuentran disponibles [aqui](https://github.c
 
 - El código visto en ayudantia se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/NextflowI.ipynb)
 
+## PMD-W8-C01 (07/11/2022)
+
+Procesamiento masivo de datos: NoSQL II
+
+### Slides
+
+Las slides de la clase NoSQL II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W8-C01/PMD-W8-C01-noSQL.pdf)
+
+### Código
+
+- El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Arango_GraphDB.ipynb)
+
+- Los datos visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/data/nosql)
+
+
