@@ -176,4 +176,12 @@ Las slides de la clase NoSQL II se encuentran disponibles [aqui](https://github.
 
 - Los datos visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/data/nosql)
 
+## PMD-W8-C02 (10/11/2022)
+
+Procesamiento masivo de datos: NoSQL III
+
+### Slides
+
+Las slides de la clase NoSQL III se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W8-C02/PMD-W8-C02-noSQL.pdf)
+
 
