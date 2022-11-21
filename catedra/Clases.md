@@ -184,4 +184,19 @@ Procesamiento masivo de datos: NoSQL III
 
 Las slides de la clase NoSQL III se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W8-C02/PMD-W8-C02-noSQL.pdf)
 
+## PMD-W9-C01 (17/11/2022)
+
+Bases de datos distribuidas
+
+### Slides
+
+Las slides de la clase bases de datos distribuidas se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C01/PMD-W9-C01-ddb.pdf)
+
+## PMD-W9-C02 (21/11/2022)
+
+Bases de datos distribuidas II
+
+### Slides
+
+Las slides de la clase bases de datos distribuidas II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C02/PMD-W9-C02-ddb.pdf)
 
