@@ -200,3 +200,12 @@ Bases de datos distribuidas II
 
 Las slides de la clase bases de datos distribuidas II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C02/PMD-W9-C02-ddb.pdf)
 
+
+## PMD-W10-C01 (28/11/2022)
+
+Bases de datos distribuidas III
+
+### Slides
+
+Las slides de la clase bases de datos distribuidas III se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C01/PMD-W10-C01-ddb.pdf)
+
