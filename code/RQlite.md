@@ -1,4 +1,4 @@
-#RQlite example
+# RQlite example
 
 
 ## download precompiled binary
