@@ -209,3 +209,12 @@ Bases de datos distribuidas III
 
 Las slides de la clase bases de datos distribuidas III se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C01/PMD-W10-C01-ddb.pdf)
 
+## PMD-W10-C02 (01/12/2022)
+
+Bases de datos distribuidas (RQLite) con algorithmo raft.
+
+### Codigo
+
+El codigo de la clase practica se encuentra disponible aqui:
+[RQlite](https://github.com/adigenova/uohpmd/blob/main/code/RQlite.md)
+
