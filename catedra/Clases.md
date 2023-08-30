@@ -10,7 +10,7 @@ Programa y introducción a PMD
 
 Las slides de la clase introducción están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C01/PMD-W1-C01-Int.pdf)
 
-## PMD-W1-C02 (23/08/2022)
+## PMD-W1-C02 (27/08/2022)
 
 Procesamiento masivo de datos: Sistemas Distribuidos.
 
@@ -18,4 +18,15 @@ Procesamiento masivo de datos: Sistemas Distribuidos.
 
 Las slides de la clase introducción están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf)
 
+## PMD-W2-C01 (30/08/2023)
+
+Procesamiento masivo de datos: Procesos y Hilos
+
+### Slides
+
+Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
 
