@@ -42,4 +42,16 @@ Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
 
+## PMD-W3-C01 (13/09/2023)
+
+Procesamiento masivo de datos: OpenMP 
+
+### Slides
+
+Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C01/PMD-W3-C01-OpenMP.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
+
 
