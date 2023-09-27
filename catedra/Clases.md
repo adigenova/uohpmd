@@ -54,4 +54,18 @@ Las slides de la clase Procesos y Hilos I se encuentran disponibles [aqui](https
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
 
+## PMD-W3-C02 (25/09/2023)
+
+Procesamiento masivo de datos: OpenMP II and MPI I
+
+### Slides
+
+Las slides de la clase OpenMP II y  MPI I se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [OpenMP](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb), [OpenMP2](https://github.com/adigenova/uohpmd/blob/main/code/OMP2.ipynb) y [MPI](https://github.com/adigenova/uohpmd/blob/main/code/MPI_I.ipynb)
+
+
+
 
