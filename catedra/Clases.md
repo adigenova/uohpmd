@@ -78,6 +78,18 @@ Las slides de la clase  MPI II se encuentran disponibles [aqui](https://github.c
 
 El código visto en clases se encuentra disponible: [MPI](https://github.com/adigenova/uohpmd/blob/main/code/MPI_II.ipynb)
 
+## PMD-W4-C02 (02/10/2023)
+
+Procesamiento masivo de datos: Metodos Hibridos
+
+### Slides
+
+Las slides de la clase  Metodos hibirdos se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C02/PMD-W5-C02-Hibrid.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [MPI](https://github.com/adigenova/uohpmd/blob/main/code/MPI_OPenMP.ipynb)
+
 
 
 
