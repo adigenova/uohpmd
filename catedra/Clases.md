@@ -84,11 +84,60 @@ Procesamiento masivo de datos: Metodos Hibridos
 
 ### Slides
 
-Las slides de la clase  Metodos hibirdos se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C02/PMD-W5-C02-Hibrid.pdf)
+Las slides de la clase  Metodos hibridos se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C02/PMD-W5-C02-Hibrid.pdf)
 
 ### Código
 
 El código visto en clases se encuentra disponible: [MPI](https://github.com/adigenova/uohpmd/blob/main/code/MPI_OPenMP.ipynb)
+
+
+## PMD-W5-C01 (04/10/2023)
+
+Procesamiento masivo de datos: Hadoop
+
+### Slides
+
+Las slides de la clase  Hadoop se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C01/PMD-W6-C01-Haadoop.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [Hadoop I](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
+
+## PMD-W5-C02 (16/10/2023)
+
+Procesamiento masivo de datos: Hadoop II
+
+### Slides
+
+Las slides de la clase  Hadoop II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C02/PMD-W6-C02-HaadoopII.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [Hadoop II](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
+
+## PMD-W6-C01 (18/10/2023)
+
+Procesamiento masivo de datos: Nextflow
+
+### Slides
+
+Las slides de la clase  Nextflow se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD_nextflow_17102022.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [Nextflow I](https://github.com/adigenova/uohpmd/blob/main/code/NextflowI.ipynb)
+
+## PMD-W6-C02 (23/10/2023)
+
+Procesamiento masivo de datos: Ejercicios Hadoop y Nextflow
+
+### Slides
+
+Las slides de la clase Ejercicios Hadoop y Nextflow se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C02/PMD_hadoop_nextflow.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [Hadoop Nextflow](https://github.com/adigenova/uohpmd/blob/main/code/Haddop_nextflow.ipynb)
 
 
 
