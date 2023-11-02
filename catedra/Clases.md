@@ -139,6 +139,20 @@ Las slides de la clase Ejercicios Hadoop y Nextflow se encuentran disponibles [a
 
 El código visto en clases se encuentra disponible: [Hadoop Nextflow](https://github.com/adigenova/uohpmd/blob/main/code/Haddop_nextflow.ipynb)
 
+## PMD-W7-C01-2 (30/10/2023)
+
+Procesamiento masivo de datos: NOSQL
+
+### Slides
+
+Las slides de la clase Ejercicios NOSQL se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible: [GraphDB](https://github.com/adigenova/uohpmd/blob/main/code/Arango_GraphDB.ipynb) y [NOSQL Arango](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
+
+
+
 
 
 
