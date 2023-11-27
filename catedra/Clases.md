@@ -151,8 +151,28 @@ Las slides de la clase Ejercicios NOSQL se encuentran disponibles [aqui](https:/
 
 El código visto en clases se encuentra disponible: [GraphDB](https://github.com/adigenova/uohpmd/blob/main/code/Arango_GraphDB.ipynb) y [NOSQL Arango](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
 
+## PMD-W9-C01 (15/11/2023)
+
+Bases de datos distribuidas
+
+### Slides
+
+Las slides de la clase se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C01/PMD-W9-C01-ddb.pdf)
+
+### Algoritmo RAFT
+
+El algoritmo RAFT visto en clases lo pueden encontrar [aqui](https://thesecretlivesofdata.com/raft/)
 
 
+## PMD-W9-C02 (23/11/2023)
 
 
+Bases de datos distribuidas II
 
+### Slides
+
+Las slides de la clase se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C02/PMD-W10-C01-ddb.pdf)
+
+### Código
+
+El codigo visto en clases utilizando el motor rqlite esta disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/RQlite.md)
