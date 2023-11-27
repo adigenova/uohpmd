@@ -176,3 +176,15 @@ Las slides de la clase se encuentran disponibles [aqui](https://github.com/adige
 ### Código
 
 El codigo visto en clases utilizando el motor rqlite esta disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/RQlite.md)
+
+## PMD-W10-C01 (27/11/2023)
+
+Repaso NoSQL
+
+### Slides
+
+Las slides de la clase se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C01/PMD-W10-C02-ddb.pdf)
+
+
+
+
