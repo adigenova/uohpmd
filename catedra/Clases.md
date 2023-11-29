@@ -185,6 +185,15 @@ Repaso NoSQL
 
 Las slides de la clase se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C01/PMD-W10-C02-ddb.pdf)
 
+## PMD-W10-C02 (29/11/2023)
+
+Repaso RAFT
+
+### Slides
+
+Las slides de la clase se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C02/RAFT.pdf)
+
+
 
 
 
