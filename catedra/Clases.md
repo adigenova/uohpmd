@@ -16,5 +16,5 @@ PMD: Big Data, Sistemas distribuidos, Linux
 
 ### Slides
 
-Las slides de la clase introduccion a Big Data, Sistemas distribuidpos [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf)
+Las slides de la clase introducción a Big Data, Sistemas distribuidos [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf)
 
