@@ -34,4 +34,16 @@ PMD: Linux para Big Data
 
 Las slides de la clase linux para big data están  [aquí](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C00/Linux_BD_HPC.pdf)
 
+## PMD-W3-C01 (26/08/2024)
+
+PMD: Procesos y Hilos
+
+### Slides
+
+Las slides de la clase procesos y Hilos están [aquí](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
+
 
