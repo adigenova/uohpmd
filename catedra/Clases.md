@@ -46,4 +46,21 @@ Las slides de la clase procesos y Hilos están [aquí](https://github.com/adigen
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
 
+## PMD-W4-C01 (02/09/2024)
+
+PMD: Procesos y Hilos II
+
+### Slides
+
+Las slides de la clase procesos y Hilos II están [aquí](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C02/PMD-W2-C02-threadsII.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
+
+
+## Data Tarea1
+
+Los datos para la pregunta 1 de la Tarea1 los pueden encontrar [aqui](https://github.com/adigenova/uohpmd/blob/main/data/tarea1)
+
 
