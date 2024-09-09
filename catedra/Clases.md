@@ -63,4 +63,26 @@ El código visto en clases se encuentra disponible [aqui](https://github.com/adi
 
 Los datos para la pregunta 1 de la Tarea1 los pueden encontrar [aqui](https://github.com/adigenova/uohpmd/blob/main/data/tarea1)
 
+## PMD-W4-C02 (07/09/2024)
+
+PMD: Procesos y Hilos II
+
+### Código
+
+Revisión detallada de los códigos de hilos [uno](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb) y [dos](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
+
+
+## PMD-W5-C01 (09/09/2024)
+
+PMD: OpenMP I
+
+### Slides
+
+Las slides de la clase OpenMP se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C01/PMD-W3-C01-OpenMP.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
+
+
 
