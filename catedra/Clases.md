@@ -84,5 +84,46 @@ Las slides de la clase OpenMP se encuentran disponibles [aqui](https://github.co
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
 
+## PMD-W5-C02 (13/09/2024)
+
+PMD: OpenMP II
+
+### Slides
+
+Las slides de la clase OpenMP II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OMP2.ipynb)
 
 
+## Receso(18/09/2024)
+
+
+## PMD-W6-C01 (23/09/2024)
+
+PMD : MPI I
+
+### Slides
+
+Las slides de la clase MPI I  se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/MPI_I.ipynb)
+
+
+## Control 1 PMD (27/09/2024)
+
+
+## PMD-W7-C01 (30/09/2024)
+
+PMD : MPI II
+
+### Slides
+
+Las slides de la clase MPI I  se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C01/PMD-W4-C01-MPI-II.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/MPI_II.ipynb)
