@@ -127,3 +127,32 @@ Las slides de la clase MPI I  se encuentran disponibles [aqui](https://github.co
 ### Código
 
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/MPI_II.ipynb)
+
+
+## PMD-W7-C02 (04/10/2024)
+
+PMD : MPI/OpenMP/Pthreads
+
+### Slides
+
+Las slides de la clase paralelizacion con metodos hibridos  se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C02/PMD-W5-C02-Hibrid.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/MPI_OPenMP.ipynb)
+
+## PMD-W8-C01 (07/10/2024)
+
+PMD : Hadoop I y II
+
+### Slides
+
+Las slides de la clase Hadoop I y II se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C01/PMD-W6-C01-Haadoop.pdf) y [HadoopII](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C02/PMD-W6-C02-HaadoopII.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [Hadoop I](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb) y [Hadoop II](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
+
+
+
+
