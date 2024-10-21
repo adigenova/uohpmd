@@ -1,0 +1,165 @@
+Oct-21 11:45:56.035 [main] DEBUG nextflow.cli.Launcher - $> nextflow run ejemplo1.nf --csv_in archivo.csv -profile local
+Oct-21 11:45:56.098 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 24.04.4
+Oct-21 11:45:56.114 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/Users/adigenova/.nextflow/plugins; core-plugins: nf-amazon@2.5.3,nf-azure@1.6.1,nf-cloudcache@0.4.1,nf-codecommit@0.2.1,nf-console@1.1.3,nf-ga4gh@1.3.0,nf-google@1.13.2-patch1,nf-tower@1.9.1,nf-wave@1.4.2-patch1
+Oct-21 11:45:56.122 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Oct-21 11:45:56.122 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Oct-21 11:45:56.124 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+Oct-21 11:45:56.138 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Oct-21 11:45:56.155 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /Users/adigenova/nextflow-examples/class/nextflow.config
+Oct-21 11:45:56.157 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /Users/adigenova/nextflow-examples/class/nextflow.config
+Oct-21 11:45:56.174 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /Users/adigenova/.nextflow/secrets/store.json
+Oct-21 11:45:56.176 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@19f040ba] - activable => nextflow.secret.LocalSecretsProvider@19f040ba
+Oct-21 11:45:56.185 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `local`
+Oct-21 11:45:56.573 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [kutral, local]
+Oct-21 11:45:56.593 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 by global default
+Oct-21 11:45:56.603 [main] DEBUG nextflow.cli.CmdRun - Launching `ejemplo1.nf` [peaceful_rosalind] DSL2 - revision: 2a28f7e6e7
+Oct-21 11:45:56.604 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Oct-21 11:45:56.604 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Oct-21 11:45:56.638 [main] DEBUG nextflow.Session - Session UUID: b048ad56-2d09-480e-b967-cb74ef6ff7f1
+Oct-21 11:45:56.638 [main] DEBUG nextflow.Session - Run name: peaceful_rosalind
+Oct-21 11:45:56.639 [main] DEBUG nextflow.Session - Executor pool size: 10
+Oct-21 11:45:56.646 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Oct-21 11:45:56.649 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=30; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Oct-21 11:45:56.749 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 24.04.4 build 5917
+  Created: 01-08-2024 07:05 UTC (03:05 CLST)
+  System: Mac OS X 13.0.1
+  Runtime: Groovy 4.0.21 on Java HotSpot(TM) 64-Bit Server VM 18+36-2087
+  Encoding: UTF-8 (UTF-8)
+  Process: 77746@NOT-TLM_S13.uoh.cl [172.16.96.118]
+  CPUs: 10 - Mem: 16 GB (76 MB) - Swap: 4 GB (1.1 GB)
+Oct-21 11:45:56.758 [main] DEBUG nextflow.Session - Work-dir: /Users/adigenova/nextflow-examples/class/work [Mac OS X]
+Oct-21 11:45:56.758 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /Users/adigenova/nextflow-examples/class/bin
+Oct-21 11:45:56.766 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Oct-21 11:45:56.773 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Oct-21 11:45:56.801 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Oct-21 11:45:56.807 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 11; maxThreads: 1000
+Oct-21 11:45:56.845 [main] DEBUG nextflow.Session - Session start
+Oct-21 11:45:56.847 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /Users/adigenova/nextflow-examples/class/result/pipeline_info/execution_trace_2024-10-21_11-45-56.txt
+Oct-21 11:45:57.203 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Oct-21 11:45:57.300 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:pA` matches process pA
+Oct-21 11:45:57.308 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-21 11:45:57.309 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-21 11:45:57.312 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Oct-21 11:45:57.316 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=10; memory=16 GB; capacity=10; pollInterval=100ms; dumpInterval=5m
+Oct-21 11:45:57.318 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Oct-21 11:45:57.351 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:pB` matches process pB
+Oct-21 11:45:57.352 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-21 11:45:57.352 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-21 11:45:57.366 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:pC` matches process pC
+Oct-21 11:45:57.367 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Oct-21 11:45:57.367 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Oct-21 11:45:57.376 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: pA, pB, pC
+Oct-21 11:45:57.376 [main] DEBUG nextflow.Session - Igniting dataflow network (4)
+Oct-21 11:45:57.380 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > pA
+Oct-21 11:45:57.380 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > pB
+Oct-21 11:45:57.380 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > pC
+Oct-21 11:45:57.380 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_537ee47555cc9fc3: /Users/adigenova/nextflow-examples/class/ejemplo1.nf
+Oct-21 11:45:57.380 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Oct-21 11:45:57.380 [main] DEBUG nextflow.Session - Session await
+Oct-21 11:45:57.517 [Task submitter] WARN  n.executor.BashWrapperBuilder - Task runtime metrics are not reported when using macOS without a container engine
+Oct-21 11:45:57.527 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.529 [Task submitter] INFO  nextflow.Session - [04/8e4309] Submitted process > pB (3)
+Oct-21 11:45:57.536 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.537 [Task submitter] INFO  nextflow.Session - [71/5c32af] Submitted process > pA (2)
+Oct-21 11:45:57.542 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.542 [Task submitter] INFO  nextflow.Session - [f2/fb9242] Submitted process > pA (5)
+Oct-21 11:45:57.547 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.548 [Task submitter] INFO  nextflow.Session - [1e/ba8ccc] Submitted process > pB (4)
+Oct-21 11:45:57.567 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: pB (3); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/04/8e4309677ec68f73315a79761d0b02]
+Oct-21 11:45:57.568 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'TaskFinalizer' minSize=10; maxSize=30; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Oct-21 11:45:57.570 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: pA (2); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/71/5c32af14101ed26d01f6937c7c192c]
+Oct-21 11:45:57.573 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.578 [Task submitter] INFO  nextflow.Session - [76/d46887] Submitted process > pB (10)
+Oct-21 11:45:57.578 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 11; name: pA (5); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/f2/fb9242ebec09b865be5db134aec095]
+Oct-21 11:45:57.582 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 7; name: pB (4); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/1e/ba8ccc6cfc883cef09fd5b2ae721f9]
+Oct-21 11:45:57.583 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.584 [Task submitter] INFO  nextflow.Session - [71/fe6ce7] Submitted process > pB (5)
+Oct-21 11:45:57.588 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.588 [Task submitter] INFO  nextflow.Session - [43/282bb5] Submitted process > pB (6)
+Oct-21 11:45:57.592 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.592 [Task submitter] INFO  nextflow.Session - [f3/c9e426] Submitted process > pB (8)
+Oct-21 11:45:57.596 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.597 [Task submitter] INFO  nextflow.Session - [6a/4d1c46] Submitted process > pB (2)
+Oct-21 11:45:57.600 [TaskFinalizer-3] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=30; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Oct-21 11:45:57.601 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.603 [Task submitter] INFO  nextflow.Session - [b1/a43501] Submitted process > pA (9)
+Oct-21 11:45:57.607 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.607 [Task submitter] INFO  nextflow.Session - [66/b33434] Submitted process > pB (1)
+Oct-21 11:45:57.620 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 19; name: pB (10); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/76/d468870435ee984de3580d51cabba8]
+Oct-21 11:45:57.626 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.626 [Task submitter] INFO  nextflow.Session - [af/99bf0b] Submitted process > pB (7)
+Oct-21 11:45:57.639 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 9; name: pB (5); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/71/fe6ce771890c26973ec76032d161d1]
+Oct-21 11:45:57.641 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 10; name: pB (6); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/43/282bb54aa420626e8eebd038a723e2]
+Oct-21 11:45:57.643 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.643 [Task submitter] INFO  nextflow.Session - [b5/41ae8f] Submitted process > pB (9)
+Oct-21 11:45:57.643 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 15; name: pB (8); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/f3/c9e4261ab41af89b9943ad74e2d32a]
+Oct-21 11:45:57.651 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: pB (2); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/6a/4d1c467ecec091a21fc64d9c21a87e]
+Oct-21 11:45:57.656 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: pB (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/66/b334343d86b1033df0e89eaf1db8a4]
+Oct-21 11:45:57.659 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.660 [Task submitter] INFO  nextflow.Session - [46/7eb688] Submitted process > pA (8)
+Oct-21 11:45:57.667 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 18; name: pA (9); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/b1/a435019cfc6b9856d8641dc47ec6f2]
+Oct-21 11:45:57.668 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 12; name: pB (7); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/af/99bf0b9815cc274f25ddd27403ed70]
+Oct-21 11:45:57.671 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.671 [Task submitter] INFO  nextflow.Session - [b2/4d260e] Submitted process > pA (10)
+Oct-21 11:45:57.677 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 17; name: pB (9); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/b5/41ae8f3b0dd4a8c0f27e20529deb98]
+Oct-21 11:45:57.690 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 16; name: pA (8); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/46/7eb688a4eae27e1b9422cefaba6004]
+Oct-21 11:45:57.693 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.694 [Task submitter] INFO  nextflow.Session - [19/1e7aff] Submitted process > pA (7)
+Oct-21 11:45:57.701 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 20; name: pA (10); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/b2/4d260efa9278059d836553860570b7]
+Oct-21 11:45:57.708 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.709 [Task submitter] INFO  nextflow.Session - [7c/562d68] Submitted process > pA (6)
+Oct-21 11:45:57.723 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 14; name: pA (7); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/19/1e7affd1b03916482917383fcff1c4]
+Oct-21 11:45:57.726 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.727 [Task submitter] INFO  nextflow.Session - [9f/c4a233] Submitted process > pA (1)
+Oct-21 11:45:57.738 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 13; name: pA (6); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/7c/562d68aea1239dc4b0464e267af692]
+Oct-21 11:45:57.741 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.741 [Task submitter] INFO  nextflow.Session - [fa/891957] Submitted process > pA (3)
+Oct-21 11:45:57.759 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: pA (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/9f/c4a233b84f10259764e2fc6f4b6821]
+Oct-21 11:45:57.762 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.763 [Task submitter] INFO  nextflow.Session - [61/b44c57] Submitted process > pA (4)
+Oct-21 11:45:57.772 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: pA (3); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/fa/891957739b1601dc2a9946a7797ee6]
+Oct-21 11:45:57.776 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.776 [Task submitter] INFO  nextflow.Session - [bf/b92aea] Submitted process > pC (1)
+Oct-21 11:45:57.791 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 8; name: pA (4); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/61/b44c57eb96fd5978e1f93f3966bdfb]
+Oct-21 11:45:57.795 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.795 [Task submitter] INFO  nextflow.Session - [37/826a90] Submitted process > pC (2)
+Oct-21 11:45:57.810 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 21; name: pC (1); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/bf/b92aea4c101895cdb8a4c2a200146e]
+Oct-21 11:45:57.813 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.813 [Task submitter] INFO  nextflow.Session - [f2/ada8fd] Submitted process > pC (3)
+Oct-21 11:45:57.827 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 22; name: pC (2); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/37/826a906c61836d18c5431d26815f16]
+Oct-21 11:45:57.830 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.830 [Task submitter] INFO  nextflow.Session - [e2/b818e2] Submitted process > pC (4)
+Oct-21 11:45:57.843 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 23; name: pC (3); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/f2/ada8fd3e2f9f2ffadc9079a7a1807f]
+Oct-21 11:45:57.846 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.846 [Task submitter] INFO  nextflow.Session - [93/4bc910] Submitted process > pC (5)
+Oct-21 11:45:57.859 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 24; name: pC (4); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/e2/b818e2206a668cd588e8408eaae991]
+Oct-21 11:45:57.863 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.863 [Task submitter] INFO  nextflow.Session - [b1/2eafcf] Submitted process > pC (6)
+Oct-21 11:45:57.876 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 25; name: pC (5); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/93/4bc910f9a793243d45a310e66467bc]
+Oct-21 11:45:57.879 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.879 [Task submitter] INFO  nextflow.Session - [14/d51a3a] Submitted process > pC (7)
+Oct-21 11:45:57.894 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 26; name: pC (6); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/b1/2eafcfc9f2f0e01e4f65a5752cd6a3]
+Oct-21 11:45:57.896 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.896 [Task submitter] INFO  nextflow.Session - [69/ae6670] Submitted process > pC (8)
+Oct-21 11:45:57.908 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 27; name: pC (7); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/14/d51a3a1eb97f5111eaf044648f3200]
+Oct-21 11:45:57.912 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.912 [Task submitter] INFO  nextflow.Session - [c5/2bf2fb] Submitted process > pC (9)
+Oct-21 11:45:57.926 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 28; name: pC (8); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/69/ae667016130c5ed0eb4aff83390904]
+Oct-21 11:45:57.930 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Oct-21 11:45:57.930 [Task submitter] INFO  nextflow.Session - [4a/b91ae7] Submitted process > pC (10)
+Oct-21 11:45:57.942 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 29; name: pC (9); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/c5/2bf2fbfa4d70222a32e974c1ed3cd2]
+Oct-21 11:45:57.962 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 30; name: pC (10); status: COMPLETED; exit: 0; error: -; workDir: /Users/adigenova/nextflow-examples/class/work/4a/b91ae78ff1f16513c1ef3b92a8afa3]
+Oct-21 11:45:57.965 [main] DEBUG nextflow.Session - Session await > all processes finished
+Oct-21 11:45:58.069 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Oct-21 11:45:58.069 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Oct-21 11:45:58.071 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'TaskFinalizer' shutdown completed (hard=false)
+Oct-21 11:45:58.071 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+Oct-21 11:45:58.074 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=30; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=0ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=7; peakCpus=11; peakMemory=8 GB; ]
+Oct-21 11:45:58.074 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+Oct-21 11:45:58.075 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+Oct-21 11:45:59.117 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+Oct-21 11:45:59.353 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Oct-21 11:45:59.361 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+Oct-21 11:45:59.362 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
