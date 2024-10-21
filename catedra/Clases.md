@@ -154,5 +154,22 @@ Las slides de la clase Hadoop I y II se encuentran disponibles [aqui](https://gi
 El código visto en clases se encuentra disponible [Hadoop I](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb) y [Hadoop II](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
 
 
+## PMD-W9-C01 (14/10/2024)
 
+PMD : Nextflow
+
+### Slides
+
+Las slides de la clase Nextflow se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD_nextflow_17102022.pdf)
+
+## PMD-W9-C02 (18/10/2024)
+Clase de programacion en Hadoop
+### Código
+El código visto en clases se encuentra disponible [Hadoop coding](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
+
+
+## PMD-W10-C01 (18/10/2024)
+Clase de programacion en Nextflow
+### Código
+El código visto en clases se encuentra disponible [Nextflow](https://github.com/adigenova/uohpmd/tree/main/code/ejemplo_nextflow_class1)
 
