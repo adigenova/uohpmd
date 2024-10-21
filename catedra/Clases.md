@@ -168,7 +168,7 @@ Clase de programacion en Hadoop
 El código visto en clases se encuentra disponible [Hadoop coding](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
 
 
-## PMD-W10-C01 (18/10/2024)
+## PMD-W10-C01 (21/10/2024)
 Clase de programacion en Nextflow
 ### Código
 El código visto en clases se encuentra disponible [Nextflow](https://github.com/adigenova/uohpmd/tree/main/code/ejemplo_nextflow_class1)
