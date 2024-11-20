@@ -173,3 +173,55 @@ Clase de programacion en Nextflow
 ### Código
 El código visto en clases se encuentra disponible [Nextflow](https://github.com/adigenova/uohpmd/tree/main/code/ejemplo_nextflow_class1)
 
+## PMD-W10-C02 (25/10/2024)
+NOSQL : Introduccion y conceptos basicos
+
+### Slides
+
+Las slides de la clase NOSQL se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
+
+### Código
+El código visto en clases se encuentra disponible [Nextflow](https://github.com/adigenova/uohpmd/tree/main/code/ejemplo_nextflow_class1)
+
+
+## PMD-W11-C01 (28/10/2024)
+
+
+### Control 2
+
+
+### PMD-W12-C01-02 (04/11 y 8/11)
+NoSQL: motores multimodelos, AQL y consultas en grafos.
+
+### Slides
+Las slides de la clase NOSQL se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
+
+### Código
+El codigo visto en clases esta disponible: 
+[Documentos en ArangoDB](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
+[Grafos en ArangoDB](https://github.com/adigenova/uohpmd/blob/main/code/Arango_GraphDB.ipynb)
+
+
+### PMD-W13-C01 (11/11 y 15/11)
+Bases de datos distribuidas: Introducción y conceptos
+### Slides
+Las slides de la clase BDD se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C01/PMD-W9-C01-ddb.pdf)
+
+
+###  PMD-W14-C01 (18/11)
+Algoritmo RAFT: funcionamiento y rqlite
+
+### Slides
+Las slides de la clase BDD se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W10-C01/PMD-W10-C01-ddb.pdf)
+
+### PMD-W14-C02 (22/11)
+
+Ejercicios NOSQL y RAFT
+
+### PMD-W15-C02 (29/11)
+
+### Control 3
+
+### PMD-W16-C01 (09/12)
+
+### Control recuperativo
