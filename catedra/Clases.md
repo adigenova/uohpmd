@@ -180,8 +180,6 @@ NOSQL : Introduccion y conceptos basicos
 
 Las slides de la clase NOSQL se encuentran disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
 
-### Código
-El código visto en clases se encuentra disponible [Nextflow](https://github.com/adigenova/uohpmd/tree/main/code/ejemplo_nextflow_class1)
 
 
 ## PMD-W11-C01 (28/10/2024)
