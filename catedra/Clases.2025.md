@@ -26,3 +26,18 @@ Linux para sistemas distribuidos y big data
 
 Las slides de la clase introducción a Linux están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf) y [parte2] (https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C00/Linux_BD_HPC.pdf)
 
+
+## PMD-W2-C01 (01/09/2025)
+
+Procesos y Hilos I
+
+### Slides
+
+Las slides de la clases de procesos e hilos están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
+
+
+
