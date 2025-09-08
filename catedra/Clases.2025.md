@@ -52,5 +52,19 @@ Las slides de la clases de procesos e hilos están disponibles [aqui](https://gi
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Threads_C.ipynb)
 
 
+## PMD-W3-C01 (08/09/2025)
+
+Procesos y Hilos II
+
+### Slides
+
+Las slides de la clases de procesos e hilos están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C02/PMD-W2-C02-threadsII.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
+
+
+
 
 
