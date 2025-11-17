@@ -65,6 +65,55 @@ Las slides de la clases de procesos e hilos están disponibles [aqui](https://gi
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
 
 
+## PMD-W4-C01 (10/09/2025)
 
+OpenMP I 
+
+### Slides
+
+Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C01/PMD-W3-C01-OpenMP.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
+
+
+## PMD-W4-C01 (13/09/2025)
+
+OpenMP II y MPI I 
+
+### Slides
+
+
+Las slides de la clases de OpenMP II y MPI I están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI.pdf
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
+
+## PMD-W4-C02 (30/09/2025)
+
+MPI II
+
+### Slides
+
+Las slides de la clases de MPI II  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C01/PMD-W4-C01-MPI-II.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
+
+
+## PMD-W5-C02 (17/11/2025)
+
+Modelo Hibrido MPI y OpenMP/Pthread
+
+### Slides
+
+Las slides de la clases de modelos hibridos están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C02/PMD-W5-C02-Hibrid.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
 
 
