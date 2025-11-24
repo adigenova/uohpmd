@@ -117,3 +117,18 @@ Las slides de la clases de modelos hibridos están disponibles [aqui](https://gi
 El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
 
 
+
+## PMD-W6-C01 (24/11/2025)
+
+Hadoop
+
+### Slides
+
+Las slides de la clases de Hadoop están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C01/PMD-W6-C01-Haadoop.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code)
+
+
+
