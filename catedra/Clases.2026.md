@@ -10,7 +10,7 @@ Programa y introducción a PMD
 
 Las slides de la clase introducción están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C01/PMD-W1-C01-Int.pdf)
 
-## PMD-W1-C01 (20/08/2026)
+## PMD-W1-C02 (20/08/2026)
 
 Introducción a sistemas distribuidos
 
