@@ -1,0 +1,976 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% -----------------------------------------------------------------------------
+% Procesamiento Masivo de Datos
+% Linux + shell + pipes + regex + sed + awk
+% Reorganized for a progressive, hands-on introduction.
+% -----------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{xurl}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,overlay-beamer-styles}
+
+\definecolor{UOHBlue}{RGB}{0,117,201}
+\usetheme[accent=UOHBlue]{Jacquenetta}
+\usepackage{uoh-jacquenetta}
+
+% --- Course metadata ---------------------------------------------------------
+\title[Procesamiento Masivo de Datos]{Procesamiento Masivo de Datos}
+\subtitle{Linux, tuberías, expresiones regulares, \texttt{sed} y \texttt{awk}}
+\author{Alex Di Genova}
+\institute{Universidad de O'Higgins}
+\date{2026}
+
+\begin{document}
+
+\titleframe
+
+% =============================================================================
+\section{Motivación}
+% =============================================================================
+
+\begin{frame}[fragile]{La idea central del curso}
+  \centering
+  \vspace{3mm}
+  \metric{Blue}{Datos}{GB \textrightarrow{} TB \textrightarrow{} PB}\hfill
+  \metric{Mint}{Herramientas}{pequeñas y componibles}\hfill
+  \metric{Coral}{Objetivo}{flujos reproducibles}
+  \vspace{8mm}
+  \begin{wideblock}{Pregunta guía}
+    ¿Cómo procesamos archivos grandes \alert{sin abrirlos completos en memoria}, evitando pasos manuales y dejando un análisis que pueda repetirse?
+  \end{wideblock}
+  \vfill
+  \small\color{Slate}En esta clase, la terminal no es el objetivo: es el lenguaje común para mover, inspeccionar, transformar y resumir datos.
+\end{frame}
+
+\begin{frame}[fragile]{Objetivos de aprendizaje}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{wideblock}{Linux y shell}
+        \begin{itemize}
+          \item navegar y manipular archivos
+          \item comprender rutas, permisos y procesos
+          \item usar redirecciones y tuberías
+        \end{itemize}
+      \end{wideblock}
+    \column{.48\textwidth}
+      \begin{wideblock}{Procesamiento de texto}
+        \begin{itemize}
+          \item buscar patrones con regex y \term{grep}
+          \item transformar flujos con \term{sed}
+          \item filtrar, calcular y resumir con \term{awk}
+        \end{itemize}
+      \end{wideblock}
+  \end{columns}
+  \vspace{5mm}
+  \centering\pill{Meta de la clase}\quad Convertir una pregunta sobre datos en una tubería verificable y reutilizable.
+\end{frame}
+
+\begin{frame}[fragile]{Del archivo al resultado: un modelo mental}
+  \centering
+  \begin{tikzpicture}[>=Latex,node distance=3mm]
+    \tikzset{stage/.style={rounded corners=4pt,minimum width=23mm,minimum height=12mm,align=center,font=\small\bfseries}}
+    \node[stage,fill=Blue!16,visible on=<1->] (f) {archivo\\\scriptsize entrada};
+    \node[stage,fill=Cyan!18,right=of f,visible on=<2->] (i) {inspeccionar\\\scriptsize head · wc · file};
+    \node[stage,fill=Amber!20,right=of i,visible on=<3->] (s) {seleccionar\\\scriptsize grep · cut};
+    \node[stage,fill=Mint!18,right=of s,visible on=<4->] (t) {transformar\\\scriptsize sed · awk};
+    \node[stage,fill=Coral!18,right=of t,visible on=<5->] (o) {resultado\\\scriptsize tabla · resumen};
+    \draw[->,thick,Blue,visible on=<2->] (f)--(i);
+    \draw[->,thick,Blue,visible on=<3->] (i)--(s);
+    \draw[->,thick,Blue,visible on=<4->] (s)--(t);
+    \draw[->,thick,Blue,visible on=<5->] (t)--(o);
+  \end{tikzpicture}
+  \vspace{8mm}
+  \begin{wideblock}{Principio Unix}
+    Resolver problemas complejos combinando herramientas simples, cada una especializada en una tarea pequeña.
+  \end{wideblock}
+\end{frame}
+
+% =============================================================================
+\section{Linux y shell: lo esencial}
+% =============================================================================
+
+\begin{frame}[fragile]{¿Qué ocurre cuando escribimos un comando?}
+  \centering
+  \begin{tikzpicture}[node distance=.8mm]
+    \tikzset{layer/.style={minimum width=118mm,minimum height=8mm,rounded corners=2pt,font=\small\bfseries}}
+    \node[layer,fill=Blue!16,visible on=<1->] (u) {usuario: terminal · shell · programas};
+    \node[layer,fill=Cyan!18,below=of u,visible on=<2->] (s) {llamadas al sistema};
+    \node[layer,fill=Mint!18,below=of s,visible on=<3->] (k) {kernel: procesos · memoria · red · sistema de archivos};
+    \node[layer,fill=Ink,text=Paper,below=of k,visible on=<4->] (h) {CPU · RAM · discos · interfaces de red};
+  \end{tikzpicture}
+  \vspace{6mm}
+  \begin{wideblock}{Idea clave}
+    La \alert{shell} interpreta el comando y crea procesos; el \alert{kernel} administra los recursos físicos.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{La shell es interfaz y también lenguaje}
+  \begin{columns}[T,onlytextwidth]
+    \column{.43\textwidth}
+      \textbf{Como interfaz}
+      \begin{itemize}
+        \item ejecuta programas
+        \item conecta entrada y salida
+        \item controla procesos
+      \end{itemize}
+      \textbf{Como lenguaje}
+      \begin{itemize}
+        \item variables y condiciones
+        \item ciclos y funciones
+        \item scripts versionables
+      \end{itemize}
+    \column{.54\textwidth}
+\begin{lstlisting}
+$ pwd
+/home/alex/project
+$ command --option input.tsv
+\end{lstlisting}
+      \small\pill{programa} \term{command}\quad
+      \pill[Cyan]{opción} \term{--option}\quad
+      \pill[Mint]{argumento} \term{input.tsv}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Navegar: saber dónde estoy y qué hay alrededor}
+\codebar{shell}
+\begin{lstlisting}
+pwd                    # directorio actual
+ls                     # listar
+ls -lh                  # tamanos legibles
+ls -la                  # incluye archivos ocultos
+cd data                 # entrar a data/
+cd ..                   # subir un nivel
+cd ~                    # volver al HOME
+\end{lstlisting}
+  \vspace{3mm}
+  \centering
+  \term{.} = aquí \qquad \term{..} = directorio padre \qquad \term{\~} = directorio personal
+\end{frame}
+
+\begin{frame}[fragile]{Archivos y directorios: crear, copiar, mover, borrar}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+\codebar{crear y copiar}
+\begin{lstlisting}
+mkdir results
+mkdir -p results/qc
+cp input.tsv backup.tsv
+cp -r data/ data_backup/
+\end{lstlisting}
+    \column{.48\textwidth}
+\codebar{mover y borrar}
+\begin{lstlisting}
+mv old.tsv new.tsv
+mv new.tsv results/
+rm file.tmp
+rm -r directory/
+\end{lstlisting}
+  \end{columns}
+  \vspace{5mm}
+  \pill[Coral]{Atención}\quad \term{rm} no tiene papelera. Revise rutas y comodines antes de ejecutar.
+\end{frame}
+
+\begin{frame}[fragile]{Encontrar y medir datos}
+\begin{lstlisting}
+find data/ -type f -name '*.tsv'
+find . -type f -size +1G
+
+du -sh data/
+du -h --max-depth=1 data/ | sort -h
+
+df -h
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{Dos preguntas distintas}
+    \term{du} pregunta: ``¿cuánto ocupa este directorio?'' \qquad
+    \term{df} pregunta: ``¿cuánto espacio queda en el sistema de archivos?''
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Comodines y comillas: la shell expande antes de ejecutar}
+  \begin{columns}[T,onlytextwidth]
+    \column{.47\textwidth}
+      \textbf{Globbing}
+\begin{lstlisting}
+ls *.tsv
+ls sample?.txt
+ls run_[123].log
+\end{lstlisting}
+    \column{.49\textwidth}
+      \textbf{Comillas}
+\begin{lstlisting}
+echo "$HOME"
+echo '$HOME'
+rm -- "file with spaces.txt"
+\end{lstlisting}
+  \end{columns}
+  \vspace{6mm}
+  \begin{wideblock}{Regla práctica}
+    Use comillas dobles alrededor de variables y rutas cuando no quiera que espacios o comodines cambien el significado del comando.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Pedir ayuda es parte del trabajo}
+\begin{lstlisting}
+man sort
+sort --help
+command -v awk
+type cd
+\end{lstlisting}
+  \vspace{5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}\pill{man}\quad manual completo
+    \column{.31\textwidth}\pill[Cyan]{--help}\quad recordatorio rápido
+    \column{.31\textwidth}\pill[Mint]{command -v}\quad ¿qué ejecutable usaré?
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Permisos: quién puede hacer qué}
+\begin{lstlisting}
+$ ls -l analysis.sh
+-rwxr-x--- 1 alex lab 2048 Aug 31 analysis.sh
+\end{lstlisting}
+  \begin{center}
+  \begin{tabular}{>{\bfseries}lccc}
+    \toprule
+    & usuario & grupo & otros \\
+    \midrule
+    representación & rwx & r-x & --- \\
+    significado & leer/escribir/ejecutar & leer/ejecutar & ninguno \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{3mm}
+  \pill{mínimo privilegio}\quad Conceda sólo el acceso necesario; evite \term{chmod 777} como solución rápida.
+\end{frame}
+
+% =============================================================================
+\section{Flujos, redirecciones y tuberías}
+% =============================================================================
+
+\begin{frame}[fragile]{Tres flujos; infinitas combinaciones}
+  \centering
+  \begin{tikzpicture}[>=Latex,node distance=12mm]
+    \node[draw=Blue,very thick,rounded corners=4pt,minimum width=35mm,minimum height=18mm,font=\bfseries] (cmd) {comando};
+    \node[left=of cmd,align=center] (in) {\pill[Cyan]{stdin · 0}\\datos de entrada};
+    \node[right=of cmd,yshift=7mm,align=center] (out) {\pill[Mint]{stdout · 1}\\resultado};
+    \node[right=of cmd,yshift=-10mm,align=center] (err) {\pill[Coral]{stderr · 2}\\diagnóstico};
+    \draw[->,line width=1.2pt,Cyan] (in)--(cmd);
+    \draw[->,line width=1.2pt,Mint] (cmd)--(out);
+    \draw[->,line width=1.2pt,Coral] (cmd)--(err);
+  \end{tikzpicture}
+  \vspace{5mm}
+\begin{lstlisting}
+command < input.txt > result.txt 2> errors.log
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Redirecciones: decidir de dónde vienen y adónde van los datos}
+\begin{lstlisting}
+command > result.txt        # sobrescribe stdout
+command >> result.txt       # agrega stdout al final
+command 2> errors.log       # guarda stderr
+command > out.txt 2>&1      # stdout + stderr
+command < input.txt         # toma stdin desde archivo
+\end{lstlisting}
+  \vspace{4mm}
+  \pill[Amber]{Consejo}\quad Antes de usar \term{>}, confirme que no está sobrescribiendo un resultado importante.
+\end{frame}
+
+\begin{frame}[fragile]{La tubería: stdout de un proceso \textrightarrow{} stdin del siguiente}
+\codebar{pipeline.sh}
+\begin{lstlisting}
+cat file.txt \
+  | grep 'ERROR' \
+  | sort \
+  | uniq -c \
+  | sort -nr
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{Regla de depuración}
+    Construya la tubería de izquierda a derecha. Ejecute cada etapa sobre una muestra pequeña antes de agregar la siguiente.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{No siempre necesitamos \texttt{cat}}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \textbf{Funciona}
+\begin{lstlisting}
+cat file.tsv | grep chile
+\end{lstlisting}
+    \column{.48\textwidth}
+      \textbf{Más directo}
+\begin{lstlisting}
+grep chile file.tsv
+\end{lstlisting}
+  \end{columns}
+  \vspace{6mm}
+  \small
+  \textbf{Pero} \term{cat} es útil para concatenar archivos, alimentar comandos que sólo leen stdin o hacer una tubería más explícita durante la enseñanza.
+\end{frame}
+
+% =============================================================================
+\section{Inspeccionar, seleccionar y ordenar}
+% =============================================================================
+
+\begin{frame}[fragile]{Inspeccionar antes de transformar}
+\begin{lstlisting}
+head -n 5 worldcitiespop.csv
+tail -n 5 worldcitiespop.csv
+wc -l worldcitiespop.csv
+file worldcitiespop.csv
+less worldcitiespop.csv
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}\pill{1}\quad ¿hay cabecera?
+    \column{.31\textwidth}\pill{2}\quad ¿cuál es el delimitador?
+    \column{.31\textwidth}\pill{3}\quad ¿qué valores faltan?
+  \end{columns}
+  \vspace{5mm}
+  \alert{Nunca empiece transformando un archivo que todavía no ha inspeccionado.}
+\end{frame}
+
+\begin{frame}[fragile]{Una caja de herramientas para texto}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{>{\bfseries\color{Blue}}l p{.69\textwidth}}
+    \toprule
+    inspeccionar & \term{head}, \term{tail}, \term{less}, \term{wc}, \term{file} \\
+    buscar & \term{grep} \\
+    columnas & \term{cut}, \term{paste} \\
+    ordenar/agrupar & \term{sort}, \term{uniq} \\
+    transformar & \term{tr}, \term{sed}, \term{awk} \\
+    combinar/comparar & \term{join}, \term{comm}, \term{diff} \\
+    encontrar archivos & \term{find} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{3mm}
+  \centering\small Elija la herramienta más simple que exprese correctamente la operación.
+\end{frame}
+
+\begin{frame}[fragile]{Seleccionar columnas con \texttt{cut}}
+\codebar{worldcitiespop.csv}
+\begin{lstlisting}
+head -n 3 worldcitiespop.csv
+
+cut -d, -f1,2,5 worldcitiespop.csv | head
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{Importante}
+    \term{cut -d,} sirve aquí porque el archivo es simple. Un CSV general puede contener comas entre comillas y necesita un parser real.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Ordenar y contar categorías}
+\begin{lstlisting}
+cut -d, -f1 worldcitiespop.csv \
+  | tail -n +2 \
+  | sort \
+  | uniq -c \
+  | sort -nr \
+  | head
+\end{lstlisting}
+  \vspace{4mm}
+  \centering
+  \pill{sort}\; agrupa iguales \quad + \quad
+  \pill[Cyan]{uniq -c}\; cuenta adyacentes \quad + \quad
+  \pill[Mint]{sort -nr}\; ordena por frecuencia
+\end{frame}
+
+\begin{frame}[fragile]{Caso guiado: las 10 ciudades más pobladas}
+  \textbf{Pregunta:} ¿cuáles son las 10 ciudades con mayor población?
+\codebar{top-cities.sh}
+\begin{lstlisting}
+tail -n +2 worldcitiespop.csv \
+  | sort -t, -k5,5nr \
+  | head -n 10
+\end{lstlisting}
+  \begin{center}
+  \begin{tikzpicture}[>=Latex,node distance=4mm]
+    \node[rounded corners=3pt,fill=Blue!16,minimum width=34mm,minimum height=9mm,font=\scriptsize\bfseries] (n0) {quitar cabecera};
+    \node[rounded corners=3pt,fill=Amber!18,minimum width=38mm,minimum height=9mm,font=\scriptsize\bfseries,right=of n0] (n1) {ordenar campo 5 numérico};
+    \node[rounded corners=3pt,fill=Mint!18,minimum width=34mm,minimum height=9mm,font=\scriptsize\bfseries,right=of n1] (n2) {tomar diez};
+    \draw[->,thick] (n0)--(n1); \draw[->,thick] (n1)--(n2);
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Procesar datos comprimidos sin descomprimirlos a disco}
+\begin{lstlisting}
+gzip -dc reads.txt.gz | head
+zcat table.tsv.gz | wc -l
+
+zcat table.tsv.gz \
+  | grep -v '^#' \
+  | cut -f1,2 \
+  | head
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{Por qué importa}
+    En datos masivos, evitar copias intermedias ahorra espacio, I/O y tiempo. Muchas herramientas pueden leer directamente desde \term{stdin}.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{¿Qué operaciones escalan bien?}
+  \begin{columns}[T,onlytextwidth]
+    \column{.47\textwidth}
+      \begin{wideblock}{Streaming}
+        \term{grep}, \term{cut}, \term{sed} y muchos usos de \term{awk} procesan una línea a la vez.
+      \end{wideblock}
+    \column{.47\textwidth}
+      \begin{wideblock}{Requieren más recursos}
+        \term{sort} necesita ordenar globalmente; agregaciones en \term{awk} pueden almacenar muchas claves en memoria.
+      \end{wideblock}
+  \end{columns}
+  \vspace{6mm}
+  \centering\pill[Amber]{Pregunta de escalabilidad}\quad ¿cuánto crece la memoria y el disco temporal cuando crece el archivo?
+\end{frame}
+
+% =============================================================================
+\section{Expresiones regulares y grep}
+% =============================================================================
+
+\begin{frame}[fragile]{Regex: describir patrones, no posiciones fijas}
+  \begin{center}
+  \begin{tabular}{l p{.67\textwidth}}
+    \toprule
+    \textbf{Patrón} & \textbf{Significado} \\
+    \midrule
+    \term{\char94} \quad \term{\$} & inicio y final de línea \\
+    \term{.} & cualquier carácter \\
+    \term{[abc]} & uno de los caracteres del conjunto \\
+    \term{[\char94 abc]} & cualquier carácter excepto los del conjunto \\
+    \term{*} \quad \term{+} \quad \term{?} & cero o más; uno o más; opcional \\
+    \term{\{m,n\}} & entre \emph{m} y \emph{n} repeticiones \\
+    \term{(a|b)} & agrupación y alternativas en ERE \\
+    \term{[[:digit:]]} & clase portable de dígitos \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{4mm}
+  \pill[Amber]{Consejo}\quad Use \term{grep -E} y \term{sed -E} para expresiones regulares extendidas.
+\end{frame}
+
+\begin{frame}[fragile]{Buscar con \texttt{grep}}
+\begin{lstlisting}
+grep 'Chile' countries.txt
+grep -i 'chile' countries.txt
+grep -n 'ERROR' pipeline.log
+grep -v '^#' variants.tsv
+grep -E '^(chr1|chr2)[[:space:]]' variants.tsv
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{.23\textwidth}\pill{i}\; ignora caso
+    \column{.23\textwidth}\pill[Cyan]{n}\; muestra línea
+    \column{.23\textwidth}\pill[Mint]{v}\; invierte
+    \column{.23\textwidth}\pill[Coral]{E}\; regex extendida
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Regex en acción}
+\codebar{regex-demo.sh}
+\begin{lstlisting}
+$ printf '%s\n' ac abc abbc abbbc abbbbbc \
+    | grep -E '^ab{1,3}c$'
+abc
+abbc
+abbbc
+\end{lstlisting}
+  \vspace{3mm}
+  \begin{wideblock}{Leer el patrón de izquierda a derecha}
+    inicio · \term{a} · entre 1 y 3 letras \term{b} · \term{c} · final de línea
+  \end{wideblock}
+\end{frame}
+
+% =============================================================================
+\section{sed: transformar un flujo}
+% =============================================================================
+
+\begin{frame}[fragile]{\texttt{sed}: pensar en ``buscar y transformar''}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \textbf{Sustituir}
+\codebar{sed · sustitución}
+\begin{lstlisting}
+sed 's/hello/bye/' file.txt
+sed 's/hello/bye/g' file.txt
+\end{lstlisting}
+    \column{.48\textwidth}
+      \textbf{Normalizar espacios}
+\codebar{sed · regex extendida}
+\begin{lstlisting}
+sed -E 's/[[:space:]]+/ /g' file.txt
+\end{lstlisting}
+  \end{columns}
+  \vspace{5mm}
+  \centering \term{s/patrón/reemplazo/banderas}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{sed}: seleccionar líneas y rangos}
+\begin{lstlisting}
+sed -n '10,20p' file.txt
+sed -n '/ERROR/p' pipeline.log
+sed '10,20s/hello/bye/g' file.txt
+sed '/^#/d' variants.tsv
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}\pill{p}\quad imprimir
+    \column{.31\textwidth}\pill[Cyan]{d}\quad eliminar
+    \column{.31\textwidth}\pill[Mint]{10,20}\quad rango de líneas
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Capturas: reorganizar texto con grupos}
+\codebar{sed · grupos de captura}
+\begin{lstlisting}
+$ echo 'chr1:100-250' \
+    | sed -E 's/([^:]+):([0-9]+)-([0-9]+)/\1\t\2\t\3/'
+chr1    100    250
+\end{lstlisting}
+  \vspace{5mm}
+  \begin{wideblock}{Idea clave}
+    Los paréntesis capturan partes del patrón; \term{\textbackslash1}, \term{\textbackslash2}, \term{\textbackslash3} las reutilizan en el reemplazo.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplos de transformación con \texttt{sed}}
+\begin{lstlisting}
+sed 's/2022/2024/g' file.txt
+sed 's/2022/2024/g; s/casa/home/g' file.txt
+
+echo 'cats dog bee parrot foxed' \
+  | sed -E 's/cat|dog|fox/--/g'
+# --s -- bee parrot --ed
+
+echo 'car bat cod map scat dot abacus' \
+  | sed 's/b.*at/-/'
+# car - dot abacus
+\end{lstlisting}
+  \vspace{2mm}
+  \small\color{Slate}Discusión: \term{.*} es codicioso; consume todo lo posible antes de permitir que el resto del patrón coincida.
+\end{frame}
+
+% =============================================================================
+\section{awk: filtrar, calcular y resumir}
+% =============================================================================
+
+\begin{frame}[fragile]{\texttt{awk}: datos como registros y campos}
+  \begin{columns}[T,onlytextwidth]
+    \column{.46\textwidth}
+      \begin{itemize}
+        \item un registro por línea
+        \item campos \term{\$1 ... \$NF}
+        \item \term{NR}: número de registro
+        \item regla = patrón + acción
+      \end{itemize}
+    \column{.51\textwidth}
+\codebar{awk · filtro}
+\begin{lstlisting}
+awk -F, 'NR > 1 && $5 > 1e6 {
+  print $2, $5
+}' worldcitiespop.csv
+\end{lstlisting}
+  \end{columns}
+  \vspace{5mm}
+  \centering\term{awk 'condición \{ acción \}' archivo}
+\end{frame}
+
+\begin{frame}[fragile]{Separadores: \texttt{FS} para leer, \texttt{OFS} para escribir}
+\begin{lstlisting}
+awk -F, 'BEGIN {OFS="\t"}
+  NR > 1 {print $1, $2, $5}
+' worldcitiespop.csv | head
+\end{lstlisting}
+  \vspace{5mm}
+  \begin{wideblock}{Modelo}
+    \term{FS} define cómo se separan los campos de entrada; \term{OFS} define cómo se separan los campos impresos.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Patrones y condiciones con \texttt{awk}}
+\begin{lstlisting}
+awk '$NF < 0' table.txt
+awk 'NR == 1 || $5 > 1000000' worldcitiespop.csv
+awk '$2 ~ /error/' log.txt
+awk 'tolower($2) ~ /error/' log.txt
+awk 'NF >= 5 {print $1, $NF}' table.txt
+\end{lstlisting}
+  \vspace{4mm}
+  \pill{\textasciitilde}\; coincide con regex \quad
+  \pill[Cyan]{!\textasciitilde}\; no coincide \quad
+  \pill[Mint]{NF}\; número de campos
+\end{frame}
+
+\begin{frame}[fragile]{El ciclo de vida de \texttt{awk}}
+  \centering
+  \begin{tikzpicture}[>=Latex,node distance=9mm]
+    \tikzset{phase/.style={rounded corners=4pt,minimum width=31mm,minimum height=14mm,align=center,font=\bfseries}}
+    \node[phase,fill=Blue!16] (b) {BEGIN\\\scriptsize inicializar};
+    \node[phase,fill=Cyan!18,right=of b] (m) {cada registro\\\scriptsize filtrar · calcular};
+    \node[phase,fill=Mint!18,right=of m] (e) {END\\\scriptsize resumir};
+    \draw[->,thick,Blue] (b)--(m); \draw[->,thick,Blue] (m)--(e);
+    \draw[->,thick,Slate,loop above] (m) to node[above,font=\scriptsize]{siguiente línea} (m);
+  \end{tikzpicture}
+\begin{lstlisting}
+awk 'BEGIN {sum=0}
+     {sum += $1}
+     END {print sum}' values.txt
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Agregación con arreglos asociativos}
+  \textbf{Pregunta:} ¿cuál es la población total registrada por país?
+\codebar{population-by-country.sh}
+\begin{lstlisting}
+awk -F, '
+  NR > 1 && $5 != "" { pop[$1] += $5 }
+  END { for (c in pop) print c, pop[c] }
+' worldcitiespop.csv \
+  | sort -k2,2nr \
+  | head
+\end{lstlisting}
+  \vspace{3mm}
+  \pill{clave}\; país \quad + \quad \pill[Cyan]{valor}\; suma acumulada \quad = \quad \pill[Mint]{resumen}\; por grupo
+\end{frame}
+
+\begin{frame}[fragile]{Contar categorías con \texttt{awk}}
+\begin{lstlisting}
+awk -F, '
+  NR > 1 { count[$1]++ }
+  END {
+    for (c in count)
+      print c, count[c]
+  }
+' worldcitiespop.csv \
+  | sort -k2,2nr \
+  | head
+\end{lstlisting}
+  \vspace{4mm}
+  \small\color{Slate}El patrón \term{count[key]++} aparece constantemente en logs, tablas, variantes, muestras y resultados de pipelines.
+\end{frame}
+
+\begin{frame}[fragile]{Funciones útiles de \texttt{awk}}
+  \begin{columns}[T,onlytextwidth]
+    \column{.47\textwidth}
+      \textbf{Cadenas}
+      \begin{itemize}
+        \item \term{length(s)}, \term{substr(s,p,n)}
+        \item \term{split(s,a,sep)}
+        \item \term{sub}, \term{gsub}, \term{match}
+        \item \term{tolower}, \term{toupper}
+      \end{itemize}
+    \column{.47\textwidth}
+      \textbf{Cálculo}
+      \begin{itemize}
+        \item \term{+ - * / \% \^}
+        \item \term{sqrt}, \term{log}, \term{int}
+        \item \term{== != < <= > >=}
+        \item \term{\&\& || !}
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Laboratorio corto: selección con \texttt{awk}}
+\begin{lstlisting}[basicstyle=\ttfamily\fontsize{7}{8}\selectfont\color{Paper}]
+$ cat table.txt
+brown bread mat hair 42
+blue cake mug shirt -7
+yellow banana window shoes 3.14
+
+$ awk '{print $2}' table.txt
+bread
+cake
+banana
+
+$ awk '$NF < 0' table.txt
+blue cake mug shirt -7
+
+$ awk '{gsub(/b/, "B", $1)} 1' table.txt
+Brown bread mat hair 42
+Blue cake mug shirt -7
+yellow banana window shoes 3.14
+\end{lstlisting}
+\end{frame}
+
+% =============================================================================
+\section{Combinar herramientas}
+% =============================================================================
+
+\begin{frame}[fragile]{Ejemplo integrado: frecuencia de palabras}
+\codebar{word-frequency.sh}
+\begin{lstlisting}
+tr '[:upper:]' '[:lower:]' < text.txt \
+  | tr -cs '[:alnum:]' '\n' \
+  | sed '/^$/d' \
+  | sort \
+  | uniq -c \
+  | sort -nr \
+  | head -n 20
+\end{lstlisting}
+  \vspace{3mm}
+  \textbf{Discuta:} ¿qué ocurre con tildes, guiones, números y distintas configuraciones regionales?
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo integrado: resumir un archivo de variantes}
+  \small Supongamos un TSV simplificado: \term{CHROM POS REF ALT SAMPLE}
+\codebar{variants.tsv}
+\begin{lstlisting}
+grep -v '^#' variants.tsv \
+  | awk 'BEGIN {OFS="\t"}
+         {count[$1]++}
+         END {for (chr in count) print chr, count[chr]}' \
+  | sort -k2,2nr
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{Transferencia de aprendizaje}
+    El mismo patrón sirve para contar eventos por cromosoma, errores por nodo, muestras por grupo o registros por categoría.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Combinar dos tablas con \texttt{join}}
+  \small \term{join} requiere que ambas tablas estén ordenadas por la clave.
+\begin{lstlisting}
+sort -k1,1 countries.tsv > countries.sorted.tsv
+sort -k1,1 population.tsv > population.sorted.tsv
+
+join -t $'\t' -1 1 -2 1 \
+  countries.sorted.tsv population.sorted.tsv
+\end{lstlisting}
+  \vspace{4mm}
+  \pill[Amber]{Concepto}\quad Es el equivalente en shell de un \emph{inner join} simple.
+\end{frame}
+
+\begin{frame}[fragile]{Una tubería reproducible deja huellas}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \begin{itemize}[<+->]
+        \item script versionado
+        \item entradas identificadas
+        \item parámetros explícitos
+        \item versiones de herramientas
+      \end{itemize}
+    \column{.48\textwidth}
+      \begin{itemize}[<+->]
+        \item errores registrados
+        \item conteos de control
+        \item salidas deterministas
+        \item comando de ejecución documentado
+      \end{itemize}
+  \end{columns}
+  \vspace{5mm}
+\begin{lstlisting}
+#!/usr/bin/env bash
+set -euo pipefail
+
+pipeline input.tsv > result.tsv 2> pipeline.log
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Ver el flujo mientras se ejecuta: \texttt{tee}}
+\begin{lstlisting}
+grep -v '^#' variants.tsv \
+  | tee filtered.tsv \
+  | awk '{count[$1]++}
+         END {for (c in count) print c, count[c]}'
+\end{lstlisting}
+  \vspace{5mm}
+  \begin{wideblock}{Útil para depurar}
+    \term{tee} copia el flujo a un archivo y, al mismo tiempo, lo deja continuar por la tubería.
+  \end{wideblock}
+\end{frame}
+
+% =============================================================================
+\section{Trabajo remoto y clúster}
+% =============================================================================
+
+\begin{frame}[fragile]{El clúster: dónde ejecutaremos los análisis grandes}
+  \begin{columns}[c,onlytextwidth]
+    \column{.63\textwidth}
+    \centering
+    \begin{tikzpicture}[>=Latex,node distance=7mm]
+      \tikzset{box/.style={rounded corners=3pt,minimum width=27mm,minimum height=11mm,align=center,font=\small\bfseries}}
+      \node[box,fill=Blue!18] (login) {nodo de acceso};
+      \node[box,fill=Amber!22,below=of login] (sched) {planificador\\SLURM};
+      \node[box,fill=Mint!20,right=16mm of sched] (fs) {almacenamiento\\compartido};
+      \node[box,fill=Cyan!18,below left=8mm and -5mm of sched] (n1) {cómputo 01};
+      \node[box,fill=Cyan!18,below=8mm of sched] (n2) {cómputo 02};
+      \node[box,fill=Cyan!18,below right=8mm and -5mm of sched] (n3) {cómputo n};
+      \draw[->,thick,Blue] (login)--node[right,font=\scriptsize]{envía jobs}(sched);
+      \foreach \n in {n1,n2,n3}{\draw[->,thick,Blue] (sched)--(\n);\draw[-,thick,Mint] (fs)--(\n);}
+    \end{tikzpicture}
+    \column{.34\textwidth}
+      \begin{itemize}[<+->]
+        \item SSH para entrar
+        \item SLURM para computar
+        \item filesystem compartido
+        \item nodos para trabajo pesado
+      \end{itemize}
+      \vspace{2mm}\alert{No ejecute análisis pesado en el nodo de acceso.}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Acceso remoto y transferencia}
+  \begin{columns}[T,onlytextwidth]
+    \column{.48\textwidth}
+      \textbf{Conectar}
+\begin{lstlisting}
+ssh user@cluster
+ssh -p 8765 user@cluster
+\end{lstlisting}
+    \column{.48\textwidth}
+      \textbf{Transferir}
+\begin{lstlisting}
+scp file.tsv user@cluster:/data/
+rsync -avP results/ \
+  user@cluster:/data/results/
+\end{lstlisting}
+  \end{columns}
+  \vspace{4mm}
+  \pill[Mint]{rsync}\quad especialmente útil para directorios grandes y transferencias que pueden reanudarse.
+\end{frame}
+
+\begin{frame}[fragile]{Sesiones persistentes para trabajo interactivo}
+\begin{lstlisting}
+tmux new -s analysis
+
+# Ctrl-b d   -> separar la sesion
+
+tmux ls
+tmux attach -t analysis
+\end{lstlisting}
+  \vspace{4mm}
+  \begin{wideblock}{En un clúster}
+    Use \term{tmux} para sesiones interactivas livianas; use el planificador para análisis que consumen CPU o memoria de manera significativa.
+  \end{wideblock}
+\end{frame}
+
+% =============================================================================
+\section{Práctica}
+% =============================================================================
+
+\begin{frame}[fragile]{Laboratorio: ciudades del mundo}
+\codebar{worldcitiespop.csv}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize\color{Paper}]
+head worldcitiespop.csv
+wc -l worldcitiespop.csv
+head -100 worldcitiespop.csv > sample_worldcitiespop.csv
+
+cut -d, -f1,5 worldcitiespop.csv > country_population.csv
+
+tail -n +2 worldcitiespop.csv \
+  | sort -t, -k5,5nr \
+  | head -10
+
+awk -F, 'NR > 1 && $5 > 1000000' worldcitiespop.csv
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Laboratorio: de pregunta a solución}
+  \begin{enumerate}
+    \item ¿Cuántas filas tiene el archivo y cuántas poseen población informada?
+    \item ¿Cuántos países distintos aparecen?
+    \item ¿Cuáles son las 10 ciudades más pobladas?
+    \item ¿Cuánta población total registra cada país?
+    \item ¿Qué países tienen más ciudades con población $>1$ millón?
+  \end{enumerate}
+  \vspace{4mm}
+  \begin{wideblock}{Criterio de evaluación}
+    Cada respuesta debe incluir: comando, resultado, una comprobación y una explicación de una línea.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{Desafíos: de simple a compuesto}
+  \begin{enumerate}
+    \item Contar la frecuencia de palabras en un texto.
+    \item Reemplazar \term{hello} por \term{bye} sólo entre las líneas 10 y 20.
+    \item Extraer un rango \term{chr:start-end} y convertirlo a tres columnas.
+    \item Combinar dos tablas por un campo común.
+    \item Contar registros por categoría con un arreglo asociativo de \term{awk}.
+    \item Procesar un archivo \term{.gz} sin crear una copia descomprimida.
+  \end{enumerate}
+  \vspace{3mm}
+  \pill[Amber]{Criterio}\quad Primero una prueba pequeña; después el archivo completo.
+\end{frame}
+
+% =============================================================================
+\section{Herramientas y frontera práctica}
+% =============================================================================
+
+\begin{frame}[fragile]{¿Cuándo dejar shell, sed o awk?}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}
+      \pill{Shell}\par\smallskip
+      \small orquestar programas, archivos y procesos.
+    \column{.31\textwidth}
+      \pill[Cyan]{sed / awk}\par\smallskip
+      \small transformar y resumir texto estructurado de forma compacta.
+    \column{.31\textwidth}
+      \pill[Mint]{Python / R}\par\smallskip
+      \small lógica extensa, parsers complejos, modelos y visualización.
+  \end{columns}
+  \vspace{8mm}
+  \begin{wideblock}{Frontera práctica}
+    Una tubería debe ser fácil de leer. Si la lógica deja de ser obvia, muévala a un script más expresivo.
+  \end{wideblock}
+\end{frame}
+
+\begin{frame}[fragile]{CSV y tablas modernas}
+  \begin{columns}[T,onlytextwidth]
+    \column{.31\textwidth}
+      \pill{csvtk}\par\smallskip
+      \small filtrar, mutar y combinar CSV/TSV dentro de tuberías.
+    \column{.31\textwidth}
+      \pill[Cyan]{xsv}\par\smallskip
+      \small seleccionar, indexar, unir y analizar CSV rápidamente.
+    \column{.31\textwidth}
+      \pill[Mint]{YouPlot}\par\smallskip
+      \small inspeccionar distribuciones directamente en terminal.
+  \end{columns}
+  \vspace{8mm}
+  \centering\small Shell sigue siendo la capa de composición; las herramientas especializadas resuelven formatos que requieren un parser real.
+\end{frame}
+
+\begin{frame}[fragile]{Recursos del curso}
+  \small
+  \begin{itemize}
+    \item Linux Upskill Challenge: \url{https://linuxupskillchallenge.org/}
+    \item GNU awk: \url{https://www.gnu.org/software/gawk/manual/}
+    \item GNU sed: \url{https://www.gnu.org/software/sed/manual/}
+    \item Learn GNU awk: \url{https://learnbyexample.github.io/learn_gnuawk/}
+    \item Learn GNU sed: \url{https://learnbyexample.github.io/learn_gnused/}
+    \item Regex101: \url{https://regex101.com/}
+    \item worldcitiespop.csv: \url{https://burntsushi.net/stuff/worldcitiespop.csv}
+    \item csvtk: \url{https://github.com/shenwei356/csvtk}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Ideas para llevar}
+  \begin{enumerate}
+    \item Inspeccione antes de transformar.
+    \item Piense en datos como flujos: \term{stdin}, \term{stdout}, \term{stderr}.
+    \item Combine herramientas pequeñas con tuberías.
+    \item \term{grep} busca; \term{sed} transforma; \term{awk} filtra, calcula y resume.
+    \item Pregunte siempre cómo escalan memoria, disco e I/O.
+    \item Convierta el análisis final en un script reproducible.
+  \end{enumerate}
+  \vspace{6mm}
+  \begin{wideblock}{Siguiente paso}
+    Tome una tarea manual, exprésela como tubería, pruébela con una muestra pequeña y luego ejecútela sobre el conjunto completo.
+  \end{wideblock}
+\end{frame}
+
+\thanksframe[Preguntas]
+
+\end{document}

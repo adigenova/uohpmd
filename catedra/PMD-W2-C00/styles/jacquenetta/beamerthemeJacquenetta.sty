@@ -1,0 +1,45 @@
+% ----------------------------------------------------------
+% beamerthemeJacquenetta.sty — Main theme loader
+%
+%
+% 2026 Samuel Manchajm — CC BY-SA 4.0
+%
+% Usage:
+%   \documentclass[aspectratio=169]{beamer}
+%   \usetheme{Jacquenetta}
+%
+% Options:
+%   accent=<color>   Change the accent color (default: jq@blue)
+%                    e.g. accent=jq@orange, accent=teal
+%   noborder         Disable the signature dark border
+%
+% Dependencies: tikz, tcolorbox, helvet, microtype, setspace
+% ----------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeJacquenetta}%
+  [2026/04/06 v1.0 Jacquenetta Beamer theme]
+
+\mode<presentation>
+
+% === Pass options to sub-themes ================================
+\DeclareOptionBeamer{accent}{%
+  \PassOptionsToPackage{accent=#1}{beamercolorthemeJacquenetta}}
+\DeclareOptionBeamer{noborder}{%
+  \PassOptionsToPackage{noborder}{beamerouterthemeJacquenetta}}
+\ProcessOptionsBeamer
+
+% === Required packages =========================================
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins}
+\RequirePackage{microtype}
+
+% === Load sub-themes ===========================================
+\usecolortheme{Jacquenetta}
+\usefonttheme{Jacquenetta}
+\useinnertheme{Jacquenetta}
+\useoutertheme{Jacquenetta}
+
+\mode<all>
+\endinput

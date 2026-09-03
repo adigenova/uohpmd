@@ -1,0 +1,189 @@
+% ----------------------------------------------------------
+% beamerinnerthemeJacquenetta.sty — Inner elements
+% Jacquenetta Beamer Theme | CC BY-SA 4.0
+% ----------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemeJacquenetta}%
+  [2026/04/06 v1.0 Jacquenetta inner theme]
+
+\mode<presentation>
+
+% === Items =====================================================
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{navigation symbols}{}
+
+% Enumerate: clean arabic numbers instead of circled glyphs
+\setbeamertemplate{enumerate items}[default]
+
+% Description: wider label spacing
+\setbeamersize{description width=1.5cm}
+
+% === Title page ================================================
+\defbeamertemplate*{title page}{Jacquenetta}{%
+  \vspace{2cm}%
+  {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+  \vspace{0.3cm}%
+  {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+  \vspace{0.4cm}%
+  {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+  \vspace{0.15cm}%
+  {%
+    \usebeamerfont{institute}\usebeamercolor[fg]{institute}%
+    \insertinstitute
+    \ifx\insertdate\empty\else
+      \quad\textbar\quad
+      \usebeamercolor[fg]{date}\insertdate
+    \fi
+    \par
+  }%
+  \vspace{0.8cm}%
+  % Logo on title page — bottom-right, only if \logo{} was set
+  \setbox0=\hbox{\insertlogo}%
+  \ifdim\wd0>0pt
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[anchor=south east, xshift=-1.2cm, yshift=1cm]
+        at (current page.south east) {\insertlogo};
+    \end{tikzpicture}%
+  \fi
+}
+
+% === \titleframe — title page without border ===================
+\newcommand{\titleframe}{%
+  {%
+    \setbeamertemplate{background}{}%
+    \begin{frame}[plain,noframenumbering]
+      \titlepage
+    \end{frame}%
+  }%
+}
+
+% === \thanksframe — closing slide ==============================
+\newcommand{\thanksframe}[1][Thank you.]{%
+  {%
+    \setbeamertemplate{background}{}%
+    \setbeamercolor{background canvas}{bg=jq@dark}%
+    \begin{frame}[plain,noframenumbering]
+      \centering
+      \vfill
+      {\fontsize{22}{28}\selectfont\bfseries\color{white}#1}%
+      \vfill
+    \end{frame}%
+  }%
+}
+
+% === \sectionframe{number}{title} — dark divider ===============
+\newcommand{\sectionframe}[2]{%
+  {%
+    \setbeamercolor{background canvas}{bg=jq@dark}%
+    \setbeamertemplate{background}{}%
+    \begin{frame}[plain,noframenumbering]
+      \vfill
+      \begin{columns}
+        \begin{column}{0.25\textwidth}
+          \raggedleft
+          \fontsize{44}{52}\selectfont\bfseries\color{white!15}#1%
+        \end{column}
+        \begin{column}{0.7\textwidth}
+          \fontsize{22}{28}\selectfont\bfseries\color{white}#2%
+        \end{column}
+      \end{columns}
+      \vfill
+    \end{frame}%
+  }%
+}
+
+% === Standard blocks — left-border via colored rule ============
+% Pure TeX: no tcolorbox, no tikzpicture nodes. Safe in fragile.
+
+\defbeamertemplate*{block begin}{Jacquenetta}{%
+  \par\vspace{0.3cm}\noindent
+  \hbox to \linewidth\bgroup
+    \color{jq@accent}\vrule width 2.5pt\relax
+    \hspace{4mm}%
+    \begin{minipage}[t]{\dimexpr\linewidth-2.5pt-4mm\relax}%
+      {\usebeamerfont{block title}\usebeamercolor[fg]{block title}%
+       \insertblocktitle\par}\vspace{2pt}%
+      \usebeamercolor[fg]{normal text}%
+}
+\defbeamertemplate*{block end}{Jacquenetta}{%
+    \end{minipage}%
+  \egroup\par
+}
+
+\defbeamertemplate*{block alerted begin}{Jacquenetta}{%
+  \par\vspace{0.3cm}\noindent
+  \hbox to \linewidth\bgroup
+    \color{jq@orange}\vrule width 2.5pt\relax
+    \hspace{4mm}%
+    \begin{minipage}[t]{\dimexpr\linewidth-2.5pt-4mm\relax}%
+      {\usebeamerfont{block title}\usebeamercolor[fg]{block title alerted}%
+       \insertblocktitle\par}\vspace{2pt}%
+      \usebeamercolor[fg]{normal text}%
+}
+\defbeamertemplate*{block alerted end}{Jacquenetta}{%
+    \end{minipage}%
+  \egroup\par
+}
+
+\defbeamertemplate*{block example begin}{Jacquenetta}{%
+  \par\vspace{0.3cm}\noindent
+  \hbox to \linewidth\bgroup
+    \color{jq@green}\vrule width 2.5pt\relax
+    \hspace{4mm}%
+    \begin{minipage}[t]{\dimexpr\linewidth-2.5pt-4mm\relax}%
+      {\usebeamerfont{block title}\usebeamercolor[fg]{block title example}%
+       \insertblocktitle\par}\vspace{2pt}%
+      \usebeamercolor[fg]{normal text}%
+}
+\defbeamertemplate*{block example end}{Jacquenetta}{%
+    \end{minipage}%
+  \egroup\par
+}
+
+% === problock — custom callout (tcolorbox, accent border) ======
+% borderline offset=4pt so the line doesn't touch the title
+\newtcolorbox{problock}[1]{%
+  empty,
+  borderline west={2.5pt}{4pt}{jq@accent},
+  title={#1},
+  attach boxed title to top left={xshift=6mm},
+  boxed title style={%
+    empty, size=minimal, toprule=0pt, top=2pt, left=0mm, overlay={}},
+  coltitle=jq@dark,
+  fonttitle=\usebeamerfont{block title},
+  before=\vspace{0.3cm},
+  parbox=false,
+  boxsep=0pt,
+  left=10mm,
+  right=0mm,
+  top=4pt,
+  bottom=4pt,
+  toptitle=2pt,
+  colback=white,
+  coltext=jq@dark!90%
+}
+
+% === highlightbox — same visual, orange accent =================
+\newtcolorbox{highlightbox}[1][]{%
+  empty,
+  borderline west={2.5pt}{4pt}{jq@orange},
+  left=10mm, right=0mm, top=4pt, bottom=4pt,
+  boxsep=0pt,
+  colback=white,
+  coltext=jq@dark!90,
+  parbox=false,
+  before=\vspace{0.3cm},
+  #1%
+}
+
+% === TOC styling ===============================================
+\setbeamertemplate{section in toc}{%
+  {\usebeamercolor[fg]{section in toc}%
+   \bfseries\inserttocsectionnumber.\hspace{0.5em}\inserttocsection\par}%
+}
+\setbeamertemplate{subsection in toc}{%
+  \hspace{1.5em}{\small\inserttocsubsection\par}%
+}
+
+\mode<all>
+\endinput

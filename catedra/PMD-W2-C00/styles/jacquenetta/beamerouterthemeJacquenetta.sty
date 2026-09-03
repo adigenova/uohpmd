@@ -1,0 +1,59 @@
+% ----------------------------------------------------------
+% beamerouterthemeJacquenetta.sty — Frame chrome
+% Jacquenetta Beamer Theme | CC BY-SA 4.0
+% ----------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeJacquenetta}%
+  [2026/04/06 v1.0 Jacquenetta outer theme]
+
+\mode<presentation>
+
+% === Options ===================================================
+\newif\ifjq@border
+\jq@bordertrue
+\DeclareOptionBeamer{noborder}{\jq@borderfalse}
+\ProcessOptionsBeamer
+
+% === Margins ===================================================
+\setbeamersize{text margin left=1.2cm, text margin right=1.2cm}
+
+% === Background: signature border ==============================
+\setbeamertemplate{background}{%
+  \ifjq@border
+    \begin{tikzpicture}[overlay, remember picture]
+      \draw[line width=5pt, jq@dark]
+        ([shift={(4mm,-4mm)}]current page.north west)
+        rectangle
+        ([shift={(-4mm,4mm)}]current page.south east);
+    \end{tikzpicture}%
+  \fi
+}
+
+% === Frame title ===============================================
+\defbeamertemplate*{frametitle}{Jacquenetta}{%
+  \vspace{0.8cm}%
+  \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}%
+  \insertframetitle%
+}
+
+% === Footer: logo (left) + page number (right) =================
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Logo — bottom-left, only if \logo{} was set by the user
+    \setbox0=\hbox{\insertlogo}%
+    \ifdim\wd0>0pt
+      \node[anchor=south west, xshift=0.8cm, yshift=0.7cm]
+        at (current page.south west) {\insertlogo};%
+    \fi
+    % Page number — bottom-right
+    \node[anchor=south east, xshift=-0.8cm, yshift=0.8cm]
+      at (current page.south east) {%
+        \usebeamerfont{page number in head/foot}%
+        \insertframenumber\,/\,\inserttotalframenumber
+      };
+  \end{tikzpicture}%
+  \vspace{0.5cm}%
+}
+
+\mode<all>
+\endinput

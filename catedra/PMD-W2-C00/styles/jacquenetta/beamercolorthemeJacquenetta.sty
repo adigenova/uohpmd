@@ -1,0 +1,67 @@
+% ----------------------------------------------------------
+% beamercolorthemeJacquenetta.sty — Color palette
+% Jacquenetta Beamer Theme | CC BY-SA 4.0
+% ----------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemeJacquenetta}%
+  [2026/04/06 v1.0 Jacquenetta color theme]
+
+\mode<presentation>
+
+% === Palette ===================================================
+\definecolor{jq@dark}{HTML}{121212}
+\definecolor{jq@gray}{HTML}{757575}
+\definecolor{jq@blue}{HTML}{4A90E2}
+\definecolor{jq@orange}{HTML}{E67E22}
+\definecolor{jq@green}{HTML}{27AE60}
+
+% Default accent
+\colorlet{jq@accent}{jq@blue}
+
+% === Option: accent=<color> ====================================
+\DeclareOptionBeamer{accent}{\colorlet{jq@accent}{#1}}
+\ProcessOptionsBeamer
+
+% === Public color names ========================================
+\colorlet{jqdark}{jq@dark}
+\colorlet{jqgray}{jq@gray}
+\colorlet{jqblue}{jq@blue}
+\colorlet{jqorange}{jq@orange}
+\colorlet{jqgreen}{jq@green}
+\colorlet{jqaccent}{jq@accent}
+
+% === Beamer color assignments ==================================
+% Canvas
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=jq@dark}
+
+% Structure
+\setbeamercolor{frametitle}{fg=jq@dark}
+\setbeamercolor{title}{fg=jq@dark}
+\setbeamercolor{subtitle}{fg=jq@gray}
+\setbeamercolor{author}{fg=jq@dark}
+\setbeamercolor{institute}{fg=jq@gray}
+\setbeamercolor{date}{fg=jq@gray}
+\setbeamercolor{section in toc}{fg=jq@dark}
+
+% Items
+\setbeamercolor{item}{fg=jq@dark}
+\setbeamercolor{subitem}{fg=jq@dark}
+
+% Blocks — flat style, left-border driven
+\setbeamercolor{block title}{fg=jq@dark, bg=}
+\setbeamercolor{block body}{bg=}
+\setbeamercolor{block title alerted}{fg=jq@dark, bg=}
+\setbeamercolor{block body alerted}{bg=}
+\setbeamercolor{block title example}{fg=jq@dark, bg=}
+\setbeamercolor{block body example}{bg=}
+
+% Alerts & accents
+\setbeamercolor{alerted text}{fg=jq@orange}
+
+% Footnotes
+\setbeamercolor{footnote}{fg=jq@gray}
+\setbeamercolor{footnote mark}{fg=jq@gray}
+
+\mode<all>
+\endinput

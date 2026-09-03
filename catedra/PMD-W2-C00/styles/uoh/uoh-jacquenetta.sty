@@ -1,0 +1,81 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{uoh-jacquenetta}[2026/08/31 UOH helpers for Jacquenetta]
+
+% Course-specific palette and semantic aliases. The presentation itself uses
+% the upstream Jacquenetta theme without modifying its source files.
+\definecolor{UOHBlue}{RGB}{0,117,201}
+\definecolor{UOHYellow}{RGB}{247,217,62}
+\definecolor{UOHGreen}{RGB}{63,174,42}
+\definecolor{UOHGray}{RGB}{85,87,89}
+\definecolor{UOHDark}{RGB}{26,43,61}
+\definecolor{UOHPaper}{RGB}{247,249,251}
+\definecolor{UOHMist}{RGB}{231,240,247}
+\definecolor{UOHCoral}{RGB}{229,91,76}
+
+\colorlet{Ink}{UOHDark}
+\colorlet{Navy}{UOHDark}
+\colorlet{Blue}{UOHBlue}
+\colorlet{Cyan}{UOHBlue!72!UOHGreen}
+\colorlet{Mint}{UOHGreen}
+\colorlet{Amber}{UOHYellow!88!orange}
+\colorlet{Coral}{UOHCoral}
+\colorlet{Paper}{UOHPaper}
+\colorlet{White}{white}
+\colorlet{Mist}{UOHMist}
+\colorlet{Slate}{UOHGray}
+
+\newcommand{\UOHwordmark}[1][UOHBlue]{%
+  \begingroup\setlength{\fboxsep}{3pt}%
+  \colorbox{#1}{\color{white}\usefont{T1}{phv}{b}{n}\scriptsize\strut UOH}%
+  \endgroup}
+
+% Keep Jacquenetta's footer uncluttered. The university name remains on the
+% title page; users can enable a licensed raster/vector logo with \logo{}.
+\logo{}
+
+% The course contains information-dense terminal examples. A slightly tighter
+% line spacing preserves Jacquenetta's typography without clipping those slides.
+\setstretch{1.12}
+
+\lstdefinestyle{terminal}{
+  basicstyle=\ttfamily\small\color{UOHPaper},
+  backgroundcolor=\color{UOHDark},
+  frame=single,rulecolor=\color{UOHDark},
+  framesep=6pt,xleftmargin=2pt,aboveskip=2pt,belowskip=5pt,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,
+  keywordstyle=\color{UOHYellow},commentstyle=\color{UOHGreen!70!white},
+  stringstyle=\color{UOHYellow}}
+\lstset{style=terminal}
+
+\newcommand{\term}[1]{\texttt{\color{UOHBlue}#1}}
+\newcommand{\pill}[2][UOHBlue]{\tikz[baseline=-.6ex]\node[fill=#1!12,
+  text=#1,rounded corners=3pt,inner xsep=5pt,inner ysep=2.5pt,
+  font=\bfseries\scriptsize]{#2};}
+\newcommand{\metric}[3]{\begin{minipage}[t]{.30\linewidth}\centering
+  {\color{#1}\fontsize{20}{22}\selectfont\bfseries #2}\par\smallskip
+  {\small #3}\end{minipage}}
+\newcommand{\codebar}[1]{%
+  \noindent\begin{tikzpicture}
+    \fill[UOHDark] (0,0) rectangle (\linewidth,.52);
+    \fill[UOHCoral] (.32,.26) circle (.07);
+    \fill[UOHYellow] (.58,.26) circle (.07);
+    \fill[UOHGreen] (.84,.26) circle (.07);
+    \node[anchor=east,text=UOHPaper!75,font=\ttfamily\scriptsize]
+      at ([xshift=-2mm]current bounding box.east) {#1};
+  \end{tikzpicture}\vspace{-2.5mm}}
+\newcommand{\imageplaceholder}[2][42mm]{%
+  \begin{tikzpicture}
+    \node[draw=UOHGray!55,dashed,line width=.8pt,rounded corners=3pt,
+      minimum width=\linewidth,minimum height=#1,fill=UOHMist!35,
+      align=center,text=UOHGray]{\Large\bfseries IMAGEN\\[1mm]\small #2\\
+      \scriptsize Reemplace por \texttt{\string\includegraphics}};
+  \end{tikzpicture}}
+
+% Existing course source uses wideblock. Map it to Jacquenetta's native block,
+% which is safe inside fragile frames.
+\newenvironment{wideblock}[1]{\begin{block}{#1}}{\end{block}}
+
+% Generate Jacquenetta dividers automatically for the existing section layout.
+\AtBeginSection[]{\sectionframe{\insertsectionnumber}{\insertsectionhead}}
+
+\endinput

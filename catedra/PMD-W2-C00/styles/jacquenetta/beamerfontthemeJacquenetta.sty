@@ -1,0 +1,37 @@
+% ----------------------------------------------------------
+% beamerfontthemeJacquenetta.sty — Typography
+% Jacquenetta Beamer Theme | CC BY-SA 4.0
+% ----------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerfontthemeJacquenetta}%
+  [2026/04/06 v1.0 Jacquenetta font theme]
+
+\mode<presentation>
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{anyfontsize}
+\RequirePackage{helvet}
+\RequirePackage{setspace}
+
+% Sans-serif by default, serif for math only
+\renewcommand{\familydefault}{\sfdefault}
+\usefonttheme[onlymath]{serif}
+
+% === Font assignments ==========================================
+\setbeamerfont{title}{size=\fontsize{20}{24}\selectfont, series=\bfseries}
+\setbeamerfont{subtitle}{size=\fontsize{12}{16}\selectfont}
+\setbeamerfont{frametitle}{size=\fontsize{14}{18}\selectfont, series=\bfseries}
+\setbeamerfont{author}{size=\fontsize{11}{14}\selectfont, series=\bfseries}
+\setbeamerfont{institute}{size=\fontsize{9}{11}\selectfont}
+\setbeamerfont{date}{size=\fontsize{9}{11}\selectfont}
+\setbeamerfont{page number in head/foot}{%
+  size=\fontsize{7}{9}\selectfont, series=\bfseries}
+\setbeamerfont{itemize/enumerate body}{size=\fontsize{10}{13}\selectfont}
+\setbeamerfont{itemize/enumerate subbody}{size=\fontsize{9}{12}\selectfont}
+\setbeamerfont{footnote}{size=\fontsize{7}{9}\selectfont}
+
+% Comfortable line spacing
+\setstretch{1.25}
+
+\mode<all>
+\endinput
