@@ -18,4 +18,38 @@ Introducción a sistemas distribuidos
 
 Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf)
 
+## PMD-W2-C01 (25/08/2026)
+
+Introducción a Linux
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W1-C02/PMD-W1-C02-basic_concepts.pdf)
+
+## PMD-W2-C02 (27/08/2026)
+
+AWK y Sed I
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main//catedra/PMD-W2-C00/Linux_sed_awk.pdf)
+
+## PMD-W3-C01 (01/09/2026)
+
+AWK y Sed II
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main//catedra/PMD-W2-C00/Linux_sed_awk.pdf)
+
+
+## PMD-W3-C02 (01/09/2026)
+
+AWK y Sed III
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main//catedra/PMD-W2-C00/Linux_sed_awk.pdf)
+
+
 
