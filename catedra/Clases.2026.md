@@ -43,13 +43,29 @@ AWK y Sed II
 Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main//catedra/PMD-W2-C00/Linux_sed_awk.pdf)
 
 
-## PMD-W3-C02 (01/09/2026)
+## PMD-W3-C02 (03/09/2026)
 
 AWK y Sed III
 
 ### Slides
 
-Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main//catedra/PMD-W2-C00/Linux_sed_awk.pdf)
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C00/Linux_sed_awk.pdf)
+
+## PMD-W4-C01 (08/09/2026)
+
+Procesos e Hilos I
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+## PMD-W4-C02 (10/09/2026)
+
+Procesos e Hilos II
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
 
 
 
