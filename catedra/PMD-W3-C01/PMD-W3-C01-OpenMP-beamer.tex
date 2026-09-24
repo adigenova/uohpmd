@@ -1,0 +1,610 @@
+% Conversión editable de PMD-W3-C01-OpenMP.pdf (15 páginas).
+% Véase README.md para la correspondencia y las correcciones técnicas.
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
+\usepackage{lmodern}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{booktabs,tabularx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}
+
+\definecolor{uohblue}{HTML}{0075BA}
+\definecolor{ink}{HTML}{162B3A}
+\definecolor{muted}{HTML}{536978}
+\definecolor{pale}{HTML}{EEF5F9}
+\definecolor{codegreen}{HTML}{25784B}
+\definecolor{codepurple}{HTML}{7B3979}
+\setbeamercolor{normal text}{fg=ink,bg=white}
+\setbeamercolor{structure}{fg=uohblue}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{framesubtitle}{fg=uohblue}
+\setbeamercolor{block title}{fg=uohblue,bg=pale}
+\setbeamercolor{block body}{fg=ink,bg=pale}
+\setbeamercolor{alerted text}{fg=uohblue}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize,series=\mdseries}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamerfont{block body}{size=\small}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+% Animación progresiva: las listas avanzan elemento a elemento. Las pausas
+% explícitas de abajo coordinan código, diagramas y bloques entre columnas.
+
+\setbeamersize{text margin left=8mm,text margin right=8mm}
+\setbeamertemplate{frametitle}{%
+  \vspace{3mm}\insertframetitle\par
+  {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}
+  \vspace{1mm}}
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{\hspace{8mm}\color{muted}\scriptsize
+    Alex Di Genova\enspace|\enspace Procesamiento Masivo de Datos
+    \hfill OpenMP\qquad\insertframenumber/\inserttotalframenumber\hspace{8mm}}
+  \vspace{3mm}}
+\setlength{\tabcolsep}{5pt}
+\lstdefinestyle{c}{
+  language=C,basicstyle=\ttfamily\fontsize{8}{9.7}\selectfont,
+  keywordstyle=\color{uohblue}\bfseries,
+  commentstyle=\color{codegreen},stringstyle=\color{codepurple},
+  backgroundcolor=\color{pale},frame=none,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,breakatwhitespace=true,tabsize=4,emptylines=0,
+  aboveskip=4pt,belowskip=4pt,xleftmargin=5pt,xrightmargin=5pt,
+  framexleftmargin=5pt,framexrightmargin=5pt,
+  morekeywords={pragma,omp,parallel,for,sections,section,single,critical,
+    atomic,barrier,shared,private,num_threads,schedule,static}}
+\lstdefinestyle{shell}{style=c,language=bash,
+  basicstyle=\ttfamily\fontsize{8}{10}\selectfont}
+\lstset{style=c}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\smallnote}[1]{\par{\scriptsize\color{muted}#1\par}}
+\newcommand{\notebookurl}{https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb}
+
+% Diagramas vectoriales: todos los nodos y las etiquetas son editables.
+\tikzset{flow/.style={-{Latex[length=2mm]},thick,draw=uohblue},
+  thread/.style={circle,draw=uohblue,fill=pale,minimum size=6mm,
+    inner sep=0pt,font=\scriptsize},
+  diagramlabel/.style={font=\scriptsize,text=muted,align=center}}
+\newcommand{\forkjoin}{%
+\begin{tikzpicture}[x=.78cm,y=.64cm]
+  \node[diagramlabel] at (0,1.25) {Hilo principal};
+  \draw[flow] (0,.95)--(0,.3);
+  \draw[thick,uohblue] (-1.5,.3)--(1.5,.3);
+  \foreach \x in {-1.5,-.5,.5,1.5}{\draw[flow] (\x,.3)--(\x,-1.1);}
+  \draw[thick,uohblue] (-1.5,-1.15)--(1.5,-1.15);
+  \node[diagramlabel,right] at (1.7,-.35) {Equipo de hilos};
+  \node[diagramlabel,right] at (1.7,-1.15) {Barrera implícita};
+  \draw[flow] (0,-1.15)--(0,-2.3);
+  \node[diagramlabel,left] at (-.2,-1.75) {Código serial};
+  \draw[thick,uohblue] (-1.5,-2.3)--(1.5,-2.3);
+  \foreach \x in {-1.5,-.5,.5,1.5}{\draw[flow] (\x,-2.3)--(\x,-3.7);}
+  \draw[thick,uohblue] (-1.5,-3.75)--(1.5,-3.75);
+  \node[diagramlabel,right] at (1.7,-3) {Equipo de hilos};
+  \node[diagramlabel,right] at (1.7,-3.75) {Barrera implícita};
+  \draw[flow] (0,-3.75)--(0,-4.55);
+\end{tikzpicture}}
+
+\title{Procesamiento Masivo de Datos}
+\subtitle{OpenMP}
+\author{Alex Di Genova}
+\institute{Universidad de O'Higgins}
+\date{09/09/2024}
+\hypersetup{pdftitle={Procesamiento Masivo de Datos: OpenMP},
+  pdfauthor={Alex Di Genova},pdfsubject={Clase introductoria de OpenMP},
+  colorlinks=true,urlcolor=uohblue,linkcolor=uohblue}
+
+\begin{document}
+
+% 01 — Original: página 1.
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0] at ([xshift=8mm,yshift=-5mm]current page.north west)
+      {\includegraphics[height=13mm]{assets/uoh.png}};
+    \node[anchor=north east,inner sep=0] at ([xshift=-8mm,yshift=-5mm]current page.north east)
+      {\includegraphics[width=49mm]{assets/ici.pdf}};
+    \fill[pale] (current page.south west) rectangle ([yshift=14mm]current page.south east);
+    \draw[uohblue,line width=1.3pt] ([xshift=8mm,yshift=14mm]current page.south west)
+      --([xshift=45mm,yshift=14mm]current page.south west);
+  \end{tikzpicture}\par
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0,text width=14cm]
+      at ([xshift=8mm,yshift=-28mm]current page.north west) {
+      {\fontsize{27}{31}\selectfont\bfseries Procesamiento Masivo\\de Datos: \textcolor{uohblue}{OpenMP}\par}
+      \vspace{5mm}
+      {\large Alex Di Genova\par}
+      \vspace{2mm}
+      {\color{muted}Universidad de O'Higgins\par}
+    };
+    \node[anchor=south west,inner sep=0,font=\small]
+      at ([xshift=8mm,yshift=7mm]current page.south west) {09/09/2024};
+  \end{tikzpicture}
+\end{frame}
+
+% 02 — Original: página 2.
+\begin{frame}
+  \vfill
+  {\fontsize{36}{40}\selectfont\bfseries OpenMP\par}
+  \par\vspace{4mm}
+  {\Large\color{uohblue}Introducción y funciones\par}
+  \par\vspace{7mm}
+  {\color{muted}Memoria compartida · Regiones paralelas · Trabajo compartido\par}
+  \vfill
+\end{frame}
+
+% 03 — Original: página 3.
+\begin{frame}[fragile]{OpenMP}{Introducción}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{.54\textwidth}
+  \begin{itemize}[<+->]\setlength\itemsep{4pt}
+    \item API para programar sistemas de \alert{memoria compartida} en C, C++ y Fortran.
+    \item Combina directivas del compilador, funciones de tiempo de ejecución y variables de entorno.
+    \item El programador identifica el paralelismo e inserta las directivas apropiadas.
+    \item En C/C++, las directivas comienzan con \code{#pragma omp}.
+  \end{itemize}
+\column{.42\textwidth}
+  \begin{block}{Sintaxis de una región paralela}
+\begin{lstlisting}
+#pragma omp parallel [clausulas]
+{
+    /* Bloque estructurado */
+}
+\end{lstlisting}
+  \end{block}
+  \smallnote{Los corchetes indican elementos opcionales; no son parte del código C.}
+  \par\vspace{3mm}
+  El programador decide:
+  \begin{itemize}[<+->]\setlength\itemsep{4pt}
+    \item qué código se ejecuta en paralelo;
+    \item qué variables son privadas o compartidas;
+    \item cómo sincronizar los accesos.
+  \end{itemize}
+\end{columns}
+\end{frame}
+
+% 04 — Original: página 4.
+\begin{frame}{OpenMP}{La región paralela · Modelo fork--join}
+\small
+\begin{columns}[c,onlytextwidth]
+\column{.58\textwidth}
+  \begin{itemize}[<+->]\setlength\itemsep{2pt}
+    \item La ejecución comienza en un hilo inicial. Una región \code{parallel} forma un \alert{equipo de hilos}.
+    \item El hilo que encuentra la región es el hilo principal del equipo.
+    \item Todos ejecutan el bloque. Las construcciones de trabajo compartido distribuyen tareas.
+    \item Al terminar la región hay una \alert{barrera implícita}; continúa el hilo que la encontró.
+    \item Evitar regiones pequeñas ayuda a reducir el sobrecosto.
+  \end{itemize}
+  \begin{block}{Número de hilos solicitado}
+    \small\code{OMP_NUM_THREADS} · \code{omp_set_num_threads()}\\[2pt]
+    Cláusula \code{num_threads(n)} en una región concreta.
+  \end{block}
+\column{.39\textwidth}
+  \centering\forkjoin
+\end{columns}
+\end{frame}
+
+% 05 — Original: página 5. Figura reconstruida en TikZ.
+\begin{frame}{OpenMP}{Modelo de memoria}
+\begin{columns}[c,onlytextwidth]
+\column{.49\textwidth}
+  \begin{block}{Variables privadas}
+    Cada hilo dispone de su propia copia. Un mismo nombre puede referirse a ubicaciones distintas de memoria.
+  \end{block}
+  \begin{block}{Variables compartidas}
+    Los hilos pueden leer y escribir la misma ubicación. El programador debe coordinar los accesos que puedan entrar en conflicto.
+  \end{block}
+  \small Las variables globales se comparten por defecto, salvo excepciones como \code{threadprivate}.
+  \par\vspace{2mm}
+  \smallnote{Privatizar un puntero no privatiza automáticamente los datos a los que apunta.}
+\column{.48\textwidth}
+  \centering
+  \begin{tikzpicture}[x=1cm,y=1cm]
+    \node[ellipse,fill=pale,draw=uohblue,thick,align=center,
+      minimum width=2.5cm,minimum height=1.25cm] (mem) at (0,0) {Memoria\\compartida};
+    \foreach \ang/\id in {90/0,30/1,-30/2,-90/3,-150/4,150/5}{
+      \node[thread] (t\id) at (\ang:1.7) {H\id};
+      \node[ellipse,draw=muted,fill=white,font=\scriptsize,align=center,
+        inner sep=3pt] (p\id) at (\ang:2.65) {Memoria\\privada};
+      \draw[thick,uohblue] (mem)--(t\id);
+      \draw[muted] (t\id)--(p\id);
+    }
+  \end{tikzpicture}\par
+\end{columns}
+\end{frame}
+
+% 06 — Original: página 6.
+\begin{frame}[fragile]{OpenMP}{Construcciones de trabajo compartido}
+\small
+  Dentro de una región paralela, estas construcciones distribuyen trabajo entre los hilos del equipo.
+  \par\vspace{3mm}
+\begin{columns}[T,onlytextwidth]
+\column{.31\textwidth}
+  \begin{block}{\code{for}: iteraciones}
+    \small Reparte las iteraciones de un ciclo entre los hilos.
+  \end{block}
+\begin{lstlisting}
+#pragma omp for
+for (int i = 0; i < n; i++) {
+    procesar(i);
+}
+\end{lstlisting}
+\column{.34\textwidth}
+  \begin{block}{\code{sections}: bloques}
+    \small Cada sección se ejecuta una vez, por uno de los hilos.
+  \end{block}
+\begin{lstlisting}
+#pragma omp sections
+{
+    #pragma omp section
+    { funcion_a(); }
+
+    #pragma omp section
+    { funcion_b(); }
+}
+\end{lstlisting}
+\column{.30\textwidth}
+  \begin{block}{\code{single}: un hilo}
+    \small Un solo hilo ejecuta el bloque; no se especifica cuál.
+  \end{block}
+\begin{lstlisting}
+#pragma omp single
+{
+    preparar_datos();
+}
+\end{lstlisting}
+\end{columns}
+  \par\vspace{3mm}
+  \smallnote{Por defecto hay una barrera al final de estas construcciones. La cláusula \code{nowait} permite omitirla cuando sea correcto. Fragmentos ilustrativos.}
+\end{frame}
+
+% 07 — Original: página 7.
+\begin{frame}[fragile]{OpenMP}{Paralelismo anidado}
+\small
+\begin{columns}[c,onlytextwidth]
+\column{.48\textwidth}
+  Una región paralela puede aparecer dentro de otra. Cada hilo que la encuentra forma un nuevo equipo.
+  \par\vspace{3mm}
+  \begin{tikzpicture}[x=1cm,y=.8cm]
+    \node[diagramlabel] at (0,.7) {Hilo inicial};
+    \draw[flow] (0,.4)--(0,0);
+    \draw[uohblue,thick] (-1.3,0)--(1.3,0);
+    \foreach \x in {-1.3,1.3}{
+      \draw[flow] (\x,0)--(\x,-.9);
+      \draw[uohblue,thick] (\x-.55,-.9)--(\x+.55,-.9);
+      \draw[flow] (\x-.55,-.9)--(\x-.55,-2.15);
+      \draw[flow] (\x+.55,-.9)--(\x+.55,-2.15);
+      \draw[uohblue,thick] (\x-.55,-2.2)--(\x+.55,-2.2);
+      \draw[flow] (\x,-2.2)--(\x,-3.1);
+    }
+    \draw[uohblue,thick] (-1.3,-3.15)--(1.3,-3.15);
+    \draw[flow] (0,-3.15)--(0,-3.7);
+    \node[diagramlabel,right] at (2,-1.5) {Equipos\\internos};
+  \end{tikzpicture}\par
+  \smallnote{Esquema: 2 hilos externos y 2 hilos por equipo interno, si la configuración permite ambos niveles activos.}
+\column{.48\textwidth}
+  \textbf{Ejemplo del original: 1 $\times$ 5}
+\begin{lstlisting}
+#pragma omp parallel num_threads(1)
+{
+    Work1();
+
+    #pragma omp parallel num_threads(5)
+    {
+        Work2();
+    }
+}
+\end{lstlisting}
+  \small La región externa tiene un hilo; la interna solicita cinco.
+  \par\vspace{3mm}
+  \begin{block}{Niveles activos}
+    \small Para dos niveles con varios hilos: \code{omp_set_max_active_levels(2)}. El entorno puede limitar el tamaño de los equipos.
+  \end{block}
+\end{columns}
+\end{frame}
+
+% 08 — Original: página 8.
+\begin{frame}[fragile]{OpenMP}{Sincronización}
+\small
+\begin{columns}[T,onlytextwidth]
+\column{.31\textwidth}
+  \begin{block}{Barrera}
+    Todos los hilos del equipo esperan hasta que todos hayan llegado al mismo punto.
+  \end{block}
+\begin{lstlisting}
+producir();
+#pragma omp barrier
+consumir();
+\end{lstlisting}
+  \small Debe ser alcanzada por todos los hilos del equipo.
+\column{.31\textwidth}
+  \begin{block}{Región crítica}
+    Solo un hilo a la vez ejecuta una región crítica con el mismo nombre.
+  \end{block}
+\begin{lstlisting}
+#pragma omp critical
+{
+    sum += c;
+    contador++;
+}
+\end{lstlisting}
+  \small Protege un bloque de instrucciones. Las regiones sin nombre comparten la misma exclusión.
+\column{.31\textwidth}
+  \begin{block}{Operación atómica}
+    Protege una operación admitida sobre una ubicación concreta de memoria.
+  \end{block}
+\begin{lstlisting}
+#pragma omp atomic update
+sum += c;
+\end{lstlisting}
+  \small No protege un bloque arbitrario de código.
+\end{columns}
+\par\vspace{4mm}
+\smallnote{\code{critical} y \code{atomic} no son barreras. Los accesos concurrentes a un dato compartido deben usar una sincronización compatible.}
+\end{frame}
+
+% 09 — Original: página 9.
+\begin{frame}{OpenMP}{Funciones de tiempo de ejecución}
+  \small Permiten consultar y modificar la configuración. Por ejemplo, \code{OMP_NUM_THREADS} fija una solicitud inicial y \code{omp_set_num_threads()} la cambia para regiones posteriores del contexto de la tarea que llama.
+  \par\vspace{2mm}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}lX@{}}
+  \toprule
+  \textbf{Función} & \textbf{Descripción} \\
+  \midrule
+  \code{omp_set_num_threads(n)} & Solicita el número de hilos para regiones posteriores. \\
+  \code{omp_get_num_threads()} & Número de hilos del equipo actual; fuera de él, 1. \\
+  \code{omp_get_max_threads()} & Cota superior para un nuevo equipo sin cláusula \code{num_threads}. \\
+  \code{omp_get_num_procs()} & Número de procesadores disponibles para el dispositivo. \\
+  \code{omp_get_thread_num()} & Identificador del hilo: desde 0 hasta el tamaño del equipo menos 1. \\
+  \code{omp_in_parallel()} & Indica si se ejecuta dentro de una región paralela activa. \\
+  \code{omp_get_dynamic()} & Consulta si el ajuste dinámico del número de hilos está habilitado. \\
+  \code{omp_set_dynamic(valor)} & Habilita o deshabilita ese ajuste. \\
+  \code{omp_get_nested()} & Consulta el paralelismo anidado; función obsoleta. \\
+  \code{omp_set_nested(valor)} & Configura el paralelismo anidado; función obsoleta. \\
+  \bottomrule
+  \end{tabularx}
+  \par\vspace{2mm}
+  \smallnote{Se conservan las dos últimas funciones del original. Alternativas: \code{omp_get_max_active_levels()} y \code{omp_set_max_active_levels(n)}.}
+\end{frame}
+
+% 10 — Original: página 10.
+\begin{frame}[fragile]{Ejemplos OpenMP}{Hello world}
+\begin{columns}[T,onlytextwidth]
+\column{.55\textwidth}
+  \lstinputlisting{examples/hello.c}
+  \par\vspace{2mm}
+  \textbf{Compilar y ejecutar en una terminal}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/hello.c -o hello
+export OMP_NUM_THREADS=3
+./hello
+\end{lstlisting}
+\column{.41\textwidth}
+  \begin{block}{Un saludo por hilo}
+    Cada hilo ejecuta el mismo bloque y consulta su identificador con \code{omp_get_thread_num()}.
+  \end{block}
+  \par\vspace{2mm}
+  \textbf{Una salida posible}
+\begin{lstlisting}[language={}]
+Hola Mundo... desde hilo = 1
+Hola Mundo... desde hilo = 0
+Hola Mundo... desde hilo = 2
+\end{lstlisting}
+  \small El orden de los mensajes puede cambiar entre ejecuciones.
+  \par\vspace{3mm}
+  \smallnote{En Jupyter/Colab: \texttt{\%env OMP\_NUM\_THREADS=3}; anteponer \code{!} a los comandos de compilación y ejecución.}
+\end{columns}
+\end{frame}
+
+% 11 — Original: página 11 (primer ejemplo).
+\begin{frame}[fragile]{Ejemplos OpenMP}{Un for dentro de parallel: trabajo repetido}
+\begin{columns}[T,onlytextwidth]
+\column{.54\textwidth}
+  \lstinputlisting{examples/for_replicado.c}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/for_replicado.c -o for1
+OMP_NUM_THREADS=3 ./for1
+\end{lstlisting}
+\column{.42\textwidth}
+  \begin{block}{Cada hilo recorre todo el ciclo}
+    Con un equipo de 3 hilos, cada hilo ejecuta 10 iteraciones: \alert{30 mensajes en total}.
+  \end{block}
+  \par\vspace{3mm}
+  \begin{tikzpicture}[x=.39cm,y=.7cm]
+    \foreach \h in {0,1,2}{
+      \node[diagramlabel,left] at (-.4,-\h) {H\h};
+      \foreach \k in {0,...,9}{
+        \node[draw=uohblue,fill=pale,minimum width=3.7mm,
+          minimum height=4.5mm,inner sep=0pt,font=\tiny] at (\k,-\h) {\k};
+      }
+    }
+  \end{tikzpicture}\par
+  \par\vspace{3mm}
+  \smallnote{Declarar \code{k} dentro del bloque evita que los hilos compartan el índice y compitan al modificarlo. \code{parallel} por sí solo no reparte el ciclo.}
+\end{columns}
+\end{frame}
+
+% 12 — Original: página 11 (segundo ejemplo).
+\begin{frame}[fragile]{Ejemplos OpenMP}{omp for: distribuir las iteraciones}
+\begin{columns}[T,onlytextwidth]
+\column{.54\textwidth}
+  \lstinputlisting{examples/for_repartido.c}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/for_repartido.c -o for2
+OMP_NUM_THREADS=2 ./for2
+\end{lstlisting}
+\column{.42\textwidth}
+  \begin{block}{Cada iteración se ejecuta una vez}
+    Con 2 hilos y \code{schedule(static)}, las 10 iteraciones se reparten en dos bloques de 5.
+  \end{block}
+  \par\vspace{3mm}
+  \begin{tikzpicture}[x=.43cm,y=.8cm]
+    \node[diagramlabel,left] at (-.4,0) {H0};
+    \node[diagramlabel,left] at (-.4,-1) {H1};
+    \foreach \k in {0,...,4}{
+      \node[draw=uohblue,fill=pale,minimum width=4mm,minimum height=5mm,
+        inner sep=0pt,font=\tiny] at (\k,0) {\k};
+    }
+    \foreach \k in {5,...,9}{
+      \node[draw=uohblue,fill=pale,minimum width=4mm,minimum height=5mm,
+        inner sep=0pt,font=\tiny] at (\k,-1) {\k};
+    }
+  \end{tikzpicture}\par
+  \par\vspace{3mm}
+  \small El índice del ciclo de \code{omp for} es privado. Hay una barrera implícita al final del ciclo.
+  \par\vspace{2mm}
+  \smallnote{También se puede escribir \code{#pragma omp parallel for}. El orden de impresión sigue siendo no determinista.}
+\end{columns}
+\end{frame}
+
+% 13 — Original: página 12 (funciones auxiliares).
+\begin{frame}[fragile]{Ejemplos OpenMP}{Funciones de trabajo para sections, single y anidamiento}
+  \small Las funciones de \code{work.h} imprimen el trabajo y el identificador del hilo.
+  \par\vspace{2mm}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+  \lstinputlisting[firstline=3,lastline=5]{examples/work.h}
+  \lstinputlisting[firstline=7,lastline=14,basicstyle=\ttfamily\fontsize{7}{8.5}\selectfont]{examples/work.h}
+\column{.48\textwidth}
+  \lstinputlisting[firstline=15,lastline=21,basicstyle=\ttfamily\fontsize{7}{8.5}\selectfont]{examples/work.h}
+  \begin{block}{Simular trabajo}
+    \small \code{sleep(1)} espera un segundo en \code{Work1}, \code{Work2} y \code{Work4}.
+  \end{block}
+\end{columns}
+  \par\vspace{3mm}
+  \smallnote{Archivo auxiliar compartido por los siguientes ejemplos. \code{unistd.h} y \code{sleep} requieren un entorno POSIX, como Linux o Colab.}
+\end{frame}
+
+% 14 — Original: página 12 (sections).
+\begin{frame}[fragile]{Ejemplos OpenMP}{Secciones paralelas}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+  \lstinputlisting{examples/sections.c}
+\column{.48\textwidth}
+  \begin{itemize}[<+->]\setlength\itemsep{5pt}
+    \item Tres secciones para cinco hilos: algunos no reciben trabajo.
+    \item \code{Work2()} y \code{Work3()} pertenecen a la misma sección: se ejecutan en orden y en el mismo hilo.
+  \end{itemize}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/sections.c -o sections
+OMP_NUM_THREADS=5 ./sections
+\end{lstlisting}
+  \textbf{Una salida posible}
+\begin{lstlisting}[language={}]
+executing work 1 hilo:1
+executing work 2 hilo:2
+executing work 4 hilo:3
+executing work 3 hilo:2
+\end{lstlisting}
+  \smallnote{El reparto de secciones entre hilos puede variar.}
+\end{columns}
+\end{frame}
+
+% 15 — Original: página 12 (single).
+\begin{frame}[fragile]{Ejemplos OpenMP}{single: un bloque ejecutado por un hilo}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+  \lstinputlisting{examples/single.c}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/single.c -o single
+OMP_NUM_THREADS=10 ./single
+\end{lstlisting}
+\column{.48\textwidth}
+  \begin{block}{Con un equipo de 10 hilos}
+  \begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+    \code{Work1()} & 10 ejecuciones: una por hilo.\\[5pt]
+    \code{Work2()} & 1 ejecución.\\[5pt]
+    \code{Work3()} & 1 ejecución, en el mismo hilo que \code{Work2()}.\\[5pt]
+    \code{Work4()} & 10 ejecuciones, después de la barrera de \code{single}.
+  \end{tabularx}
+  \end{block}
+  \par\vspace{3mm}
+  El hilo que ejecuta \code{single} no tiene por qué ser el hilo principal.
+  \par\vspace{3mm}
+  \smallnote{No hay barrera de entrada: \code{Work2()} puede comenzar mientras otros hilos aún ejecutan \code{Work1()}. Todos esperan al final de \code{single}.}
+\end{columns}
+\end{frame}
+
+% 16 — Original: página 13 (anidamiento).
+\begin{frame}[fragile]{Ejemplos OpenMP}{Regiones paralelas anidadas}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+  \lstinputlisting{examples/nested.c}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp examples/nested.c -o nested
+OMP_DYNAMIC=FALSE ./nested
+\end{lstlisting}
+\column{.48\textwidth}
+  \textbf{Una salida posible}
+\begin{lstlisting}[language={}]
+executing work 1 hilo:0
+executing work 2 hilo:2
+executing work 2 hilo:4
+executing work 2 hilo:0
+executing work 2 hilo:1
+executing work 2 hilo:3
+\end{lstlisting}
+  \begin{itemize}[<+->]\setlength\itemsep{5pt}
+    \item El equipo externo tiene un único hilo.
+    \item La región interna solicita un equipo de cinco hilos.
+    \item Los identificadores son locales a cada equipo.
+  \end{itemize}
+  \par\vspace{2mm}
+  \smallnote{La región externa de un hilo es inactiva: este caso solo necesita un nivel activo.}
+\end{columns}
+\end{frame}
+
+% 17 — Original: página 13 (critical).
+\begin{frame}[fragile]{Ejemplos OpenMP}{Acumulación compartida con una sección crítica}
+\begin{columns}[T,onlytextwidth]
+\column{.60\textwidth}
+  \lstinputlisting[basicstyle=\ttfamily\fontsize{7.6}{9}\selectfont]{examples/critical.c}
+\column{.36\textwidth}
+  \begin{block}{Proteger la actualización}
+    \small \code{sum += c} lee y escribe la variable compartida. \code{critical} permite una actualización a la vez.
+  \end{block}
+\begin{lstlisting}[style=shell]
+gcc -fopenmp \
+    examples/critical.c -o critical
+OMP_NUM_THREADS=5 ./critical
+\end{lstlisting}
+  \small Cada iteración imprime su contribución; al salir del ciclo se muestra la suma total.
+  \par\vspace{3mm}
+  \smallnote{\code{rand()} se llama en serie. Sus valores dependen de la implementación de C.}
+\end{columns}
+\end{frame}
+
+% 18 — Original: página 14. Captura original extraída del PDF.
+\begin{frame}{Google Colab}{Material práctico de la clase}
+\begin{columns}[c,onlytextwidth]
+\column{.40\textwidth}
+  \centering\includegraphics[height=5.6cm]{assets/colab.png}
+\column{.56\textwidth}
+  {\Large\bfseries Notebook de OpenMP\par}
+  \par\vspace{4mm}
+  Ejemplos de compilación y ejecución en un notebook.
+  \par\vspace{5mm}
+  \href{\notebookurl}{\beamergotobutton{Abrir OpenMP.ipynb en GitHub}}
+  \par\vspace{4mm}
+  {\footnotesize\url{https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb}\par}
+  \par\vspace{4mm}
+  \smallnote{Enlace y captura conservados del PDF original.}
+\end{columns}
+\end{frame}
+
+% 19 — Original: página 15.
+\begin{frame}{¿Consultas?}
+  \vfill
+  \begin{center}
+    {\LARGE ¿Consultas o comentarios?\par}
+    \par\vspace{8mm}
+    {\Large\color{uohblue}Muchas gracias\par}
+  \end{center}
+  \vfill
+\end{frame}
+
+\end{document}

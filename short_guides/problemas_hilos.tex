@@ -1,0 +1,143 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codeblue}{rgb}{0,0,0.8}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstdefinestyle{cstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{red},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C
+}
+
+\lstset{style=cstyle}
+
+\title{\textbf{Ejercicios de Pthreads en C}\\ \large De nivel básico a intermedio}
+\author{PMD}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introducción}
+Los siguientes ejercicios están diseñados para practicar el uso de hilos POSIX (\texttt{pthreads}) en C. Se cubren tres temas fundamentales:
+\begin{itemize}
+    \item \textbf{Mutex} (\texttt{pthread\_mutex\_t}): exclusión mutua para proteger secciones críticas.
+    \item \textbf{pthread\_join}: sincronización para esperar la terminación de hilos.
+    \item \textbf{Variables de condición} (\texttt{pthread\_cond\_t}): comunicación y espera entre hilos.
+\end{itemize}
+
+Se recomienda compilar con:
+\begin{lstlisting}[language=bash,numbers=none]
+gcc archivo.c -o programa -lpthread
+\end{lstlisting}
+
+\bigskip
+
+%========================================================
+\section{Nivel Básico}
+%========================================================
+
+\subsection*{Ejercicio 1: Hola Mundo con Hilos y pthread\_join}
+Escribe un programa que cree \textbf{5 hilos}. Cada hilo debe imprimir su identificador (recibido como argumento) y el mensaje \texttt{"Hilo i ejecutándose"}. El hilo principal debe esperar a que \textbf{todos} los hilos terminen usando \texttt{pthread\_join} antes de imprimir \texttt{"Todos los hilos han terminado"}.
+
+\textbf{Objetivo:} Practicar la creación de hilos y \texttt{pthread\_join}.
+
+%--------------------------------------------------------
+\subsection*{Ejercicio 2: Suma de un arreglo con mutex}
+Dado un arreglo de enteros de tamaño $N = 1000000$ inicializado con valores aleatorios, crea \textbf{4 hilos}. Cada hilo suma una porción del arreglo y acumula el resultado en una variable global \texttt{suma\_total}. Protege el acceso a \texttt{suma\_total} con un \texttt{pthread\_mutex\_t}.
+
+\textbf{Objetivo:} Comprender el uso básico de mutex para evitar condiciones de carrera.
+
+%--------------------------------------------------------
+\subsection*{Ejercicio 3: Contador compartido}
+Implementa un programa con \textbf{10 hilos}, donde cada hilo incrementa un contador global \textbf{100000 veces}. 
+\begin{enumerate}[label=\alph*)]
+    \item Primero realiza el incremento \textbf{sin} mutex y observa el resultado final.
+    \item Luego repite el experimento \textbf{con} mutex.
+\end{enumerate}
+Explica la diferencia observada.
+
+\textbf{Objetivo:} Visualizar experimentalmente el problema de las condiciones de carrera.
+
+\bigskip
+
+%========================================================
+\section{Nivel Intermedio}
+%========================================================
+
+\subsection*{Ejercicio 4: Productor--Consumidor con buffer acotado}
+Implementa el clásico problema \textbf{productor--consumidor} usando:
+\begin{itemize}
+    \item Un buffer circular de tamaño $B = 5$.
+    \item \textbf{2 hilos productores} que insertan números enteros aleatorios.
+    \item \textbf{2 hilos consumidores} que extraen y muestran los valores.
+    \item Un \texttt{pthread\_mutex\_t} para proteger el buffer.
+    \item \textbf{Dos variables de condición}: \texttt{no\_lleno} y \texttt{no\_vacio}.
+\end{itemize}
+
+Los productores se detienen después de insertar $50$ elementos cada uno. El programa debe terminar cuando todos los elementos hayan sido consumidos.
+
+\textbf{Objetivo:} Combinar mutex y variables de condición para sincronizar hilos.
+
+%--------------------------------------------------------
+\subsection*{Ejercicio 5: Barrera de sincronización con variables de condición}
+Implementa una \textbf{barrera} manual usando \texttt{pthread\_mutex\_t} y \texttt{pthread\_cond\_t}. La barrera debe tener las siguientes funciones:
+\begin{lstlisting}
+typedef struct {
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
+    int count;
+    int total;
+    int generation;
+} barrera_t;
+
+void barrera_init(barrera_t *b, int total);
+void barrera_wait(barrera_t *b);
+void barrera_destroy(barrera_t *b);
+\end{lstlisting}
+Crea \textbf{6 hilos} que ejecuten 3 fases de trabajo. Cada hilo debe llamar a \texttt{barrera\_wait()} al final de cada fase, de modo que ningún hilo avance a la siguiente fase hasta que todos hayan terminado la actual.
+
+\textbf{Objetivo:} Entender el uso avanzado de variables de condición y generaciones.
+
+%--------------------------------------------------------
+\subsection*{Ejercicio 6: Cola de tareas (thread pool simplificado)}
+Implementa un \textbf{pool de 3 hilos trabajadores} que consuman tareas de una cola compartida. Cada tarea es una función simple (por ejemplo, imprimir un número y dormir 100~ms). El programa debe:
+\begin{enumerate}[label=\alph*)]
+    \item Encapsular la cola con mutex y variables de condición.
+    \item Permitir que el hilo principal agregue 20 tareas.
+    \item Cuando ya no haya tareas y se indique el cierre (\texttt{shutdown}), los trabajadores deben terminar limpiamente.
+\end{enumerate}
+
+\textbf{Objetivo:} Aplicar mutex y variables de condición a un patrón real de concurrencia.
+
+
+\end{document}
