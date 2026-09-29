@@ -1,0 +1,603 @@
+% Clase editable basada en PMD-W4-C02-OpenMP-MPI.pdf (18 paginas).
+% Los ejemplos completos se incluyen desde examples/; ver README.md.
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
+\usepackage{lmodern,tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{booktabs,tabularx,listings,tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,overlay-beamer-styles}
+
+\definecolor{uohblue}{HTML}{0075BA}
+\definecolor{ink}{HTML}{162B3A}
+\definecolor{muted}{HTML}{536978}
+\definecolor{pale}{HTML}{EEF5F9}
+\definecolor{codegreen}{HTML}{25784B}
+\definecolor{codepurple}{HTML}{7B3979}
+\definecolor{warm}{HTML}{B45C2C}
+\setbeamercolor{normal text}{fg=ink,bg=white}
+\setbeamercolor{structure}{fg=uohblue}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{framesubtitle}{fg=uohblue}
+\setbeamercolor{block title}{fg=uohblue,bg=pale}
+\setbeamercolor{block body}{fg=ink,bg=pale}
+\setbeamercolor{alerted text}{fg=warm}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamerfont{block body}{size=\small}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+% Apariciones progresivas al avanzar; se reserva el espacio para evitar saltos.
+% Para imprimir sin etapas, agregar handout a las opciones de documentclass.
+\setbeamercovered{invisible}
+\setbeamersize{text margin left=8mm,text margin right=8mm}
+\setbeamertemplate{frametitle}{%
+  \vspace{3mm}\insertframetitle\par
+  {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}
+  \vspace{1mm}}
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{\hspace{8mm}\color{muted}\scriptsize
+    Alex Di Genova\enspace|\enspace Procesamiento Masivo de Datos
+    \hfill OpenMP II / MPI I\quad\insertframenumber/\inserttotalframenumber\hspace{8mm}}
+  \vspace{3mm}}
+\setlength{\tabcolsep}{5pt}
+\lstdefinestyle{c}{language=C,
+  basicstyle=\ttfamily\fontsize{9}{11}\selectfont,
+  keywordstyle=\color{uohblue}\bfseries,
+  commentstyle=\color{codegreen},stringstyle=\color{codepurple},
+  backgroundcolor=\color{pale},frame=none,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,breakatwhitespace=true,tabsize=4,emptylines=0,
+  aboveskip=5pt,belowskip=5pt,xleftmargin=5pt,xrightmargin=5pt,
+  morekeywords={pragma,omp,parallel,for,sections,section,single,critical,
+    atomic,barrier,shared,private,firstprivate,default,none,num_threads,
+    schedule,static,dynamic,guided,runtime,reduction,collapse,task,taskwait}}
+\lstdefinestyle{compact}{style=c,basicstyle=\ttfamily\fontsize{8}{9.7}\selectfont}
+\lstdefinestyle{shell}{style=c,language=bash,basicstyle=\ttfamily\fontsize{8.5}{10.5}\selectfont}
+\lstset{style=c}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\smallnote}[1]{\par\vspace{2pt}{\scriptsize\color{muted}#1\par}}
+\newcommand{\sourcefile}[1]{\smallnote{Programa completo: \code{examples/#1}}}
+\newcommand{\snippet}[3][]{\lstinputlisting[style=c,
+  rangebeginprefix={//BEGIN},rangeendprefix={//END},
+  includerangemarker=false,linerange={#3-#3},#1]{examples/#2}}
+\tikzset{flow/.style={-{Latex[length=2mm]},thick,draw=uohblue},
+  box/.style={draw=uohblue,fill=pale,rounded corners=2pt,
+    minimum height=7mm,align=center,font=\small,inner sep=5pt},
+  labeltext/.style={font=\scriptsize,text=muted,align=center}}
+\title{Procesamiento Masivo de Datos}
+\subtitle{OpenMP II y MPI I}
+\author{Alex Di Genova}
+\institute{Universidad de O'Higgins}
+\date{13/09/2024}
+\hypersetup{pdftitle={Procesamiento Masivo de Datos: OpenMP II y MPI I},
+  pdfauthor={Alex Di Genova},pdfsubject={Clase Beamer con ejemplos simples e intermedios},
+  colorlinks=true,urlcolor=uohblue,linkcolor=uohblue}
+
+\begin{document}
+
+% 01. Fuente: pagina 1.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,inner sep=0] at ([xshift=8mm,yshift=-5mm]current page.north west)
+    {\includegraphics[height=13mm]{assets/uoh.png}};
+  \node[anchor=north east,inner sep=0] at ([xshift=-8mm,yshift=-5mm]current page.north east)
+    {\includegraphics[width=49mm]{assets/ici.pdf}};
+  \fill[pale] (current page.south west) rectangle ([yshift=14mm]current page.south east);
+  \draw[uohblue,line width=1.3pt] ([xshift=8mm,yshift=14mm]current page.south west)
+    --([xshift=45mm,yshift=14mm]current page.south west);
+  \node[anchor=north west,inner sep=0,text width=14cm]
+    at ([xshift=8mm,yshift=-27mm]current page.north west) {
+    {\fontsize{26}{30}\selectfont\bfseries Procesamiento Masivo de Datos\par}
+    \vspace{3mm}{\fontsize{25}{29}\selectfont\color{uohblue}OpenMP II y MPI I\par}
+    \vspace{5mm}{\large Alex Di Genova\par}
+    \vspace{2mm}{\color{muted}Universidad de O'Higgins\par}};
+  \node[anchor=south west,font=\small,inner sep=0]
+    at ([xshift=8mm,yshift=7mm]current page.south west) {28/09/2026};
+  \node[anchor=south east,font=\small,inner sep=0,text=muted]
+    at ([xshift=-8mm,yshift=7mm]current page.south east) {Memoria compartida y paso de mensajes};
+\end{tikzpicture}
+\end{frame}
+
+
+
+\section{OpenMP: repaso y ejemplos simples}
+% 03. Fuente: paginas 2--3.
+\begin{frame}[fragile]{OpenMP: formar un equipo y repartir trabajo}{Repaso · Memoria compartida y modelo fork--join}
+\begin{columns}[T,onlytextwidth]
+\column{.57\textwidth}
+\begin{itemize}[<+->]\setlength\itemsep{4pt}
+  \item API para C, C++ y Fortran: directivas, rutinas y variables de entorno.
+  \item \code{parallel} forma un equipo; cada hilo ejecuta el bloque.
+  \item \code{for} reparte iteraciones entre los hilos del equipo.
+  \item Al terminar la región paralela hay una barrera implícita.
+\end{itemize}
+\begin{uncoverenv}<3->
+\begin{lstlisting}[style=compact]
+#pragma omp parallel
+{
+    #pragma omp for
+    for (int i = 0; i < n; ++i) procesar(i);
+}
+\end{lstlisting}
+\end{uncoverenv}
+\column{.38\textwidth}
+\centering
+\begin{tikzpicture}[x=.9cm,y=.74cm]
+\node[labeltext] at (0,.5) {Hilo inicial};
+\draw[flow] (0,.1)--(0,-.6);
+\draw[thick,uohblue,visible on=<2->] (-1.5,-.6)--(1.5,-.6);
+\foreach \x/\id in {-1.5/0,-.5/1,.5/2,1.5/3}{
+  \draw[flow,visible on=<2->] (\x,-.6)--(\x,-1.3);
+  \node[box,minimum width=7mm,visible on=<2->] at (\x,-1.7) {H\id};
+  \draw[flow,visible on=<4->] (\x,-2.1)--(\x,-2.8);}
+\draw[thick,uohblue,visible on=<4->] (-1.5,-2.8)--(1.5,-2.8);
+\draw[flow,visible on=<4->] (0,-2.8)--(0,-3.6);
+\node[labeltext,visible on=<4->] at (0,-4) {Barrera y continuación serial};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% 04.
+\begin{frame}{Antes de paralelizar: ¿quién usa cada variable?}{Repaso · Alcance de datos}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+Cláusula / regla & Efecto & Uso típico \\
+\midrule
+\leavevmode\uncover<1->{\code{shared(a)}} & \leavevmode\uncover<1->{Todos acceden al mismo objeto.} & \leavevmode\uncover<1->{Arreglo de entrada de solo lectura.} \\
+\leavevmode\uncover<2->{\code{private(x)}} & \leavevmode\uncover<2->{Una copia por hilo; no hereda el valor inicial.} & \leavevmode\uncover<2->{Temporal que se asigna antes de leer.} \\
+\leavevmode\uncover<3->{\code{firstprivate(x)}} & \leavevmode\uncover<3->{Una copia inicializada con el valor previo.} & \leavevmode\uncover<3->{Parámetros de una tarea.} \\
+\leavevmode\uncover<4->{\code{reduction(+:s)}} & \leavevmode\uncover<4->{Acumuladores privados que se combinan.} & \leavevmode\uncover<4->{Suma, conteo o producto escalar.} \\
+\leavevmode\uncover<5->{\code{default(none)}} & \leavevmode\uncover<5->{Exige atributos explícitos, salvo los predeterminados.} & \leavevmode\uncover<5->{Revisar el alcance de datos.} \\
+\bottomrule
+\end{tabularx}
+\begin{block}<6->{Dos reglas útiles}
+El índice del \code{omp for} y las variables automáticas del bloque paralelo son privados. Copiar un puntero no copia el arreglo al que apunta.
+\end{block}
+\end{frame}
+
+
+
+
+% 07.
+\begin{frame}[fragile]{Ejemplo simple 2: sumar dos vectores}{Una iteración escribe una posición distinta}
+\snippet{02_vectores.c}{kernel}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\begin{block}<2->{Datos de entrada}
+\(N=12,\quad a_i=i,\quad b_i=2i\).\\[4pt]
+Cada iteración calcula \(c_i=a_i+b_i=3i\).
+\end{block}
+\column{.48\textwidth}
+\begin{block}<3->{Por qué es correcto}
+\code{a} y \code{b} solo se leen; cada posición de \code{c} tiene un único escritor. Compartir un arreglo no implica necesariamente una carrera.
+\end{block}
+\end{columns}
+\uncover<4->{\small\textbf{Resultado:} \code{0 3 6 9 12 15 18 21 24 27 30 33}.}
+\sourcefile{02_vectores.c}
+\end{frame}
+
+% 08.
+\begin{frame}[fragile]{¿Qué falla si todos actualizan la misma suma?}{Ejemplo incorrecto para discutir · No ejecutar como solución}
+\begin{columns}[T,onlytextwidth]
+\column{.47\textwidth}
+\begin{lstlisting}
+int suma = 0;
+#pragma omp parallel for shared(a,suma)
+for (int i = 0; i < n; ++i) {
+    suma += a[i];  // CARRERA
+}
+\end{lstlisting}
+\uncover<2->{\small La lectura, la suma y la escritura no forman una actualización atómica.}
+\column{.49\textwidth}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{uncoverenv}<2->
+\begin{tabular}{lll}
+\toprule
+Paso & Hilo 0 & Hilo 1 \\
+\midrule
+\leavevmode\uncover<2->{1} & \leavevmode\uncover<2->{Lee 0} & \leavevmode\uncover<2->{Lee 0} \\
+\leavevmode\uncover<3->{2} & \leavevmode\uncover<3->{Calcula \(0+1\)} & \leavevmode\uncover<3->{Calcula \(0+2\)} \\
+\leavevmode\uncover<4->{3} & \leavevmode\uncover<4->{Escribe 1} & \leavevmode\uncover<4->{Escribe 2} \\
+\bottomrule
+\end{tabular}
+\end{uncoverenv}
+\begin{block}<5->{Actualización perdida}
+Esta intercalación ilustra cómo se pierde una contribución. La carrera produce comportamiento indefinido en C; no existe una salida fiable.
+\end{block}
+\end{columns}
+\end{frame}
+
+% 09. Fuente: pagina 5, suma.
+\begin{frame}[fragile]{Ejemplo simple 3: sumar con reduction}{Cada hilo acumula; OpenMP combina}
+\snippet{03_suma.c}{kernel}
+\begin{block}<2->{Resultado esperado: 55}
+Las copias privadas de \code{suma} comienzan en cero. Al finalizar, sus contribuciones se combinan con el valor original mediante \code{+}. Inicializamos la suma original en cero.
+\end{block}
+\uncover<3->{\small\textbf{Cambio propuesto:} reemplazar la suma por un producto escalar \(\sum_i a_i b_i\).}
+%\sourcefile{03_suma.c}
+\end{frame}
+
+
+
+
+% 12.
+\begin{frame}[fragile]{Ejemplo simple 4: promedio de un arreglo}{Funciona aunque N no sea múltiplo del número de hilos}
+\snippet{04_promedio.c}{kernel}
+\begin{uncoverenv}<2->
+\begin{lstlisting}[style=shell]
+OMP_NUM_THREADS=4 ./build/examples/04_promedio 10003
+# N=10003 promedio=5001.000000 esperado=5001.000000
+\end{lstlisting}
+\end{uncoverenv}
+\begin{block}<3->{Verificación independiente}
+El arreglo contiene \(0,1,\ldots,N-1\); su promedio es \((N-1)/2\). Probar también \(N=1\), \(N=3\) y \(N=10\). El programa rechaza \(N=0\).
+\end{block}
+%\sourcefile{04_promedio.c}
+\end{frame}
+
+% 14.
+\begin{frame}{Elegir la sincronización necesaria}{Correctitud primero; después, costo}
+\small\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+Construcción & Qué garantiza & Ejemplo de uso \\
+\midrule
+\leavevmode\uncover<1->{\code{reduction}} & \leavevmode\uncover<1->{Acumulación privada y combinación.} & \leavevmode\uncover<1->{Suma de un vector.} \\
+\leavevmode\uncover<2->{\code{atomic update}} & \leavevmode\uncover<2->{Actualización atómica de una ubicación compatible.} & \leavevmode\uncover<2->{\code{contador++;}} \\
+\leavevmode\uncover<3->{\code{critical(nombre)}} & \leavevmode\uncover<3->{Exclusión mutua para un bloque con ese nombre.} & \leavevmode\uncover<3->{Fusionar un histograma local.} \\
+\leavevmode\uncover<4->{\code{barrier}} & \leavevmode\uncover<4->{El equipo espera; todo hilo debe alcanzarla.} & \leavevmode\uncover<4->{Leer datos producidos por otros hilos.} \\
+\leavevmode\uncover<5->{\code{taskwait}} & \leavevmode\uncover<5->{Espera las tareas hijas previas de la tarea actual.} & \leavevmode\uncover<5->{Finalizar una etapa recursiva.} \\
+\bottomrule
+\end{tabularx}
+\begin{block}<6->{Sobre nowait}
+\code{for}, \code{sections} y \code{single} tienen barrera final salvo \code{nowait}. Quitarla exige que el siguiente paso no dependa de resultados pendientes.
+\end{block}
+\end{frame}
+
+
+\section{OpenMP: ejemplos intermedios}
+% 17. Fuente: pagina 6.
+\begin{frame}{Ejemplo intermedio 1: histograma de un texto}{De muchas actualizaciones compartidas a contadores locales}
+\begin{columns}[T,onlytextwidth]
+\column{.49\textwidth}
+\begin{enumerate}[<+->]\setlength\itemsep{7pt}
+\item Repartir las posiciones del texto con \code{omp for}.
+\item Cada hilo acumula en su propio arreglo de 256 contadores.
+\item Fusionar cada arreglo local en una región \code{critical}.
+\end{enumerate}
+\column{.47\textwidth}
+\begin{block}{Entrada: \code{banana bandana}}
+\small\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lrrrrr}
+Byte & espacio & a & b & d & n \\
+Cuenta & 1 & 6 & 2 & 1 & 3
+\end{tabular}
+\par\vspace{3mm}Total: 13 bytes.
+\end{block}
+\begin{block}<4->{Qué estamos contando}
+256 valores posibles de un byte de 8 bits. ASCII tiene 128 códigos. En UTF-8 una letra como «á» ocupa varios bytes.
+\end{block}
+\end{columns}
+\uncover<4->{\smallnote{Se recorre el intervalo [0,n): no se copian mitades con strncpy ni se depende de terminadores intermedios.}}
+\end{frame}
+
+% 18.
+\begin{frame}[fragile]{Histograma: privatizar y fusionar}{Intermedio · Arreglo local por hilo}
+\begin{columns}[T,onlytextwidth]
+\column{.67\textwidth}
+\snippet[style=compact]{06_histograma.c}{kernel}
+\column{.29\textwidth}
+\small
+\uncover<2->{\textbf{Privado:} \code{local}, \code{i} y \code{b}.}\\[6pt]
+\uncover<3->{\textbf{Compartido:} \code{texto}, \code{n} y \code{hist}.}\\[6pt]
+\uncover<4->{El cast a \code{unsigned char} evita índices negativos.}\\[6pt]
+\uncover<5->{Se entra a \code{critical} una vez por hilo, en lugar de una vez por byte.}
+\end{columns}
+\sourcefile{06_histograma.c}
+\end{frame}
+
+
+
+
+% 23. Fuente: pagina 7.
+\begin{frame}{Ejemplo intermedio 3: quicksort}{Dividir para conquistar · Dos subarreglos independientes}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\begin{enumerate}[<+->]\setlength\itemsep{7pt}
+\item Elegir un valor pivote.
+\item Particionar el intervalo de modo que los valores pequeños queden a la izquierda.
+\item Ordenar recursivamente ambos intervalos.
+\item Terminar con cero o un elemento; usar trabajo serial para intervalos pequeños.
+\end{enumerate}
+\column{.48\textwidth}
+\centering
+\begin{tikzpicture}[x=.85cm,y=1cm]
+\node[box] (r) at (0,0) {\code{a[lo..hi]}};
+\node[box,visible on=<2->] (l) at (-1.55,-1.2) {\code{a[lo..p]}};
+\node[box,visible on=<2->] (d) at (1.55,-1.2) {\code{a[p+1..hi]}};
+\draw[flow,visible on=<2->] (r)--(l);\draw[flow,visible on=<2->] (r)--(d);
+\foreach \x in {-2.2,-.9,.9,2.2}{\node[box,minimum width=6mm,visible on=<3->] at (\x,-2.4) {\scriptsize sub};}
+\draw[flow,visible on=<3->] (l)--(-2.2,-2.05);\draw[flow,visible on=<3->] (l)--(-.9,-2.05);
+\draw[flow,visible on=<3->] (d)--(.9,-2.05);\draw[flow,visible on=<3->] (d)--(2.2,-2.05);
+\end{tikzpicture}
+\uncover<4->{\smallnote{Usamos partición de Hoare: p es una frontera; no se supone que el pivote quede en p. Los intervalos no se solapan.}}
+\end{columns}
+\end{frame}
+
+% 24.
+\begin{frame}{Por qué usar tareas para la recursión}{Un equipo de hilos ejecuta muchas unidades de trabajo}
+\begin{columns}[T,onlytextwidth]
+\column{.49\textwidth}
+\begin{block}{Crear trabajo con task}
+El hilo genera una tarea. Puede ejecutarla de inmediato o dejarla disponible para otro hilo del mismo equipo.
+\end{block}
+\begin{block}<2->{Coordinar con taskwait}
+La tarea actual espera a sus hijas ya creadas. En quicksort, cada hija espera a sus propias hijas antes de terminar.
+\end{block}
+\column{.47\textwidth}
+\begin{itemize}\setlength\itemsep{8pt}
+\item<3-> Crear una sola región \code{parallel} al inicio.
+\item<4-> Usar \code{single} para iniciar una única recursión.
+\item<5-> Copiar límites y puntero con \code{firstprivate}.
+\item<6-> Usar un umbral para no generar tareas diminutas.
+\end{itemize}
+\end{columns}
+\uncover<6->{\smallnote{El original crea parallel sections en cada llamada: puede serializar niveles internos o crear demasiados equipos. Las tareas evitan ese patrón.}}
+\end{frame}
+
+% 25.
+\begin{frame}[fragile]{Quicksort con task y taskwait}{Intermedio · Núcleo recursivo}
+\snippet[style=compact]{09_quicksort_tasks.c}{tareas}
+\uncover<2->{\small\code{UMBRAL=2048}: resolver segmentos pequeños con \code{qsort}. Las tareas comparten los datos apuntados por \code{a}, pero escriben intervalos disjuntos.}
+\sourcefile{09_quicksort_tasks.c}
+\end{frame}
+
+
+
+% 28.
+\begin{frame}{Cómo elegir una construcción de OpenMP}{Reconocer la forma del trabajo}
+\small\renewcommand{\arraystretch}{1.65}
+\begin{tabularx}{\textwidth}{XlX}
+\toprule
+Problema & Herramienta inicial & Verificación clave \\
+\midrule
+\leavevmode\uncover<1->{Iteraciones independientes} & \leavevmode\uncover<1->{\code{parallel for}} & \leavevmode\uncover<1->{Cada salida tiene un escritor.} \\
+\leavevmode\uncover<2->{Suma, conteo, máximo} & \leavevmode\uncover<2->{\code{reduction}} & \leavevmode\uncover<2->{Operación e identidad correctas.} \\
+\leavevmode\uncover<3->{Pocos bloques diferentes} & \leavevmode\uncover<3->{\code{sections}} & \leavevmode\uncover<3->{Cada bloque produce su salida.} \\
+\leavevmode\uncover<4->{Bucles rectangulares anidados} & \leavevmode\uncover<4->{\code{collapse(2)}} & \leavevmode\uncover<4->{No hay dependencias entre pares.} \\
+\leavevmode\uncover<5->{Recursión o trabajo irregular} & \leavevmode\uncover<5->{\code{task}} & \leavevmode\uncover<5->{Vida de datos y espera de tareas.} \\
+\leavevmode\uncover<6->{Acumulación en muchas celdas} & \leavevmode\uncover<6->{Datos locales + fusión} & \leavevmode\uncover<6->{La fusión protege todas las escrituras.} \\
+\bottomrule
+\end{tabularx}
+\end{frame}
+
+\section{MPI: introducción al paso de mensajes}
+% 29. Fuente: paginas 9--10.
+\begin{frame}{MPI: cuando cada proceso tiene su memoria}{Message Passing Interface}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\centering\textbf{Memoria compartida · OpenMP}\par\vspace{3mm}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,minimum width=5cm] (m) at (0,0) {Un espacio de direcciones};
+\foreach \x/\id in {-1.8/0,0/1,1.8/2}{
+  \node[box] (h\id) at (\x,-1.5) {Hilo \id};
+  \draw[flow] (h\id)--(m);}
+\end{tikzpicture}
+\par\vspace{3mm}\small Los hilos pueden acceder al mismo arreglo. Hay que coordinar accesos en conflicto.
+\column{.48\textwidth}
+\begin{uncoverenv}<2->
+\centering\textbf{Memoria distribuida · MPI}\par\vspace{3mm}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,minimum width=2.2cm,minimum height=1.1cm] (p0) at (-1.45,0) {Proceso 0\\Memoria 0};
+\node[box,minimum width=2.2cm,minimum height=1.1cm] (p1) at (1.45,0) {Proceso 1\\Memoria 1};
+\node[box,minimum width=4cm] (net) at (0,-1.5) {Comunicación explícita};
+\draw[flow] (p0)--(net);\draw[flow] (net)--(p1);
+\end{tikzpicture}
+\par\vspace{3mm}\small Los procesos intercambian datos mediante llamadas MPI, en una máquina o entre nodos.
+\end{uncoverenv}
+\end{columns}
+\end{frame}
+
+% 30. Fuente: pagina 11.
+\begin{frame}{Qué aporta el paso de mensajes}{Ventajas y costos que debemos considerar}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\begin{block}{Ventajas}
+\begin{itemize}\setlength\itemsep{6pt}
+\item<1-> Se adapta a nodos conectados por una red.
+\item<2-> Expresa particiones de datos de forma explícita.
+\item<3-> Hace visible quién posee y comunica cada dato.
+\item<4-> Permite usar memoria y cómputo de varios nodos.
+\end{itemize}
+\end{block}
+\column{.48\textwidth}
+\begin{block}{Costos y límites}
+\begin{itemize}\setlength\itemsep{6pt}
+\item<1-> La red añade latencia y limita el ancho de banda.
+\item<2-> Hay que equilibrar trabajo y comunicaciones.
+\item<3-> Un mensaje sin recepción compatible puede bloquear el programa.
+\item<4-> Espacios separados no eliminan errores de sincronización.
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% 31. Fuente: pagina 12.
+\begin{frame}{MPI es una especificación de una interfaz}{Las implementaciones proporcionan bibliotecas y herramientas}
+\begin{itemize}[<+->]\setlength\itemsep{10pt}
+\item No es un lenguaje: se usa desde programas C, C++ o Fortran mediante sus interfaces disponibles.
+\item El estándar define las operaciones y su comportamiento. Open MPI y MPICH son implementaciones.
+\item \code{mpicc} facilita compilar y enlazar un programa C con la biblioteca MPI instalada.
+\item \code{mpirun -np 4} inicia cuatro procesos en el entorno configurado.
+\end{itemize}
+\begin{block}<5->{Modelo SPMD}
+Los procesos ejecutan el mismo programa, pero pueden trabajar con datos distintos y tomar ramas distintas según su identificador o \emph{rank}.
+\end{block}
+\uncover<5->{\smallnote{Aquí estudiamos comunicación de dos lados y colectivas. MPI también ofrece otras capacidades, como operaciones de acceso remoto a memoria.}}
+\end{frame}
+
+% 32. Fuente: paginas 13 y 15.
+\begin{frame}{Vocabulario y funciones mínimas}{Proceso, rank y comunicador}
+\begin{columns}[T,onlytextwidth]
+\column{.41\textwidth}
+\begin{block}{Comunicador}
+Define un grupo y un contexto de comunicación. Usaremos \code{MPI_COMM_WORLD}.
+\end{block}
+\begin{block}<2->{Rank y tamaño}
+Con \(P\) procesos, los ranks van de \(0\) a \(P-1\). Son relativos al comunicador; no identifican núcleos físicos.
+\end{block}
+\column{.55\textwidth}
+\small\renewcommand{\arraystretch}{1.4}
+\begin{uncoverenv}<3->
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+Función & Propósito \\
+\midrule
+\leavevmode\uncover<3->{\code{MPI_Init}} & \leavevmode\uncover<3->{Inicializa el entorno MPI.} \\
+\leavevmode\uncover<4->{\code{MPI_Comm_size}} & \leavevmode\uncover<4->{Número de procesos del grupo.} \\
+\leavevmode\uncover<4->{\code{MPI_Comm_rank}} & \leavevmode\uncover<4->{Rank del proceso que llama.} \\
+\leavevmode\uncover<5->{\code{MPI_Send}} & \leavevmode\uncover<5->{Envía un mensaje.} \\
+\leavevmode\uncover<5->{\code{MPI_Recv}} & \leavevmode\uncover<5->{Recibe un mensaje compatible.} \\
+\leavevmode\uncover<6->{\code{MPI_Finalize}} & \leavevmode\uncover<6->{Finaliza el uso de MPI.} \\
+\bottomrule
+\end{tabularx}
+\end{uncoverenv}
+\end{columns}
+\end{frame}
+
+% 33. Fuente: pagina 16.
+\begin{frame}[fragile]{Primer programa MPI: hola mundo}{Un saludo por proceso}
+\begin{columns}[T,onlytextwidth]
+\column{.63\textwidth}
+\lstinputlisting[style=compact]{examples/mpi_01_hola.c}
+\column{.33\textwidth}
+\uncover<2->{\small Con cuatro procesos aparecen cuatro saludos con ranks distintos.}\\[6pt]
+\uncover<3->{Varios procesos pueden mostrar el mismo nombre de máquina.}\\[6pt]
+\uncover<3->{El orden de impresión no está garantizado.}
+\end{columns}
+\begin{uncoverenv}<4->
+\begin{lstlisting}[style=shell]
+mpicc -O2 examples/mpi_01_hola.c -o mpi_hola
+mpirun -np 4 ./mpi_hola
+\end{lstlisting}
+\end{uncoverenv}
+\end{frame}
+
+% 34. Fuente: pagina 13.
+\begin{frame}[fragile]{Anatomía de un mensaje}{Comunicación punto a punto de dos lados}
+\begin{lstlisting}
+MPI_Send(buffer, count, datatype, dest, tag, comm);
+MPI_Recv(buffer, capacity, datatype, source, tag, comm, status);
+\end{lstlisting}
+\begin{columns}[T,onlytextwidth]
+\column{.49\textwidth}
+\small
+\begin{itemize}\setlength\itemsep{6pt}
+\item<2-> \code{buffer}: dirección de los datos locales.
+\item<3-> \code{count}: cantidad de elementos del tipo indicado, no necesariamente bytes.
+\item<4-> \code{capacity}: espacio disponible en la recepción.
+\end{itemize}
+\column{.47\textwidth}
+\small
+\begin{itemize}\setlength\itemsep{6pt}
+\item<2-> \code{dest/source}: rank del otro proceso.
+\item<3-> \code{tag}: etiqueta entera para distinguir mensajes.
+\item<4-> \code{comm}: contexto de comunicación; \code{status}: información del mensaje recibido.
+\end{itemize}
+\end{columns}
+\begin{block}<5->{Compatibilidad}
+La recepción debe coincidir en comunicador, fuente y etiqueta, y tener tipos compatibles y espacio suficiente. Usaremos fuentes y etiquetas explícitas.
+\end{block}
+\end{frame}
+
+% 35.
+\begin{frame}[fragile]{Enviar un entero del rank 0 al rank 1}{Ejemplo mínimo con exactamente dos procesos}
+\snippet[style=compact]{mpi_02_mensaje.c}{kernel}
+\begin{uncoverenv}<2->
+\begin{lstlisting}[style=shell]
+make mpi
+mpirun -np 2 ./build/examples/mpi_02_mensaje
+# Rank 1 recibio 42
+\end{lstlisting}
+\end{uncoverenv}
+\uncover<3->{\small Cada proceso tiene su propia variable \code{valor}; el envío transfiere su contenido. El programa completo verifica que existan exactamente dos procesos.}
+\sourcefile{mpi_02_mensaje.c}
+\end{frame}
+
+% 36.
+\begin{frame}{El orden de las comunicaciones importa}{Evitar esperas circulares}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\begin{block}{Patrón que puede bloquearse}
+Proceso 0: enviar a 1; luego recibir de 1.\\[6pt]
+Proceso 1: enviar a 0; luego recibir de 0.
+\end{block}
+\uncover<2->{\small \code{MPI_Send} puede esperar una recepción compatible. Que funcione con mensajes pequeños no demuestra que el patrón sea correcto.}
+\column{.48\textwidth}
+\begin{block}<3->{Alternativas}
+Ordenar: un proceso envía primero y el otro recibe primero.\\[6pt]
+Usar \code{MPI_Sendrecv} para un intercambio.\\[6pt]
+Publicar recepciones y envíos no bloqueantes y esperar su finalización.
+\end{block}
+\end{columns}
+\par\vspace{4mm}
+\uncover<4->{\small\textbf{Precisión:} al retornar \code{MPI_Send}, el buffer de envío puede reutilizarse; eso no implica que el receptor ya haya terminado de procesar los datos.}
+\end{frame}
+
+% 37. Fuente: pagina 14.
+\begin{frame}{Comunicación colectiva}{Todos los procesos del comunicador participan}
+\small\renewcommand{\arraystretch}{1.45}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+Operación & Esquema & Propósito \\
+\midrule
+\leavevmode\uncover<1->{\code{MPI_Bcast}} & \leavevmode\uncover<1->{\(x\rightarrow(x,x,x)\)} & \leavevmode\uncover<1->{Copiar datos desde una raíz a todos.} \\
+\leavevmode\uncover<2->{\code{MPI_Scatter}} & \leavevmode\uncover<2->{\((a,b,c)\rightarrow a\mid b\mid c\)} & \leavevmode\uncover<2->{Distribuir bloques desde la raíz.} \\
+\leavevmode\uncover<3->{\code{MPI_Gather}} & \leavevmode\uncover<3->{\(a\mid b\mid c\rightarrow(a,b,c)\)} & \leavevmode\uncover<3->{Reunir bloques en la raíz.} \\
+\leavevmode\uncover<4->{\code{MPI_Reduce}} & \leavevmode\uncover<4->{\(a\mid b\mid c\rightarrow a+b+c\)} & \leavevmode\uncover<4->{Combinar y entregar en la raíz.} \\
+\leavevmode\uncover<5->{\code{MPI_Allreduce}} & \leavevmode\uncover<5->{\(a\mid b\mid c\rightarrow(s,s,s)\)} & \leavevmode\uncover<5->{Combinar y entregar a todos.} \\
+\leavevmode\uncover<6->{\code{MPI_Barrier}} & \leavevmode\uncover<6->{Todos esperan} & \leavevmode\uncover<6->{Sincronizar al grupo.} \\
+\bottomrule
+\end{tabularx}
+\begin{block}<7->{Reglas para nuestros ejemplos con MPI\_COMM\_WORLD}
+Todos llaman a las colectivas en el mismo orden y con argumentos compatibles. Una colectiva como \code{MPI_Bcast} no sustituye automáticamente una barrera.
+\end{block}
+\end{frame}
+
+% 38.
+\begin{frame}[fragile]{La suma de 1 a 10, ahora con MPI}{Repartir el cálculo local y combinar con MPI\_Reduce}
+\snippet[style=compact]{mpi_03_reduce.c}{kernel}
+\begin{columns}[T,onlytextwidth]
+\column{.48\textwidth}
+\begin{block}<2->{Cuatro procesos: sumas locales}
+Rank 0: \(1+5+9=15\).\\
+Rank 1: \(2+6+10=18\).\\
+Rank 2: \(3+7=10\).\\
+Rank 3: \(4+8=12\).
+\end{block}
+\column{.48\textwidth}
+\begin{block}<3->{Resultado en la raíz}
+\(15+18+10+12=55\).\\[5pt]
+Todos llaman a \code{MPI_Reduce}; solo el rank 0 usa \code{total}. Los valores se generan localmente: no hace falta enviarlos antes.
+\end{block}
+\end{columns}
+\sourcefile{mpi_03_reduce.c}
+\end{frame}
+
+
+% 40. Fuente: paginas 4, 8 y 17.
+\begin{frame}[fragile]{Material de práctica y notebooks}{Enlaces conservados del PDF original}
+\begin{itemize}[<+->]\setlength\itemsep{7pt}
+\item \href{https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb}{OpenMP.ipynb}: repaso de regiones y trabajo compartido.
+\item \href{https://github.com/adigenova/uohpmd/blob/main/code/OMP2.ipynb}{OMP2.ipynb}: ejemplos de OpenMP II.
+\item \href{https://github.com/adigenova/uohpmd/blob/main/code/MPI_I.ipynb}{MPI\_I.ipynb}: introducción a MPI.
+\end{itemize}
+\end{frame}
+
+\end{document}

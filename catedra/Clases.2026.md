@@ -61,11 +61,53 @@ Las slides de la clase de introducción a sistemas dsitrubidos  están disponibl
 
 ## PMD-W4-C02 (10/09/2026)
 
-Procesos e Hilos II
+Sincronizacion I
 
 ### Slides
 
-Las slides de la clase de introducción a sistemas dsitrubidos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+Las slides de la clase de introducción a sistemas dsitrubi
+dos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+## PMD-W5-C01 (14/09/2026)
+
+Control1
 
 
+## PMD-W6-C01 (21/09/2026)
 
+Sincronizacion II
+
+### Slides
+
+Las slides de la clase de introducción a sistemas dsitrubi
+dos  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W2-C01/PMD-W2-C01-threadsI.pdf)
+
+### Codigo
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/Pthreads_CV.ipynb)
+
+## PMD-W6-C02 (23/09/2026)
+
+OpenMP I
+
+### Slides
+
+Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C01/PMD-W3-C01-OpenMP-beamer.pdf)
+
+### Código
+
+El código visto en clases se encuentra disponible [aqui](https://github.com/adigenova/uohpmd/blob/main/code/OpenMP.ipynb)
+
+
+## PMD-W7-C01 (28/09/2026)
+
+OpenMP II y MPI I
+
+
+### Slides
+
+Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/MD-W3-C02/PMD-W4-C02-OpenMP-MPI-beamer.pdf)
+
+## PMD-W7-C02 (30/09/2026)
+
+MPI II
