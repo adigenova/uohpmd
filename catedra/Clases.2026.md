@@ -106,7 +106,7 @@ OpenMP II y MPI I
 
 ### Slides
 
-Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/MD-W3-C02/PMD-W4-C02-OpenMP-MPI-beamer.pdf)
+Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI-beamer.pdf)
 
 ## PMD-W7-C02 (30/09/2026)
 
