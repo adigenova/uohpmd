@@ -1,13 +1,17 @@
 % Fusion editable de PMD-W4-C01-MPI-II.pdf y PMD-W5-C02-Hibrid.pdf.
 % Correspondencia de paginas y cambios de ejemplos: README.md.
-\documentclass[aspectratio=169,10pt]{beamer}
+\ifdefined\PMDHandout
+  \documentclass[handout,aspectratio=169,10pt]{beamer}
+\else
+  \documentclass[aspectratio=169,10pt]{beamer}
+\fi
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
 \usepackage{lmodern,tgheros}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{booktabs,tabularx,listings,tikz,pgfplots}
-\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,overlay-beamer-styles}
 \pgfplotsset{compat=1.18}
 \definecolor{uohblue}{HTML}{0075BA}
 \definecolor{ink}{HTML}{162B3A}
@@ -29,6 +33,8 @@
 \setbeamerfont{block body}{size=\small}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{itemize items}[circle]
+% Revelaciones al avanzar; el espacio se conserva entre etapas.
+\setbeamercovered{invisible}
 \setbeamersize{text margin left=8mm,text margin right=8mm}
 \setbeamertemplate{frametitle}{%
   \vspace{3mm}\insertframetitle\par
@@ -103,6 +109,7 @@
 \begin{frame}{Tres modelos de paralelismo}{Memoria compartida, paso de mensajes y modelo híbrido}
 \begin{columns}[T,onlytextwidth]
 \column{.31\textwidth}\centering
+\begin{uncoverenv}<1->
 \textbf{Memoria compartida}\par\vspace{3mm}
 \begin{tikzpicture}[x=.82cm,y=.8cm]
 \node[box,minimum width=3cm] (m) at (0,0) {Memoria};
@@ -111,7 +118,9 @@
   \draw[flow,<->] (p\id.north)--(m.south);}
 \end{tikzpicture}\par\vspace{2mm}
 \small OpenMP / Pthreads\\Hilos del mismo proceso.
+\end{uncoverenv}
 \column{.31\textwidth}\centering
+\begin{uncoverenv}<2->
 \textbf{Paso de mensajes}\par\vspace{3mm}
 \begin{tikzpicture}[x=.82cm,y=.8cm]
 \foreach \x/\id in {-1.2/0,0/1,1.2/2}{
@@ -123,7 +132,9 @@
 \node[labeltext] at (0,-2) {Red / comunicación MPI};
 \end{tikzpicture}\par
 \small MPI: cada proceso tiene\\su propia memoria.
+\end{uncoverenv}
 \column{.31\textwidth}\centering
+\begin{uncoverenv}<3->
 \textbf{Híbrido}\par\vspace{3mm}
 \begin{tikzpicture}[x=.85cm,y=.8cm]
 \foreach \x/\id in {-1/0,1/1}{
@@ -135,8 +146,9 @@
 \node[labeltext] at (0,-2) {MPI entre procesos};
 \end{tikzpicture}\par
 \small MPI + OpenMP / Pthreads\\Hilos dentro de cada proceso.
+\end{uncoverenv}
 \end{columns}
-\begin{block}{MPI: Message Passing Interface}
+\begin{block}<4->{MPI: Message Passing Interface}
 Estándar de comunicación que implementa el modelo de paso de mensajes.
 La transferencia de datos requiere operaciones de los procesos participantes.
 \end{block}
@@ -144,23 +156,25 @@ La transferencia de datos requiere operaciones de los procesos participantes.
 
 % 03. MPI p. 4.
 \begin{frame}[fragile]{Comunicación punto a punto}{El envío y la recepción deben coincidir}
-\begin{itemize}\setlength\itemsep{5pt}
+\begin{itemize}[<+->]\setlength\itemsep{5pt}
 \item Los datos pasan del espacio de direcciones de un proceso al de otro.
 \item El emisor ejecuta \code{MPI_Send}; el receptor ejecuta \code{MPI_Recv}.
 \end{itemize}
+\begin{uncoverenv}<2->
 \begin{lstlisting}
 MPI_Send(buffer, count, datatype, destination, tag, comm);
 MPI_Recv(buffer, maxcount, datatype, source, tag, comm, &status);
 \end{lstlisting}
+\end{uncoverenv}
 \begin{columns}[T,onlytextwidth]
 \column{.48\textwidth}
-\begin{block}{Identificar el mensaje}
+\begin{block}<3->{Identificar el mensaje}
 \code{tag}: etiqueta entera.\\[3pt]
 \code{comm}: grupo de procesos y contexto.\\[3pt]
 \code{source / destination}: rango en ese comunicador.
 \end{block}
 \column{.48\textwidth}
-\begin{block}{Identificar los datos}
+\begin{block}<4->{Identificar los datos}
 \code{buffer}: dirección de memoria.\\[3pt]
 \code{count}: número de elementos.\\[3pt]
 \code{datatype}: tipo MPI de los elementos.\\[3pt]
@@ -175,15 +189,15 @@ MPI_Recv(buffer, maxcount, datatype, source, tag, comm, &status);
 \begin{tabularx}{\textwidth}{lX}
 \toprule Función & Descripción \\
 \midrule
-\code{MPI_Init} & Inicializa el entorno MPI. \\
-\code{MPI_Comm_size} & Obtiene el número de procesos del comunicador. \\
-\code{MPI_Comm_rank} & Obtiene el rango del proceso dentro del comunicador. \\
-\code{MPI_Send} & Envía un mensaje a otro proceso. \\
-\code{MPI_Recv} & Recibe un mensaje de otro proceso. \\
-\code{MPI_Finalize} & Finaliza el entorno MPI. \\
+\leavevmode\uncover<1->{\code{MPI_Init}} & \leavevmode\uncover<1->{Inicializa el entorno MPI.} \\
+\leavevmode\uncover<2->{\code{MPI_Comm_size}} & \leavevmode\uncover<2->{Obtiene el número de procesos del comunicador.} \\
+\leavevmode\uncover<2->{\code{MPI_Comm_rank}} & \leavevmode\uncover<2->{Obtiene el rango del proceso dentro del comunicador.} \\
+\leavevmode\uncover<3->{\code{MPI_Send}} & \leavevmode\uncover<3->{Envía un mensaje a otro proceso.} \\
+\leavevmode\uncover<3->{\code{MPI_Recv}} & \leavevmode\uncover<3->{Recibe un mensaje de otro proceso.} \\
+\leavevmode\uncover<3->{\code{MPI_Finalize}} & \leavevmode\uncover<3->{Finaliza el entorno MPI.} \\
 \bottomrule
 \end{tabularx}
-\begin{block}{Comunicador inicial}
+\begin{block}<4->{Comunicador inicial}
 \code{MPI_COMM_WORLD} contiene todos los procesos de la ejecución MPI.
 Sus rangos van desde \(0\) hasta \(P-1\).
 \end{block}
@@ -199,6 +213,7 @@ El proceso \code{root} comunica su buffer a todos, incluido él mismo.
 int MPI_Bcast(void *buffer, int count, MPI_Datatype datatype,
               int root, MPI_Comm comm);
 \end{lstlisting}
+\begin{uncoverenv}<2->
 \begin{block}{Reduce: combinar contribuciones}
 Aplica \code{op} a los valores de todos los procesos. El resultado queda en \code{root}.
 \end{block}
@@ -208,6 +223,7 @@ int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
                int root, MPI_Comm comm);
 \end{lstlisting}
 \smallnote{Ejemplos de operación: \code{MPI_SUM}, \code{MPI_MAX}, \code{MPI_MIN}. Todos deben llamar a las colectivas en un orden compatible.}
+\end{uncoverenv}
 \end{frame}
 
 % 06. MPI p. 7.
@@ -222,6 +238,7 @@ int MPI_Gather(const void *sendbuf, int sendcount,
                int recvcount, MPI_Datatype recvtype,
                int root, MPI_Comm comm);
 \end{lstlisting}
+\begin{uncoverenv}<2->
 \begin{block}{Scatter: repartir desde root}
 \code{root} envía un bloque distinto a cada proceso.
 \end{block}
@@ -232,6 +249,7 @@ int MPI_Scatter(const void *sendbuf, int sendcount,
                 int root, MPI_Comm comm);
 \end{lstlisting}
 \smallnote{Los conteos son por proceso: \code{recvcount} en Gather no es el tamaño total del buffer de root.}
+\end{uncoverenv}
 \end{frame}
 
 % 07--08. MPI p. 8, dividido para legibilidad.
@@ -243,7 +261,7 @@ int MPI_Scatter(const void *sendbuf, int sendcount,
 
 \begin{frame}[fragile]{Sumar un arreglo: calcular y reducir}{Cada proceso suma su bloque; root combina}
 \snippet{mpi_suma.c}{kernel}
-\begin{block}{Resultado esperado}
+\begin{block}<2->{Resultado esperado}
 \(\sum_{i=0}^{999}i=999\cdot1000/2=499\,500\).\\[3pt]
 Con \(P=4\), cada proceso recibe \(250\) elementos. Solo el rango 0 imprime el resultado global.
 \end{block}
@@ -256,12 +274,13 @@ Con \(P=4\), cada proceso recibe \(250\) elementos. Solo el rango 0 imprime el r
 \column{.48\textwidth}
 \[\pi=\int_0^1\frac{4}{1+x^2}\,dx.\]
 \small Dividimos \([0,1]\) en \(n\) intervalos y sumamos áreas de rectángulos:
-\[h=\frac1n,\qquad x_i=h\left(i-\frac12\right).\]
-\[\pi\approx h\sum_{i=1}^{n}\frac{4}{1+x_i^2}.\]
-\begin{block}{Trabajo paralelo}
+\uncover<2->{\[h=\frac1n,\qquad x_i=h\left(i-\frac12\right).\]}
+\uncover<3->{\[\pi\approx h\sum_{i=1}^{n}\frac{4}{1+x_i^2}.\]}
+\begin{block}<4->{Trabajo paralelo}
 Cada proceso calcula una parte de la suma. Una reducción suma todas las contribuciones.
 \end{block}
 \column{.48\textwidth}\centering
+\begin{uncoverenv}<2->
 \begin{tikzpicture}
 \begin{axis}[width=7cm,height=5.3cm,xmin=0,xmax=1,ymin=0,ymax=4.5,
   xlabel={$x$},ylabel={$f(x)$},xtick={0,.2,.4,.6,.8,1},ytick={0,2,4},
@@ -272,6 +291,7 @@ Cada proceso calcula una parte de la suma. Una reducción suma todas las contrib
 \end{axis}
 \end{tikzpicture}
 \smallnote{Ilustración con \(n=5\); el programa usa \(n=5000\).}
+\end{uncoverenv}
 \end{columns}
 \end{frame}
 
@@ -284,7 +304,7 @@ Cada proceso calcula una parte de la suma. Una reducción suma todas las contrib
 
 \begin{frame}[fragile]{\(\pi\): reunir el resultado y medir el error}{Reducción de las aproximaciones locales}
 \snippet{mpi_pi.c}{reduce}
-\begin{block}{Comprobar el cálculo}
+\begin{block}<2->{Comprobar el cálculo}
 Se compara la aproximación con una referencia de \(\pi\). Para \(n=5000\),
 el error de discretización es aproximadamente \(3.33\times10^{-9}\).
 El redondeo puede variar ligeramente con el número de procesos.
@@ -297,7 +317,7 @@ El redondeo puede variar ligeramente con el número de procesos.
 \[C_{ij}=\sum_{k=0}^{N-1} A_{ik}B_{kj}.\]
 \begin{columns}[T,onlytextwidth]
 \column{.51\textwidth}
-\begin{enumerate}\setlength\itemsep{6pt}
+\begin{enumerate}[<+->]\setlength\itemsep{6pt}
 \item El rango 0 inicializa \(A\) y \(B\).
 \item \code{MPI_Bcast} comunica ambas matrices.
 \item Cada proceso calcula \(N/P\) filas de \(C\).
@@ -306,10 +326,10 @@ El redondeo puede variar ligeramente con el número de procesos.
 \column{.44\textwidth}\centering
 \begin{tikzpicture}[x=1cm,y=.9cm]
 \foreach \y/\id/\rows in {0/0/{0,1},-.8/1/{2,3},-1.6/2/{4,5},-2.4/3/{6,7}}{
-  \node[box,minimum width=23mm] (p\id) at (0,\y) {P\id: filas \rows};
-  \draw[flow] (p\id.east)--(2,\y);}
-\node[box,minimum height=30mm,minimum width=15mm] at (2.8,-1.2) {\(C\)\\root};
-\node[labeltext] at (1,-3.3) {\(N=8,\;P=4\): dos filas por proceso};
+  \node[box,minimum width=23mm,visible on=<3->] (p\id) at (0,\y) {P\id: filas \rows};
+  \draw[flow,visible on=<4->] (p\id.east)--(2,\y);}
+\node[box,minimum height=30mm,minimum width=15mm,visible on=<4->] at (2.8,-1.2) {\(C\)\\root};
+\node[labeltext,visible on=<3->] at (1,-3.3) {\(N=8,\;P=4\): dos filas por proceso};
 \end{tikzpicture}
 \end{columns}
 \smallnote{Versión didáctica: cada proceso almacena A y B completas; se exige \(N\bmod P=0\).}
@@ -323,7 +343,7 @@ El redondeo puede variar ligeramente con el número de procesos.
 
 \begin{frame}[fragile]{Matrices: calcular filas y reunirlas}{El índice local r corresponde a la fila global first + r}
 \snippet{mpi_matrices.c}{kernel}
-\begin{block}{Resultado de este ejemplo}
+\begin{block}<2->{Resultado de este ejemplo}
 Todas las entradas de \(A\) valen 1 y las de \(B\) valen 2. Por tanto,
 cada entrada de \(C\) vale \(2N=16\).
 \end{block}
@@ -348,7 +368,7 @@ cada entrada de \(C\) vale \(2N=16\).
 \code{MPI_UNSIGNED_LONG_LONG} & \code{unsigned long long} \\
 \bottomrule
 \end{tabularx}
-\begin{block}{Conteo en elementos}
+\begin{block}<2->{Conteo en elementos}
 Para enviar tres enteros: \code{count = 3}, \code{datatype = MPI_INT}.
 El conteo no se expresa en bytes salvo que se use \code{MPI_BYTE}.
 \end{block}
@@ -378,16 +398,16 @@ El conteo no se expresa en bytes salvo que se use \code{MPI_BYTE}.
 \begin{columns}[T,onlytextwidth]
 \column{.55\textwidth}
 \begin{itemize}\setlength\itemsep{7pt}
-\item \code{MPI_Type_contiguous} describe tres elementos de tipo \code{MPI_INT}.
-\item \code{MPI_Type_commit} habilita el nuevo tipo para comunicar datos.
-\item Una unidad de \code{point_type} representa el punto completo.
+\item<2-> \code{MPI_Type_contiguous} describe tres elementos de tipo \code{MPI_INT}.
+\item<3-> \code{MPI_Type_commit} habilita el nuevo tipo para comunicar datos.
+\item<4-> Una unidad de \code{point_type} representa el punto completo.
 \end{itemize}
 \column{.40\textwidth}\centering\vspace{4mm}
 \begin{tikzpicture}[x=1cm,y=1cm]
 \foreach \x/\name/\val in {0/x/45,1.2/y/36,2.4/z/0}{
-\node[box,minimum width=12mm] at (\x,0) {\val};
-\node[labeltext] at (\x,.7) {\name};}
-\node[labeltext] at (1.2,-.7) {1 punto = 3 enteros};
+\node[box,minimum width=12mm,visible on=<2->] at (\x,0) {\val};
+\node[labeltext,visible on=<2->] at (\x,.7) {\name};}
+\node[labeltext,visible on=<4->] at (1.2,-.7) {1 punto = 3 enteros};
 \end{tikzpicture}
 \end{columns}
 \smallnote{Para una estructura con posibles huecos de alineación, describir las direcciones de los campos con \code{MPI_Type_create_struct}.}
@@ -405,6 +425,7 @@ El conteo no se expresa en bytes salvo que se use \code{MPI_BYTE}.
 \begin{frame}{Procesos e hilos}{MPI organiza procesos; OpenMP y Pthreads organizan hilos}
 \begin{columns}[T,onlytextwidth]
 \column{.48\textwidth}
+\begin{uncoverenv}<1->
 \begin{block}{Proceso}
 Tiene su propio espacio de direcciones. Un programa MPI se ejecuta como varios procesos,
 cada uno identificado por su rango.
@@ -413,7 +434,9 @@ cada uno identificado por su rango.
 \item Un proceso puede crear uno o más hilos.
 \item Al entrar a \code{main}, cada proceso tiene un hilo inicial de aplicación.
 \end{itemize}
+\end{uncoverenv}
 \column{.48\textwidth}
+\begin{uncoverenv}<2->
 \begin{block}{Hilo}
 Comparte con los hilos del proceso la memoria y recursos como los descriptores de archivo.
 \end{block}
@@ -422,8 +445,9 @@ Comparte con los hilos del proceso la memoria y recursos como los descriptores d
 \item Tiene su propio contador de instrucciones y pila.
 \item Puede mantener variables privadas en su pila.
 \end{itemize}
+\end{uncoverenv}
 \end{columns}
-\begin{block}{Cuidar los datos compartidos}
+\begin{block}<3->{Cuidar los datos compartidos}
 Compartir memoria permite comunicación local rápida; las escrituras concurrentes deben coordinarse.
 \end{block}
 \end{frame}
@@ -437,16 +461,16 @@ Compartir memoria permite comunicación local rápida; las escrituras concurrent
   \node[font=\small\bfseries,text=uohblue] at (\x,.9) {Nodo \id\; /\; Proceso MPI \id};
   \node[box,minimum width=42mm,minimum height=7mm] at (\x,.2) {Memoria compartida del proceso};
   \foreach \dx/\h in {-1.5/0,-.5/1,.5/2,1.5/3}{
-    \node[box,minimum width=7mm,inner sep=2pt] at (\x+\dx,-.8) {H\h};}
+    \node[box,minimum width=7mm,inner sep=2pt,visible on=<2->] at (\x+\dx,-.8) {H\h};}
 }
-\draw[flow,<->] (node0.east)--node[above,font=\small] {MPI / red} (node1.west);
-\node[labeltext] at (3.5,-2.4) {Ejemplo: dos procesos MPI, cuatro hilos por proceso};
+\draw[flow,<->,visible on=<3->] (node0.east)--node[above,font=\small] {MPI / red} (node1.west);
+\node[labeltext,visible on=<3->] at (3.5,-2.4) {Ejemplo: dos procesos MPI, cuatro hilos por proceso};
 \end{tikzpicture}
 \begin{columns}[T,onlytextwidth]
-\column{.48\textwidth}\begin{block}{Entre nodos}
+\column{.48\textwidth}\begin{block}<3->{Entre nodos}
 MPI comunica datos entre espacios de memoria separados.
 \end{block}
-\column{.48\textwidth}\begin{block}{Dentro del nodo}
+\column{.48\textwidth}\begin{block}<2->{Dentro del nodo}
 Los hilos reparten el cómputo local y comparten los datos del proceso.
 \end{block}
 \end{columns}
@@ -455,14 +479,14 @@ Los hilos reparten el cómputo local y comparten los datos del proceso.
 
 % 21. Hibrid p. 6. Ventajas presentadas como posibilidades, no garantias.
 \begin{frame}{Ventajas del modelo híbrido}{Adaptar el reparto de trabajo al hardware del clúster}
-\begin{itemize}\setlength\itemsep{5pt}
+\begin{itemize}[<+->]\setlength\itemsep{5pt}
 \item \textbf{Escalabilidad:} MPI distribuye el trabajo entre servidores; los hilos aprovechan los núcleos de cada nodo.
 \item \textbf{Rendimiento y flexibilidad:} se puede elegir cuántos procesos e hilos usar y cómo repartir las tareas.
 \item \textbf{Uso de recursos:} los hilos comparten buffers locales y aprovechan las CPU del nodo.
 \item \textbf{Comunicación:} menos procesos MPI pueden reducir el número de mensajes y algunos costos de comunicación.
 \item \textbf{Organización del programa:} MPI gestiona el nivel distribuido; OpenMP o Pthreads gestiona el nivel local.
 \end{itemize}
-\begin{block}{El beneficio se comprueba midiendo}
+\begin{block}<6->{El beneficio se comprueba midiendo}
 La mejora depende del algoritmo, del equilibrio de carga, de la memoria y de la configuración de procesos e hilos.
 \end{block}
 \end{frame}
@@ -473,13 +497,13 @@ La mejora depende del algoritmo, del equilibrio de carga, de la memoria y de la 
 \begin{tabularx}{\textwidth}{lX}
 \toprule Nivel solicitado & Regla de uso \\
 \midrule
-\code{MPI_THREAD_SINGLE} & Solo se ejecuta un hilo. \\
-\code{MPI_THREAD_FUNNELED} & Hay varios hilos; solo el hilo que inicializó MPI hace llamadas MPI. \\
-\code{MPI_THREAD_SERIALIZED} & Varios hilos pueden llamar MPI, pero las llamadas se serializan: nunca al mismo tiempo. \\
-\code{MPI_THREAD_MULTIPLE} & Varios hilos pueden hacer llamadas MPI simultáneamente. \\
+\leavevmode\uncover<1->{\code{MPI_THREAD_SINGLE}} & \leavevmode\uncover<1->{Solo se ejecuta un hilo.} \\
+\leavevmode\uncover<2->{\code{MPI_THREAD_FUNNELED}} & \leavevmode\uncover<2->{Hay varios hilos; solo el hilo que inicializó MPI hace llamadas MPI.} \\
+\leavevmode\uncover<3->{\code{MPI_THREAD_SERIALIZED}} & \leavevmode\uncover<3->{Varios hilos pueden llamar MPI, pero las llamadas se serializan: nunca al mismo tiempo.} \\
+\leavevmode\uncover<4->{\code{MPI_THREAD_MULTIPLE}} & \leavevmode\uncover<4->{Varios hilos pueden hacer llamadas MPI simultáneamente.} \\
 \bottomrule
 \end{tabularx}
-\begin{block}{Solicitar y verificar}
+\begin{block}<5->{Solicitar y verificar}
 Se usa \code{MPI_Init_thread} y se comprueba \code{provided}.
 Solicitar un nivel no garantiza que la implementación lo proporcione.
 \end{block}
@@ -492,18 +516,26 @@ Solicitar un nivel no garantiza que la implementación lo proporcione.
 int MPI_Init_thread(int *argc, char ***argv,
                     int required, int *provided);
 \end{lstlisting}
+\begin{uncoverenv}<2->
 \snippet[style=compact]{hybrid_hola.c}{init}
+\end{uncoverenv}
+\begin{uncoverenv}<3->
 \smallnote{Aquí todas las llamadas MPI ocurren fuera de la región OpenMP, en el hilo inicial. \code{FUNNELED} es suficiente.}
+\end{uncoverenv}
 %\sourcefile{hybrid_hola.c}
 \end{frame}
 
 \begin{frame}[fragile]{Hola desde procesos MPI e hilos OpenMP}{Cuatro procesos y tres hilos por proceso}
 \snippet{hybrid_hola.c}{hello}
+\begin{uncoverenv}<2->
 \begin{lstlisting}[style=shell]
 mpicc -O2 -Wall -Wextra -fopenmp examples/hybrid_hola.c -o hybrid_hola
 OMP_NUM_THREADS=3 mpirun -np 4 ./hybrid_hola
 \end{lstlisting}
+\end{uncoverenv}
+\begin{uncoverenv}<3->
 \smallnote{Cuatro mensajes de proceso y doce mensajes de hilo. El orden de impresión puede variar.}
+\end{uncoverenv}
 %\sourcefile{hybrid_hola.c}
 \end{frame}
 
@@ -516,11 +548,15 @@ OMP_NUM_THREADS=3 mpirun -np 4 ./hybrid_hola
 
 \begin{frame}[fragile]{Producto escalar: dos niveles de reducción}{OpenMP combina hilos; MPI combina procesos}
 \snippet[style=compact]{hybrid_producto.c}{kernel}
+\begin{uncoverenv}<2->
 \begin{lstlisting}[style=shell]
 mpicc -O2 -fopenmp examples/hybrid_producto.c -o hybrid_producto
 OMP_NUM_THREADS=4 mpirun -np 4 ./hybrid_producto
 \end{lstlisting}
+\end{uncoverenv}
+\begin{uncoverenv}<3->
 \smallnote{Para N = 1000, \(a_i=1\), \(b_i=2\): resultado global 2000; con P = 4, cada suma local vale 500.}
+\end{uncoverenv}
 %\sourcefile{hybrid_producto.c}
 \end{frame}
 
@@ -534,7 +570,7 @@ El hilo inicial combina las sumas después de \code{pthread_join}.}
 
 \begin{frame}[fragile]{MPI + Pthreads: preparar el bloque local}{N = 1 000 000 · Datos reproducibles entre 0 y 9}
 \snippet{hybrid_pthreads.c}{setup}
-\begin{block}{Procesos y trabajadores}
+\begin{block}<2->{Procesos y trabajadores}
 MPI reparte las N posiciones entre los procesos. Cada proceso dispone de cuatro hilos
 y de una estructura de trabajo para cada uno. Las posiciones se inicializan con el patrón \(i\bmod10\).
 \end{block}
@@ -549,11 +585,15 @@ y de una estructura de trabajo para cada uno. Las posiciones se inicializan con 
 
 \begin{frame}[fragile]{MPI + Pthreads: esperar y reducir}{Primero combinar los hilos, luego combinar los procesos}
 \snippet[style=compact]{hybrid_pthreads.c}{reduce}
+\begin{uncoverenv}<2->
 \begin{lstlisting}[style=shell]
 mpicc -O2 -pthread examples/hybrid_pthreads.c -o hybrid_pthreads
 mpirun -np 4 ./hybrid_pthreads
 \end{lstlisting}
+\end{uncoverenv}
+\begin{uncoverenv}<3->
 \smallnote{Resultado esperado: 4 500 000. Se usa \code{long long} con \code{MPI_LONG_LONG_INT} para las sumas.}
+\end{uncoverenv}
 %\sourcefile{hybrid_pthreads.c}
 \end{frame}
 
@@ -561,6 +601,7 @@ mpirun -np 4 ./hybrid_pthreads
 \begin{frame}[fragile]{Medir tiempo con OpenMP y MPI}{Comparar tiempos transcurridos en el mismo hilo o proceso}
 \begin{columns}[T,onlytextwidth]
 \column{.47\textwidth}
+\begin{uncoverenv}<1->
 \begin{block}{OpenMP: tiempo local}
 \code{omp_get_wtime()} devuelve segundos.
 \end{block}
@@ -570,7 +611,9 @@ double t1 = omp_get_wtime();
 double t2 = omp_get_wtime();
 printf("Tiempo local: %g s\n", t2 - t1);
 \end{lstlisting}
+\end{uncoverenv}
 \column{.49\textwidth}
+\begin{uncoverenv}<2->
 \begin{block}{MPI: duración del proceso más lento}
 \code{MPI_Wtime()} devuelve segundos.
 \end{block}
@@ -586,8 +629,11 @@ MPI_Reduce(&elapsed, &maximum, 1,
 if (rank == 0)
     printf("Tiempo maximo: %g s\n", maximum);
 \end{lstlisting}
+\end{uncoverenv}
 \end{columns}
+\begin{uncoverenv}<3->
 \smallnote{No restar marcas de tiempo tomadas en procesos distintos: sus relojes no tienen por qué estar sincronizados. La reducción final queda fuera de la región medida.}
+\end{uncoverenv}
 \end{frame}
 
 % 32. MPI p. 14; Hibrid p. 12. Se conservan ambos enlaces.
@@ -597,11 +643,10 @@ Operaciones colectivas, aproximación de \(\pi\), matrices y tipos de datos.\\[5
 \href{https://github.com/adigenova/uohpmd/blob/main/code/MPI_II.ipynb}{\code{code/MPI_II.ipynb}}\quad en \code{adigenova/uohpmd}.
 \end{block}
 \vspace{4mm}
-\begin{block}{MPI + OpenMP / Pthreads}
+\begin{block}<2->{MPI + OpenMP / Pthreads}
 Ejemplos de programación híbrida y medición de tiempos.\\[5pt]
 \href{https://github.com/adigenova/uohpmd/blob/main/code/MPI_OPenMP.ipynb}{\code{code/MPI_OPenMP.ipynb}}\quad en \code{adigenova/uohpmd}.
 \end{block}
-\smallnote{Los programas C de esta conversión están en \code{examples/}; las instrucciones de compilación están en \code{README.md}.}
 \end{frame}
 
 

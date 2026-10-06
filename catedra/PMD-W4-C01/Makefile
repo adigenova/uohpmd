@@ -8,10 +8,12 @@ OMP_NAMES := hybrid_hola hybrid_producto
 PTHREAD_NAMES := hybrid_pthreads
 BINS := $(addprefix build/examples/,$(MPI_NAMES) $(OMP_NAMES) $(PTHREAD_NAMES))
 
-.PHONY: all pdf examples check zip clean
-all: pdf
+.PHONY: all pdf handout examples check zip clean
+all: pdf handout
 pdf:
 	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(DECK).tex
+handout:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(DECK)-handout.tex
 examples: $(BINS)
 $(addprefix build/examples/,$(MPI_NAMES)): build/examples/%: examples/%.c examples/common.h
 	mkdir -p build/examples
@@ -24,7 +26,8 @@ $(addprefix build/examples/,$(PTHREAD_NAMES)): build/examples/%: examples/%.c ex
 	$(MPICC) $(CFLAGS) -pthread $< -o $@
 check: examples
 	python3 scripts/check_examples.py
-zip: pdf
+zip: pdf handout
 	python3 scripts/package.py
 clean:
 	$(LATEXMK) -c $(DECK).tex
+	$(LATEXMK) -c $(DECK)-handout.tex
