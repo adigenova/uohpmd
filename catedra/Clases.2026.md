@@ -103,7 +103,6 @@ El código visto en clases se encuentra disponible [aqui](https://github.com/adi
 
 OpenMP II y MPI I
 
-
 ### Slides
 
 Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI-beamer.pdf)
@@ -111,3 +110,22 @@ Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/a
 ## PMD-W7-C02 (30/09/2026)
 
 MPI II
+
+### Slides
+
+Las slides de la clases de OpenMP están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W3-C02/PMD-W4-C02-OpenMP-MPI-beamer.pdf)
+
+## PMD-W8-C01 (06/10/2026)
+
+MPI III e Hybrid
+
+### slides
+
+Las slides de la clases de MPI están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W4-C01/PMD-W4-C01-MPI-II-Hibrido-beamer.pdf)
+
+### Code
+
+Links a los codigos de ejemplo estan en las slides.
+
+
+
