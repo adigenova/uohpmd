@@ -127,5 +127,17 @@ Las slides de la clases de MPI están disponibles [aqui](https://github.com/adig
 
 Links a los codigos de ejemplo estan en las slides.
 
+## Semana receso
+
+## Semana de alerta climatica y paro estudiantil
+
+## PMD-W9-C01 (27/10/2026)
+
+Repaso Pthreads, OpenMP, MPI y sistemas hibridos.
+
+### slides
+
+Las slides de la clases de MPI están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-Repaso-Paralelismo-v2/repaso-v2.pdf)
+
 
 
