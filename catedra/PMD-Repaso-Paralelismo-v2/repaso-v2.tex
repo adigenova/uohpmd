@@ -1,0 +1,211 @@
+\ifdefined\PMDHandout
+\documentclass[handout,aspectratio=169,10pt]{beamer}
+\else
+\documentclass[aspectratio=169,10pt]{beamer}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
+\usepackage{lmodern,tgheros,booktabs,listings,tikz}
+\renewcommand{\familydefault}{\sfdefault}
+\definecolor{blueuoh}{HTML}{0075BA}
+\definecolor{ink}{HTML}{162B3A}
+\definecolor{pale}{HTML}{EEF5F9}
+\setbeamercolor{structure}{fg=blueuoh}
+\setbeamercolor{normal text}{fg=ink}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{block title}{fg=blueuoh,bg=pale}
+\setbeamercolor{block body}{fg=ink,bg=pale}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hspace{7mm}\scriptsize Alex Di Genova | Procesamiento Masivo de Datos\hfill Repaso de paralelismo\quad\insertframenumber/\inserttotalframenumber\hspace{7mm}\vspace{2mm}}
+\lstdefinestyle{c}{language=C,basicstyle=\ttfamily\fontsize{8}{9.2}\selectfont,keywordstyle=\color{blueuoh}\bfseries,commentstyle=\color{green!45!black},backgroundcolor=\color{pale},columns=fullflexible,keepspaces=true,showstringspaces=false,breaklines=true,tabsize=4,morekeywords={pragma,omp,parallel,for}}
+\lstset{style=c}
+\newcommand{\snippet}[2]{\lstinputlisting[rangebeginprefix={//BEGIN},rangeendprefix={//END},includerangemarker=false,linerange={#2-#2}]{legacy/#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{Procesamiento Masivo de Datos}
+\subtitle{Repaso de Pthreads, OpenMP, MPI y modelos híbridos\\Camino más corto por fuerza bruta}
+\author{Alex Di Genova}
+\institute{Universidad de O'Higgins}
+\date{}
+\begin{document}
+\begin{frame}\titlepage\end{frame}
+\begin{frame}{Objetivos}
+\begin{itemize}[<+->]\item Resolver el mismo problema con seis implementaciones en C.\item Repasar creación de hilos, regiones paralelas y comunicación colectiva.\item Comparar reparto, memoria y sincronización.\item Diseñar experimentos y completar ejercicios.\end{itemize}
+\end{frame}
+\begin{frame}{El problema}{Camino de menor peso entre 0 y 5}
+\begin{columns}[T]\column{.55\textwidth}\centering
+\begin{tikzpicture}[every node/.style={circle,draw=blueuoh,fill=pale,minimum size=8mm},every edge/.style={draw,thick}]
+\node (a) at (0,1) {0}; \node (b) at (2,2) {1}; \node (c) at (2,0) {2}; \node (d) at (4,2) {3}; \node (e) at (4,0) {4}; \node (f) at (6,1) {5};
+\foreach \x/\y/\w in {a/b/4,a/c/2,b/c/1,b/d/5,c/d/8,c/e/10,d/e/2,d/f/6,e/f/3} \draw (\x) -- node[draw=none,fill=white,minimum size=0pt,inner sep=1pt,font=\scriptsize] {\w} (\y);
+\draw<3->[orange!85!black,line width=2pt] (a)--(c)--(b)--(d)--(e)--(f);
+\end{tikzpicture}
+\column{.42\textwidth}\begin{itemize}[<+->]\item Grafo no dirigido, pesos positivos.\item Enumerar caminos simples: ningún vértice se repite.\item Óptimo: $0\to2\to1\to3\to4\to5$.\item Distancia: $2+1+5+2+3=13$.\end{itemize}\end{columns}
+\end{frame}
+\begin{frame}{Fuerza bruta y descomposición}
+\begin{itemize}[<+->]\item DFS explora recursivamente vecinos no visitados; al llegar al destino compara el costo.\item Una tarea por posible primer vecino de 0; si no hay arista produce infinito.\item Cada tarea mantiene su camino, visitados y mejor resultado.\item Se combinan resultados por mínimo; en caso de empate puede devolverse cualquier óptimo.\end{itemize}
+\begin{block}{Costo y límites}El número de caminos simples puede crecer factorialmente. Para pesos no negativos, Dijkstra es una alternativa mucho más eficiente.\end{block}
+\end{frame}
+\begin{frame}[fragile]{Núcleo común: búsqueda DFS}
+\lstinputlisting[firstline=14,lastline=29]{legacy/common.h}
+\end{frame}
+\begin{frame}[fragile]{Versión serial}{Una tarea a la vez}
+\lstinputlisting{legacy/serial.c}
+\begin{itemize}[<+->]\item \code{search_task(i)} explora los caminos que comienzan por $0\to i$.\item \code{combine} conserva el resultado con menor distancia.\end{itemize}
+\end{frame}
+\begin{frame}{Repaso: Pthreads}
+\begin{itemize}[<+->]\item Los hilos comparten memoria; cada uno tiene pila propia.\item \code{pthread_create} inicia una función con un argumento.\item \code{pthread_join} espera el término y recupera su resultado.\item Evitamos carreras con resultados privados, combinados después de \code{join}.\item Crear hilos tiene costo; un conjunto persistente de trabajadores puede reducirlo.\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Pthreads: función trabajadora}
+\snippet{pthreads.c}{WORKER}
+\begin{itemize}[<+->]\item El argumento apunta a un identificador estable.\item El resultado reservado se recupera tras \code{join} y luego se libera.\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Pthreads: crear y esperar}
+\begin{columns}[T,onlytextwidth]\column{.5\textwidth}\snippet{pthreads.c}{CREATE}
+\column{.5\textwidth}\snippet{pthreads.c}{JOIN}\end{columns}
+\small Se procesan tareas en lotes de hasta tres hilos y se verifican las llamadas.
+\end{frame}
+\begin{frame}{Repaso: OpenMP}
+\begin{itemize}[<+->]\item Directivas de compilador para paralelismo de memoria compartida.\item \code{parallel for} distribuye iteraciones entre hilos.\item \code{schedule(dynamic)} entrega iteraciones a medida que terminan: útil con ramas de tamaño variable.\item Cada iteración escribe una posición distinta; una barrera implícita precede a la combinación serial.\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{OpenMP: distribuir las tareas}
+\snippet{openmp.c}{OMP}
+\begin{itemize}[<+->]\item \code{results[i]} es independiente para cada iteración.\item El número de hilos se configura con \code{OMP_NUM_THREADS}.\end{itemize}
+\end{frame}
+\begin{frame}{Repaso: MPI}
+\begin{itemize}[<+->]\item Cada proceso tiene memoria propia y un rango en un comunicador.\item \code{MPI_Init}, \code{MPI_Comm_rank}, \code{MPI_Comm_size} y \code{MPI_Finalize} gestionan la ejecución.\item Reparto cíclico: rango $r$ procesa $i=1+r,1+r+P,\ldots$\item Colectivas: todos los procesos del comunicador deben llamarlas en el mismo orden.\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{MPI: reparto entre procesos}
+\snippet{mpi.c}{MPI}
+\pause\small Cada proceso calcula un mínimo local; el grafo está definido idénticamente en cada proceso.
+\end{frame}
+\begin{frame}[fragile]{MPI: elegir el camino ganador}
+\snippet{mpi_common.h}{COLLECT}
+\begin{itemize}[<+->]\item \code{MPI_MINLOC} obtiene el mínimo y rango ganador; desempata por menor rango.\item El ganador difunde longitud y camino a todos; el rango 0 imprime.\item Sin camino, la distancia es infinito y la longitud es cero.\end{itemize}
+\end{frame}
+\begin{frame}{Modelos híbridos}{Procesos MPI $\times$ hilos por proceso}
+\begin{itemize}[<+->]\item MPI distribuye tareas entre procesos; cada proceso utiliza hilos localmente.\item \code{MPI_Init_thread} solicita \code{MPI_THREAD_FUNNELED}: solo el hilo que inicializó MPI puede llamar a MPI.\item Se verifica el nivel proporcionado; las colectivas ocurren después de esperar a los hilos.\item Procesos $\times$ hilos debe respetar los recursos asignados.\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{MPI + OpenMP: inicialización}
+\snippet{mpi_openmp.c}{INIT}
+\pause\small Todos los procesos solicitan y verifican el soporte antes de hacer trabajo paralelo.
+\end{frame}
+\begin{frame}[fragile]{MPI + OpenMP: dos niveles de reparto}
+\snippet{mpi_openmp.c}{HYBRID}
+\pause\small El rango selecciona tareas; OpenMP distribuye iteraciones. Después de la barrera, el hilo inicial llama a MPI.
+\end{frame}
+\begin{frame}[fragile]{MPI + Pthreads: trabajo local}
+\snippet{mpi_pthreads.c}{WORKER}
+\pause\small Cada hilo recorre una parte de las tareas del proceso y mantiene su propio mínimo.
+\end{frame}
+\begin{frame}[fragile]{MPI + Pthreads: coordinación}
+\snippet{mpi_pthreads.c}{THREADS}
+\pause\small El hilo inicial crea y espera a los trabajadores, combina resultados y ejecuta las colectivas.
+\end{frame}
+\begin{frame}[fragile]{Compilar y ejecutar el ejemplo pequeño}
+\begin{lstlisting}[language=bash,basicstyle=\ttfamily\fontsize{9}{11}\selectfont]
+cd ../PMD-Repaso-Paralelismo
+make examples
+./build/serial
+./build/pthreads
+OMP_NUM_THREADS=3 ./build/openmp
+mpirun -np 3 ./build/mpi
+OMP_NUM_THREADS=2 mpirun -np 3 ./build/mpi_openmp
+mpirun -np 3 ./build/mpi_pthreads
+\end{lstlisting}
+\begin{block}{Resultado esperado}Distancia 13; camino 0 $\to$ 2 $\to$ 1 $\to$ 3 $\to$ 4 $\to$ 5.\end{block}
+\end{frame}
+\begin{frame}{Comparación de modelos}
+\small\begin{tabular}{llll}\toprule Modelo & Unidad & Datos & Combinación \\\midrule
+Serial & tarea & locales & mínimo serial \\
+Pthreads & hilo & memoria compartida & tras \code{join} \\
+OpenMP & iteración & memoria compartida & tras barrera \\
+MPI & proceso & memoria separada & \code{MINLOC} + \code{Bcast} \\
+MPI + hilos & proceso e hilo & local por proceso & local, luego MPI \\\bottomrule\end{tabular}
+\vspace{4mm}\par El reparto por primera arista es sencillo, pero puede producir desequilibrio de carga.
+\end{frame}
+\begin{frame}{Ejercicios: corrección y reparto}
+\begin{enumerate}[<+->]\item Dibuje el árbol para las primeras dos decisiones. ¿Por qué basta explorar caminos simples?\item Elimine una arista y calcule manualmente el nuevo resultado; confirme con todas las versiones.\item Cambie el grafo para que el destino sea inalcanzable. ¿Participan todos los rangos en las colectivas?\item Para $P=3$, escriba los índices de tarea de cada rango. ¿Qué ocurre con más procesos que tareas?\end{enumerate}
+\end{frame}
+
+\section{Un grafo desde archivo}
+\begin{frame}{De un ejemplo pequeño a un grafo desde archivo}
+\begin{itemize}[<+->]
+\item Cada programa recibe archivo, origen y destino; la búsqueda conserva DFS exhaustivo y caminos simples.
+\item Archivo de texto: primera línea $V$ $E$; luego $E$ líneas con \code{origen destino peso}, una arista dirigida por línea.
+\item Vértices numerados desde 0; pesos enteros positivos, sin aristas duplicadas ni lazos; máximo 64 vértices.
+\item El grafo se carga una vez y es de solo lectura durante la búsqueda; se guarda como listas de adyacencia.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Formato del archivo}
+\begin{lstlisting}
+4 4
+0 1 2
+0 2 5
+1 2 1
+2 3 3
+\end{lstlisting}
+\begin{itemize}[<+->]
+\item Ejemplo: 4 vértices, 4 aristas dirigidas; camino 0 $\to$ 1 $\to$ 2 $\to$ 3, costo 6.
+\item Para un grafo no dirigido, escriba ambas direcciones de cada arista.
+\item Se comprueban cabecera, rangos, pesos y aristas repetidas.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Leer y validar las aristas}
+\lstinputlisting[firstline=24,lastline=34]{examples/common.h}
+\pause\small La cabecera se valida antes del bucle; después se comprueba que no queden datos adicionales.
+\end{frame}
+\begin{frame}{Grafo de prueba: 58 vértices}
+\begin{itemize}[<+->]
+\item Archivo \code{data/capas_58.txt}: 58 vértices y 357 aristas dirigidas.
+\item Origen 0, destino 57; entre ellos hay ocho capas de siete vértices cada una.
+\item Cada vértice se conecta a todos los de la siguiente capa: $7^8=5.764.801$ caminos de 9 aristas.
+\item Pesos reproducibles entre 1 y 13; distancia mínima obtenida: 13. 
+\item Siete tareas iniciales: una por cada arista saliente del origen; se exploran todos los caminos, sin poda.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Pthreads: cola de trabajo}
+\lstinputlisting[rangebeginprefix={//BEGIN},rangeendprefix={//END},includerangemarker=false,linerange={WORKER-WORKER}]{examples/pthreads.c}
+\pause\small El mutex protege el índice compartido. Cada trabajador conserva su mínimo privado; el hilo principal los combina tras \code{pthread_join}.
+\end{frame}
+\begin{frame}[fragile]{OpenMP: tareas desde el archivo}
+\lstinputlisting[rangebeginprefix={//BEGIN},rangeendprefix={//END},includerangemarker=false,linerange={OPENMP-OPENMP}]{examples/openmp.c}
+\pause\small Una posición de resultado por arista del origen. El reparto dinámico asigna una iteración a la vez y la barrera implícita precede a la combinación.
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Compilar y ejecutar el grafo desde archivo}
+\begin{lstlisting}[language=bash,basicstyle=\ttfamily\fontsize{9}{11}\selectfont]
+make examples
+./build/serial data/capas_58.txt 0 57
+./build/pthreads data/capas_58.txt 0 57
+OMP_NUM_THREADS=4 OMP_DYNAMIC=FALSE ./build/openmp data/capas_58.txt 0 57
+make check
+make benchmark
+\end{lstlisting}
+\small Las tres versiones imprimen detalles del grafo, distancia, camino y tiempo de búsqueda. Pthreads usa cuatro hilos; OpenMP utiliza la variable de entorno.
+\end{frame}
+
+\begin{frame}{Benchmark: comparación de tiempos}{Mediana de siete ejecuciones}
+	\begin{center}\begin{tabular}{lrr}\toprule
+			Modelo & Tiempo (s) & Aceleración \\\midrule
+			\input{resultados.tex}
+	\end{tabular}\end{center}
+	\begin{itemize}[<+->]
+		\item Equipo: Apple M1 Pro, Linux aarch64, GCC 16.1.1; cuatro hilos, compilación \code{-O2}; una ejecución de calentamiento y siete mediciones secuenciales por modelo.
+		\item Tiempo de pared monotónico: incluye creación y sincronización de hilos; excluye lectura del archivo e impresión.
+		\item La aceleración es mediana serial dividida por la mediana del modelo. Es una medición de este equipo, no una garantía.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Ejercicios: grafo desde archivo}
+\begin{enumerate}[<+->]
+\item Cambie el número de hilos de OpenMP y el valor \code{THREADS} de Pthreads; mida 1, 2 y 4 hilos.
+\item Añada la carga de archivos a MPI: ¿cómo distribuiría el grafo y cómo verificaría el camino ganador?
+\item Compare con Dijkstra.
+\end{enumerate}
+\end{frame}
+
+\end{document}
