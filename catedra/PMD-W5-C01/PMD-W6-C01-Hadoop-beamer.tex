@@ -1,0 +1,647 @@
+% Conversion editable de PMD-W6-C01-Haadoop.pdf.
+% Correspondencia de paginas y cambios de ejemplos: README.md.
+\ifdefined\PMDHandout
+  \documentclass[handout,aspectratio=169,10pt]{beamer}
+\else
+  \documentclass[aspectratio=169,10pt]{beamer}
+\fi
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot,es-noquoting]{babel}
+\usepackage{lmodern,tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{booktabs,tabularx,listings,tikz,pgfplots}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,overlay-beamer-styles}
+\pgfplotsset{compat=1.18}
+\definecolor{uohblue}{HTML}{0075BA}
+\definecolor{ink}{HTML}{162B3A}
+\definecolor{muted}{HTML}{536978}
+\definecolor{pale}{HTML}{EEF5F9}
+\definecolor{codegreen}{HTML}{25784B}
+\definecolor{codepurple}{HTML}{7B3979}
+\definecolor{warm}{HTML}{B45C2C}
+\setbeamercolor{normal text}{fg=ink,bg=white}
+\setbeamercolor{structure}{fg=uohblue}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamercolor{framesubtitle}{fg=uohblue}
+\setbeamercolor{block title}{fg=uohblue,bg=pale}
+\setbeamercolor{block body}{fg=ink,bg=pale}
+\setbeamercolor{alerted text}{fg=warm}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\normalsize}
+\setbeamerfont{block title}{size=\small,series=\bfseries}
+\setbeamerfont{block body}{size=\small}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+% Revelaciones al avanzar; el espacio se conserva entre etapas.
+\setbeamercovered{invisible}
+\setbeamersize{text margin left=8mm,text margin right=8mm}
+\setbeamertemplate{frametitle}{%
+  \vspace{3mm}\insertframetitle\par
+  {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\par}
+  \vspace{1mm}}
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{\hspace{8mm}\color{muted}\scriptsize
+    Alex Di Genova\enspace|\enspace Procesamiento Masivo de Datos
+    \hfill Hadoop / MapReduce\quad\insertframenumber/\inserttotalframenumber\hspace{8mm}}
+  \vspace{3mm}}
+\setlength{\tabcolsep}{5pt}
+\lstdefinestyle{c}{language=Python,
+  basicstyle=\ttfamily\fontsize{9}{11}\selectfont,
+  keywordstyle=\color{uohblue}\bfseries,
+  commentstyle=\color{codegreen},stringstyle=\color{codepurple},
+  backgroundcolor=\color{pale},frame=none,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,breakatwhitespace=true,tabsize=4,emptylines=0,
+  aboveskip=5pt,belowskip=5pt,xleftmargin=5pt,xrightmargin=5pt,
+  morekeywords={emit}}
+\lstdefinestyle{compact}{style=c,basicstyle=\ttfamily\fontsize{8}{9}\selectfont}
+\lstdefinestyle{shell}{style=c,language=bash,basicstyle=\ttfamily\fontsize{9}{11}\selectfont}
+\lstset{style=c}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\smallnote}[1]{\par\vspace{2pt}{\scriptsize\color{muted}#1\par}}
+\newcommand{\sourcefile}[1]{\smallnote{Programa completo: \code{examples/#1}}}
+\tikzset{flow/.style={-{Latex[length=2mm]},thick,draw=uohblue},
+  box/.style={draw=uohblue,fill=pale,rounded corners=2pt,
+    minimum height=7mm,align=center,font=\small,inner sep=5pt},
+  labeltext/.style={font=\scriptsize,text=muted,align=center}}
+\title{Procesamiento Masivo de Datos}
+\subtitle{Hadoop, HDFS, YARN y MapReduce}
+\author{Alex Di Genova}
+\institute{Universidad de O'Higgins}
+\date{}
+\hypersetup{pdftitle={Procesamiento Masivo de Datos: Hadoop},
+  pdfauthor={Alex Di Genova},pdfsubject={Conversion editable a Beamer},
+  colorlinks=true,urlcolor=uohblue,linkcolor=uohblue}
+
+\begin{document}
+
+% 01. Original p. 1.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north west,inner sep=0] at ([xshift=8mm,yshift=-5mm]current page.north west)
+  {\includegraphics[height=13mm]{assets/uoh.png}};
+\node[anchor=north east,inner sep=0] at ([xshift=-8mm,yshift=-5mm]current page.north east)
+  {\includegraphics[width=49mm]{assets/ici.pdf}};
+\fill[pale] (current page.south west) rectangle ([yshift=14mm]current page.south east);
+\draw[uohblue,line width=1.3pt] ([xshift=8mm,yshift=14mm]current page.south west)
+  -- ([xshift=45mm,yshift=14mm]current page.south west);
+\node[anchor=north west,inner sep=0,text width=14cm]
+  at ([xshift=8mm,yshift=-27mm]current page.north west) {
+  {\fontsize{26}{30}\selectfont\bfseries Procesamiento Masivo de Datos\par}
+  \vspace{3mm}{\fontsize{25}{29}\selectfont\color{uohblue}Hadoop\par}
+  \vspace{2mm}{\large HDFS, YARN y MapReduce\par}
+  \vspace{4mm}{\large Alex Di Genova\par}
+  \vspace{2mm}{\color{muted}Universidad de O'Higgins\par}};
+\node[anchor=south west,font=\scriptsize,inner sep=0,text=muted]
+  at ([xshift=8mm,yshift=7mm]current page.south west) {03/11/2026};
+\node[anchor=south east,font=\small,inner sep=0,text=muted]
+  at ([xshift=-8mm,yshift=7mm]current page.south east) {Almacenamiento y cómputo distribuido};
+\end{tikzpicture}
+\end{frame}
+
+\section{Introducción}
+% 02. Original p. 2.
+\begin{frame}{De datos a información}{Un flujo de trabajo de ciencia de datos}
+\begin{itemize}[<+->]\setlength\itemsep{7pt}
+\item Los grandes volúmenes pueden superar la memoria, el almacenamiento o el tiempo disponible en una sola máquina.
+\item El análisis masivo combina software paralelo con varios servidores.
+\item El flujo completo incluye preparar, procesar y comunicar los resultados.
+\end{itemize}
+\vspace{7mm}
+\centering
+\begin{tikzpicture}[x=2.25cm]
+\foreach \i/\label in {0/Datos,1/Ingesta,2/Preparación,3/Cómputo,4/Visualización,5/Reporte}{
+  \node[box,minimum width=20mm,font=\scriptsize,visible on=<4->] (s\i) at (\i,0) {\label};}
+\foreach \a/\b in {0/1,1/2,2/3,3/4,4/5}{\draw[flow,visible on=<4->] (s\a)--(s\b);}
+\end{tikzpicture}
+\end{frame}
+
+% 03. Original p. 3.
+\begin{frame}{Flujos de trabajo de Big Data}{Escalables, reproducibles y automatizables}
+\begin{columns}[T,onlytextwidth]
+\column{.52\textwidth}
+\begin{enumerate}[<+->]\setlength\itemsep{7pt}
+\item \textbf{Consumo:} localizar, incorporar y anotar datos.
+\item \textbf{Preparación (staging):} transformar, normalizar y almacenar.
+\item \textbf{Cómputo:} generar reportes y modelos de recomendación, agrupamiento o clasificación.
+\item \textbf{Control:} orquestar tareas mediante scripts, aplicaciones y trabajos.
+\end{enumerate}
+\column{.44\textwidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,visible on=<1->] (in) at (0,0) {Ingesta};
+\node[box,visible on=<2->] (st) at (0,-1.1) {Preparación};
+\node[box,visible on=<3->] (co) at (0,-2.2) {Cómputo};
+\node[box,visible on=<3->] (out) at (0,-3.3) {Información / modelos};
+\draw[flow,visible on=<2->] (in)--(st);
+\draw[flow,visible on=<3->] (st)--(co);
+\draw[flow,visible on=<3->] (co)--(out);
+\node[box,rotate=90,minimum width=38mm,visible on=<4->] (ctrl) at (2.6,-1.65) {Control del flujo};
+\draw[flow,dashed,visible on=<4->] (ctrl.north)--(co.east);
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% 04. Original p. 4; cluster redrawn.
+\begin{frame}{Hadoop: una plataforma para Big Data}{Almacenamiento y procesamiento en un clúster}
+\begin{columns}[T,onlytextwidth]
+\column{.52\textwidth}
+\begin{itemize}[<+->]\setlength\itemsep{7pt}
+\item \textbf{HDFS} almacena los archivos en varios nodos de cómputo.
+\item \textbf{MapReduce} divide la aplicación en tareas que pueden ejecutarse en paralelo y reintentarse.
+\item Los nodos procesan sus porciones de datos y combinan resultados.
+\item La plataforma gestiona fallas y coordina recursos.
+\end{itemize}
+\column{.44\textwidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box] (master) at (0,0) {Coordinación};
+\foreach \x/\i in {-1.8/0,0/1,1.8/2}{
+  \node[box,font=\scriptsize,minimum width=15mm,visible on=<2->] (n\i) at (\x,-1.7) {Nodo \i\\Datos + tareas};
+  \draw[flow,visible on=<2->] (master)--(n\i);}
+\draw[uohblue,thick,visible on=<3->] (-1.8,-2.9)--(1.8,-2.9);
+\foreach \i in {0,1,2}{\draw[uohblue,thick,visible on=<3->] (n\i.south)--(n\i |- 0,-2.9);}
+\node[labeltext,visible on=<3->] at (0,-3.3) {Red del clúster};
+\end{tikzpicture}
+\end{columns}
+\begin{block}<4->{un sistema operativo para Big Data}
+Hadoop ofrece servicios sobre el sistema operativo de cada máquina para construir aplicaciones distribuidas.
+\end{block}
+\end{frame}
+
+% 05. Original p. 5.
+\begin{frame}{Requisitos de un sistema distribuido}{Continuar operando y crecer con la carga}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{p{3cm}X}
+\toprule Requisito & Propósito \\
+\midrule
+\uncover<1->{Tolerancia a fallas} & \uncover<1->{Una falla de un componente puede atenderse sin detener todo el sistema.} \\
+\uncover<2->{Recuperación} & \uncover<2->{Recuperar datos y trabajo mediante réplicas y reintentos.} \\
+\uncover<3->{Consistencia} & \uncover<3->{Mantener resultados coherentes al recuperar una tarea fallida.} \\
+\uncover<4->{Escalabilidad} & \uncover<4->{Incorporar recursos para admitir más datos o cómputo.} \\
+\bottomrule
+\end{tabularx}
+\begin{block}<5->{Capacidad y rendimiento}
+Agregar nodos puede aumentar la capacidad; la mejora depende del reparto del trabajo, la red y los costos de coordinación.
+\end{block}
+\end{frame}
+
+% 06. Original p. 6.
+\begin{frame}{Acercar el cómputo a los datos}{Localidad, tareas y recuperación}
+\begin{columns}[T,onlytextwidth]
+\column{.52\textwidth}
+\begin{itemize}[<+->]\setlength\itemsep{6pt}
+\item Los archivos se dividen en bloques y se almacenan con réplicas.
+\item Un trabajo se divide en tareas; se busca ejecutarlas cerca de sus datos.
+\item El framework asigna trabajo y vuelve a ejecutar tareas fallidas.
+\item El programador describe el cálculo a alto nivel y reduce la coordinación explícita entre tareas.
+\end{itemize}
+\column{.44\textwidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\i/\b in {0/1/A,2.8/2/B}{
+  \node[box,minimum width=24mm] (d\i) at (\x,0) {Bloque \b};
+  \node[box,minimum width=24mm,visible on=<2->] (t\i) at (\x,-1.3) {Tarea \i};
+  \draw[flow,visible on=<2->] (d\i)--(t\i);
+  \node[labeltext] at (\x,.7) {Nodo \i};}
+\node[box,visible on=<3->] (r) at (1.4,-2.8) {Combinar resultados};
+\foreach \i in {1,2}{\draw[flow,visible on=<3->] (t\i)--(r);}
+\end{tikzpicture}
+\smallnote{El shuffle puede transferir datos por la red.}
+\end{columns}
+\end{frame}
+
+\section{Arquitectura y servicios}
+% 07. Original p. 7.
+\begin{frame}{Arquitectura de Hadoop}{HDFS almacena; YARN administra recursos}
+\begin{columns}[T,onlytextwidth]
+\column{.5\textwidth}
+\begin{itemize}[<+->]\setlength\itemsep{7pt}
+\item \textbf{HDFS:} sistema de archivos distribuido sobre los discos del clúster.
+\item \textbf{YARN:} asigna CPU y memoria a las aplicaciones.
+\item \textbf{MapReduce:} motor de procesamiento que utiliza esos servicios.
+\item Otras aplicaciones pueden compartir la plataforma.
+\end{itemize}
+\column{.46\textwidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,minimum width=60mm,visible on=<4->] at (0,0) {MapReduce\quad Spark\quad Hive / SQL};
+\node[box,minimum width=60mm,visible on=<2->] at (0,-1.1) {YARN: recursos};
+\node[box,minimum width=60mm,visible on=<1->] at (0,-2.2) {HDFS: archivos distribuidos};
+\node[box,minimum width=60mm] at (0,-3.3) {Servidores, discos y red};
+\end{tikzpicture}
+\end{columns}
+\end{frame}
+
+% 08. Original p. 8.
+\begin{frame}{Un clúster Hadoop}{Servicios de coordinación y nodos trabajadores}
+\begin{itemize}[<+->]\setlength\itemsep{4pt}
+\item Los servicios son procesos en segundo plano (demonios), comunicados por red.
+\item Los demonios Java se ejecutan en sus propias JVM.
+\item Los nodos de coordinación administran metadatos y recursos; los trabajadores almacenan datos y ejecutan tareas.
+\end{itemize}
+\vspace{4mm}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,minimum width=43mm,visible on=<3->] (nn) at (-3,0) {NameNode\\\scriptsize Metadatos HDFS};
+\node[box,minimum width=43mm,visible on=<3->] (rm) at (3,0) {ResourceManager\\\scriptsize Recursos YARN};
+\foreach \x/\i in {-4.5/1,0/2,4.5/3}{
+ \node[box,minimum width=35mm,font=\scriptsize,visible on=<3->] (w\i) at (\x,-1.9) {Trabajador \i\\DataNode + NodeManager\\Contenedores de tareas};
+ \draw[flow,dashed,visible on=<3->] (nn)--(w\i.north west);
+ \draw[flow,visible on=<3->] (rm)--(w\i.north east);}
+\end{tikzpicture}
+\smallnote{Esquema simplificado: los servicios pueden distribuirse en distintas máquinas.}
+\end{frame}
+
+% 09. Original p. 9.
+\begin{frame}{Servicios HDFS}{Metadatos separados de los bloques de datos}
+\begin{block}<1->{NameNode}
+Mantiene el espacio de nombres: directorios, archivos, metadatos y correspondencia entre bloques y DataNodes.
+\end{block}
+\begin{block}<2->{Secondary NameNode}
+Genera puntos de control que combinan la imagen del sistema de archivos y el registro de cambios.
+\end{block}
+\begin{block}<3->{DataNode}
+Almacena bloques en el sistema de archivos local y atiende lecturas y escrituras.
+\end{block}
+\smallnote{El Secondary NameNode no reemplaza automáticamente a un NameNode fallido; la alta disponibilidad utiliza otra configuración.}
+\end{frame}
+
+% 10. Original p. 10.
+\begin{frame}{Servicios YARN}{Recursos globales, coordinación por aplicación y ejecución local}
+\begin{columns}[T,onlytextwidth]
+\column{.53\textwidth}
+\begin{block}<1->{ResourceManager}
+Administra la asignación de recursos del clúster entre aplicaciones.
+\end{block}
+\begin{block}<2->{ApplicationMaster}
+Negocia recursos y coordina las tareas de una aplicación particular.
+\end{block}
+\begin{block}<3->{NodeManager}
+Administra los contenedores de un nodo y comunica su uso de recursos.
+\end{block}
+\column{.43\textwidth}\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box] (rm) at (0,0) {ResourceManager};
+\node[box,visible on=<2->] (am) at (0,-1.6) {ApplicationMaster};
+\node[box,visible on=<3->] (nm) at (0,-3.2) {NodeManager\\Contenedores / tareas};
+\draw[flow,<->,visible on=<2->] (rm)--node[right,labeltext]{Recursos} (am);
+\draw[flow,<->,visible on=<3->] (am)--node[right,labeltext]{Ejecución} (nm);
+\end{tikzpicture}
+\end{columns}
+\smallnote{El ApplicationMaster se ejecuta en un contenedor del clúster, por aplicación.}
+\end{frame}
+
+\section{HDFS}
+% 11. Original p. 11 (blocks).
+\begin{frame}{HDFS: bloques y réplicas}{Distribuir archivos grandes sobre discos locales}
+\begin{itemize}[<+->]\setlength\itemsep{5pt}
+\item HDFS usa los sistemas de archivos locales de los DataNodes, como ext4 o XFS.
+\item Los bloques son grandes y configurables; 128 MB es un tamaño habitual.
+\item La replicación mantiene varias copias de cada bloque; el ejemplo usa tres.
+\end{itemize}
+\vspace{1mm}\centering
+\begin{tikzpicture}[x=1cm,y=.85cm]
+\node[labeltext] at (-5.7,0) {Archivo};
+\foreach \x/\b in {-2/A,0/B,2/C}{\node[box,minimum width=15mm] (b\b) at (\x,0) {\b};}
+\foreach \x/\i in {-4/1,0/2,4/3}{
+ \node[box,minimum width=31mm,visible on=<3->] (d\i) at (\x,-1.5) {DataNode \i\\A\quad B\quad C};}
+\draw[flow,visible on=<3->] (bA)--(d1);
+\draw[flow,visible on=<3->] (bB)--(d2);
+\draw[flow,visible on=<3->] (bC)--(d3);
+\end{tikzpicture}
+\begin{block}<4->{Redundancia}
+Tres réplicas consumen aproximadamente tres veces el espacio de los datos. Cada bloque sigue disponible mientras exista una réplica accesible.
+\end{block}
+\smallnote{El último bloque puede ser más pequeño; el bloque no es una unidad mínima de lectura.}
+\end{frame}
+
+% 12. Original p. 11 (architecture).
+\begin{frame}{Cómo se lee un archivo HDFS}{El NameNode devuelve ubicaciones; el DataNode entrega los datos}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,minimum width=27mm] (client) at (-4,0) {Aplicación\\Cliente HDFS};
+\node[box,minimum width=30mm,visible on=<1->] (nn) at (3,1.2) {NameNode\\Metadatos};
+\node[box,minimum width=30mm,visible on=<3->] (dn) at (3,-2.1) {DataNode\\Bloques en disco};
+\draw[flow,visible on=<1->] (client.north east)--node[above,sloped,labeltext]{1. Nombre / bloque} (nn.west);
+\draw[flow,visible on=<2->] (nn.south west)--node[below,sloped,labeltext]{2. Ubicaciones} (client.east);
+\draw[flow,visible on=<3->] (client.south east)--node[above,sloped,labeltext]{3. Bloque / rango de bytes} (dn.north west);
+\draw[flow,visible on=<4->] (dn.west)--node[below,sloped,labeltext]{4. Datos} (client.south);
+\draw[flow,dashed,visible on=<4->] (dn.north)--node[right,labeltext]{Estado / bloques} (nn.south);
+\end{tikzpicture}
+\vspace{3mm}
+\begin{block}<4->{Separar control y transferencia}
+Los datos del archivo viajan directamente entre el cliente y el DataNode.
+\end{block}
+\end{frame}
+
+% 13. Original p. 11 (shell).
+\begin{frame}[fragile]{Operaciones sobre HDFS}{La consola de archivos: hadoop fs}
+\begin{columns}[T,onlytextwidth]
+\column{.55\textwidth}
+\begin{lstlisting}[style=shell]
+hadoop fs -help
+hadoop fs -mkdir -p text_db
+hadoop fs -copyFromLocal kmers.txt text_db/
+hadoop fs -ls text_db
+hadoop fs -cat text_db/kmers.txt | less
+hadoop fs -tail text_db/kmers.txt
+\end{lstlisting}
+\column{.41\textwidth}
+\begin{uncoverenv}<2->
+\begin{lstlisting}[style=shell]
+hadoop fs -get text_db/kmers.txt ./copia.txt
+hadoop fs -chmod 664 text_db/kmers.txt
+hadoop fs -test -e text_db/kmers.txt
+hadoop fs -count text_db
+hadoop fs -du -h text_db
+\end{lstlisting}
+\end{uncoverenv}
+\end{columns}
+\begin{block}<3->{Local y remoto}
+\code{copyFromLocal} sube archivos; \code{get} los descarga.
+\code{test -e} devuelve un estado de salida, sin imprimir el resultado.
+\end{block}
+\smallnote{Las rutas relativas se resuelven en el directorio del usuario del sistema de archivos configurado.}
+\end{frame}
+
+\section{MapReduce}
+% 14. Original p. 12.
+\begin{frame}[fragile]{MapReduce: funciones sobre pares clave/valor}{Tareas independientes y combinación de resultados}
+\begin{columns}[T,onlytextwidth]
+\column{.52\textwidth}
+\begin{itemize}[<+->]\setlength\itemsep{7pt}
+\item \textbf{Map} transforma cada registro en cero o más pares intermedios.
+\item \textbf{Reduce} procesa los valores asociados a una misma clave.
+\item El modelo favorece funciones que dependen de sus entradas y evitan estado compartido entre tareas.
+\end{itemize}
+\column{.44\textwidth}
+\begin{lstlisting}
+def map(key, value):
+    # Emit zero or more pairs
+    emit(intermediate_key,
+         intermediate_value)
+\end{lstlisting}
+\begin{uncoverenv}<2->
+\begin{lstlisting}
+def reduce(key, values):
+    # Aggregate values for this key
+    emit(key, result)
+\end{lstlisting}
+\end{uncoverenv}
+\smallnote{Pseudocódigo: emit representa la emisión de un par.}
+\end{columns}
+\begin{block}<3->{La clave coordina el cálculo}
+Todos los valores de una clave deben llegar al mismo reductor.
+\end{block}
+\end{frame}
+
+% 15. Original p. 13.
+\begin{frame}{Las fases de MapReduce}{Entrada, map, shuffle y sort, reduce, salida}
+\centering
+\begin{tikzpicture}[x=2.65cm]
+\foreach \i/\lab/\step in {0/Entrada/1,1/Map/2,2/Shuffle + sort/3,3/Reduce/4,4/Salida/4}{
+ \node[box,minimum width=23mm,font=\scriptsize,visible on=<\step->] (p\i) at (\i,0) {\lab};}
+\foreach \a/\b/\step in {0/1/2,1/2/3,2/3/4,3/4/4}{\draw[flow,visible on=<\step->] (p\a)--(p\b);}
+\end{tikzpicture}
+\vspace{6mm}
+\begin{enumerate}\setlength\itemsep{6pt}
+\item<1-> Leer registros desde la entrada, por ejemplo archivos en HDFS.
+\item<2-> Emitir los pares clave/valor calculados por los mapeadores.
+\item<3-> Particionar, transferir y ordenar los pares para agruparlos por clave.
+\item<4-> Agregar cada grupo y escribir los pares finales.
+\end{enumerate}
+\end{frame}
+
+% 16. Original p. 14.
+\begin{frame}{Un trabajo distribuido}{Los mapeadores leen fragmentos; el shuffle conecta con los reductores}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\i in {-4.5/1,0/2,4.5/3}{
+ \node[box,minimum width=27mm] (in\i) at (\x,0) {Fragmento \i};
+ \node[box,minimum width=27mm,visible on=<2->] (m\i) at (\x,-1) {Map \i};
+ \draw[flow,visible on=<2->] (in\i)--(m\i);
+ \node[box,minimum width=27mm,visible on=<3->] (r\i) at (\x,-3) {Reduce \i};
+ \node[box,minimum width=27mm,visible on=<4->] (out\i) at (\x,-4) {Parte de salida \i};
+ \draw[flow,visible on=<4->] (r\i)--(out\i);}
+\foreach \i in {1,2,3}{\foreach \j in {1,2,3}{\draw[flow,thin,opacity=.65,visible on=<3->] (m\i.south)--(r\j.north);}}
+\node[labeltext,fill=white,visible on=<3->] at (0,-2) {Shuffle: repartir por clave};
+\end{tikzpicture}
+\smallnote{Un reductor puede recibir datos de todos los mapeadores. La salida se reparte en archivos.}
+\end{frame}
+
+% 17. Original p. 15 (mapper).
+\begin{frame}[fragile]{Ejemplo: contar apariciones de números}{El mapper emite una unidad por registro}
+\begin{columns}[T,onlytextwidth]
+\column{.24\textwidth}
+\textbf{\code{input.txt}}
+\lstinputlisting[style=compact]{examples/input.txt}
+\column{.46\textwidth}
+\textbf{\code{mapper.py}}
+\lstinputlisting{examples/mapper.py}
+\column{.24\textwidth}
+\begin{uncoverenv}<2->
+\textbf{Salida del mapper}
+\begin{lstlisting}[style=compact]
+1   1
+2   1
+3   1
+4   1
+5   1
+\end{lstlisting}
+\smallnote{Separador real: tabulador.}
+\end{uncoverenv}
+\end{columns}
+\begin{block}<3->{Clave = número; valor = 1}
+Si un número aparece varias veces, se emite un par por cada aparición.
+\end{block}
+\end{frame}
+
+% 18. Original p. 15 (reducer).
+\begin{frame}[fragile]{El reducer suma los valores de cada clave}{Entrada agrupada por clave; memoria constante}
+\begin{columns}[T,onlytextwidth]
+\column{.61\textwidth}
+\lstinputlisting[style=compact]{examples/reducer.py}
+\column{.35\textwidth}
+\begin{block}<1->{Acumulación}
+Mantener la clave actual y su contador.
+\end{block}
+\begin{block}<2->{Cambio de clave}
+Emitir el grupo anterior e iniciar el siguiente.
+\end{block}
+\begin{block}<3->{Fin de entrada}
+Emitir el último grupo, si existe.
+\end{block}
+\smallnote{El mismo reducer sirve para palabras: las claves son texto.}
+\end{columns}
+\end{frame}
+
+% 19. Original p. 15; local verification added.
+\begin{frame}[fragile]{Probar el cálculo localmente}{Simular map, agrupación y reduce antes de usar el clúster}
+\begin{lstlisting}[style=shell]
+python3 examples/mapper.py < examples/input.txt \
+  | LC_ALL=C sort -k1,1 \
+  | python3 examples/reducer.py
+\end{lstlisting}
+\begin{columns}[T,onlytextwidth]
+\column{.3\textwidth}
+\begin{uncoverenv}<2->
+\textbf{Salida esperada}
+\begin{lstlisting}
+1   1
+2   1
+3   1
+4   1
+5   1
+\end{lstlisting}
+\end{uncoverenv}
+\column{.66\textwidth}
+\begin{block}<3->{Por qué ordenar}
+El reducer consume claves contiguas. La salida directa de varios mapeadores puede intercalar claves iguales.
+\end{block}
+\begin{block}<4->{Alcance de esta prueba}
+Comprueba el cálculo con un único flujo. La ejecución distribuida añade particionado, red, planificación y recuperación.
+\end{block}
+\end{columns}
+\end{frame}
+
+% 20. Original p. 15 (submission).
+\begin{frame}[fragile]{Ejecutar con Hadoop Streaming}{Enviar scripts y leer la salida desde HDFS}
+\begin{lstlisting}[style=shell]
+hadoop fs -mkdir -p pmd-hadoop/input
+hadoop fs -copyFromLocal examples/input.txt pmd-hadoop/input/numbers.txt
+hadoop jar "$HADOOP_HOME"/share/hadoop/tools/lib/hadoop-streaming-*.jar \
+  -files examples/mapper.py,examples/reducer.py \
+  -mapper 'python3 mapper.py' \
+  -reducer 'python3 reducer.py' \
+  -input pmd-hadoop/input/numbers.txt \
+  -output pmd-hadoop/output
+\end{lstlisting}
+\begin{uncoverenv}<2->
+\begin{lstlisting}[style=shell]
+hadoop fs -cat 'pmd-hadoop/output/part-*'
+\end{lstlisting}
+\end{uncoverenv}
+\begin{block}<3->{Antes de enviar el trabajo}
+El directorio de salida debe ser nuevo y los trabajadores deben tener Python 3.
+\end{block}
+\sourcefile{run_hadoop.sh}
+\end{frame}
+
+% 21. Original p. 16 (functions and input).
+\begin{frame}[fragile]{WordCount: contar palabras}{La misma reducción; otra función map}
+\begin{columns}[T,onlytextwidth]
+\column{.54\textwidth}
+\textbf{Entrada}
+\lstinputlisting[style=compact]{examples/words.txt}
+\begin{uncoverenv}<2->
+\textbf{\code{word_mapper.py}}
+\lstinputlisting[style=compact]{examples/word_mapper.py}
+\end{uncoverenv}
+\column{.42\textwidth}
+\begin{lstlisting}
+def map(dockey, line):
+    for word in tokenize(line):
+        emit(word, 1)
+
+def reduce(word, values):
+    emit(word, sum(values))
+\end{lstlisting}
+\smallnote{Pseudocódigo: tokenize separa palabras y signos.}
+\begin{block}<3->{Una política explícita}
+Se conservan mayúsculas y se separa el punto final: \code{The} y \code{the} son claves distintas; \code{.} también es una clave.
+\end{block}
+\end{columns}
+\end{frame}
+
+% 22. Original p. 16 (shuffle and output).
+\begin{frame}{WordCount: agrupación y resultado}{Cada clave reúne los valores emitidos por ambos mapeadores}
+\begin{columns}[T,onlytextwidth]
+\column{.57\textwidth}
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{lll}
+\toprule Clave & Valores agrupados & Total \\
+\midrule
+\uncover<1->{\code{.}} & \uncover<2->{[1, 1]} & \uncover<3->{2} \\
+\uncover<1->{\code{The}} & \uncover<2->{[1, 1]} & \uncover<3->{2} \\
+\uncover<1->{\code{cat}} & \uncover<2->{[1, 1]} & \uncover<3->{2} \\
+\uncover<1->{\code{fast}} & \uncover<2->{[1, 1]} & \uncover<3->{2} \\
+\uncover<1->{\code{hat}} & \uncover<2->{[1, 1]} & \uncover<3->{2} \\
+\uncover<1->{\code{in}} & \uncover<2->{[1]} & \uncover<3->{1} \\
+\uncover<1->{\code{no}} & \uncover<2->{[1]} & \uncover<3->{1} \\
+\uncover<1->{\code{ran}} & \uncover<2->{[1]} & \uncover<3->{1} \\
+\uncover<1->{\code{the}} & \uncover<2->{[1]} & \uncover<3->{1} \\
+\uncover<1->{\code{wears}} & \uncover<2->{[1]} & \uncover<3->{1} \\
+\bottomrule
+\end{tabular}
+\column{.39\textwidth}
+\begin{block}<1->{Map}
+Cada aparición produce \code{(palabra, 1)}.
+\end{block}
+\begin{block}<2->{Shuffle y sort}
+Reunir todas las apariciones de una palabra.
+\end{block}
+\begin{block}<3->{Reduce}
+Sumar los unos: 15 tokens en total y 10 claves distintas.
+\end{block}
+\end{columns}
+\end{frame}
+
+% 23. Original p. 17 (two diagrams consolidated).
+\begin{frame}{WordCount con dos mapeadores y dos reductores}{Particionar por clave conecta ambos conjuntos de tareas}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box,text width=43mm,font=\scriptsize] (m1) at (-3.8,0) {Map 1\\The fast cat wears no hat .};
+\node[box,text width=43mm,font=\scriptsize] (m2) at (3.8,0) {Map 2\\The cat in the hat ran fast .};
+\node[box,text width=43mm,visible on=<2->] (r1) at (-3.8,-2.3) {Reduce 1\\\scriptsize .\quad The\quad cat\quad fast\quad hat};
+\node[box,text width=43mm,visible on=<2->] (r2) at (3.8,-2.3) {Reduce 2\\\scriptsize in\quad no\quad ran\quad the\quad wears};
+\foreach \i in {1,2}{\foreach \j in {1,2}{\draw[flow,visible on=<2->] (m\i.south)--(r\j.north);}}
+\node[labeltext,fill=white,visible on=<2->] at (0,-1.15) {Una partición por clave};
+\node[box,visible on=<3->] (o1) at (-3.8,-3.8) {5 claves con total 2};
+\node[box,visible on=<3->] (o2) at (3.8,-3.8) {5 claves con total 1};
+\draw[flow,visible on=<3->] (r1)--(o1);
+\draw[flow,visible on=<3->] (r2)--(o2);
+\end{tikzpicture}
+\smallnote{Partición ilustrativa. La asignación real depende del particionador; cada clave corresponde a un único reductor.}
+\end{frame}
+
+% 24. Original p. 18.
+\begin{frame}{Hadoop Streaming: entrada y salida estándar}{Integrar scripts externos al flujo de MapReduce}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[box] (in) at (-5.4,0) {Entrada\\HDFS};
+\node[box,text width=28mm,visible on=<2->] (map) at (-1.9,0) {stdin\\\code{mapper.py}\\stdout};
+\node[box,text width=15mm,font=\scriptsize,visible on=<3->] (sh) at (1,0) {Shuffle\\y sort};
+\node[box,text width=28mm,visible on=<4->] (red) at (3.8,0) {stdin\\\code{reducer.py}\\stdout};
+\draw[flow,visible on=<2->] (in)--node[above,labeltext]{Registros} (map);
+\draw[flow,visible on=<3->] (map)--node[above,labeltext]{Pares} (sh);
+\draw[flow,visible on=<4->] (sh)--node[above,labeltext]{Grupos} (red);
+\node[box,visible on=<5->] (out) at (3.8,-2) {Salida HDFS};
+\draw[flow,visible on=<5->] (red)--(out);
+\end{tikzpicture}
+\vspace{3mm}
+\begin{block}<5->{Contrato del protocolo}
+Una línea por registro. En la salida de los scripts, clave y valor se separan mediante un tabulador. Los mensajes de diagnóstico van a \code{stderr}.
+\end{block}
+\end{frame}
+
+\section{Práctica}
+% 25. Original p. 19: original links preserved.
+\begin{frame}{Práctica en Google Colab}{Notebooks del curso}
+\begin{block}<1->{Hadoop I}
+\href{https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb}{\textbf{Abrir HadoopI.ipynb}}\par\vspace{2mm}
+\small\url{https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb}
+\end{block}
+\begin{block}<2->{Hadoop II}
+\href{https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb}{\textbf{Abrir HadoopII.ipynb}}\par\vspace{2mm}
+\small\url{https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb}
+\end{block}
+
+\end{frame}
+
+% 26. Original p. 20.
+\begin{frame}{Consultas}{Preguntas y comentarios}
+\vfill\centering
+{\fontsize{25}{30}\selectfont\color{uohblue}¿Consultas o comentarios?\par}
+\vspace{9mm}
+{\Large Muchas gracias\par}
+\vfill
+\end{frame}
+\end{document}

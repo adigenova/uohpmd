@@ -144,13 +144,23 @@ Las slides de la clases de MPI están disponibles [aqui](https://github.com/adig
 Control 2
 
 
-## PMD-W10-C01
+## PMD-W10-C01 (03/11/2026)
 
 Hadoop I
 
 ### slides
 
-Las slides de hadoop
- 
+Las slides de hadoop  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C01/PMD-W6-C01-Hadoop-beamer-handout.pdf)
+
+
+## PMD-W10-C02 (10/11/2026)
+
+Nextflow I
+
+### slides
+
+Las slides de nextflow  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD-W6-C01-Nextflow-beamer-handout.pdf)
+
+
 
 
