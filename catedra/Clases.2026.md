@@ -137,7 +137,20 @@ Repaso Pthreads, OpenMP, MPI y sistemas hibridos.
 
 ### slides
 
-Las slides de la clases de MPI están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-Repaso-Paralelismo-v2/repaso-v2.pdf)
+Las slides de la clases de MPI están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-Repaso-Paralelismo-v2/repaso-v2.pdf)A
 
+## PMD-W9-C02 (29/10/2026)
+
+Control 2
+
+
+## PMD-W10-C01
+
+Hadoop I
+
+### slides
+
+Las slides de hadoop
+ 
 
 
