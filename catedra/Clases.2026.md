@@ -153,6 +153,10 @@ Hadoop I
 Las slides de hadoop  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W5-C01/PMD-W6-C01-Hadoop-beamer-handout.pdf)
 
 
+### Codigo 
+ [haddop1](https://github.com/adigenova/uohpmd/blob/main/code/HadoopI.ipynb)
+ [haddop2](https://github.com/adigenova/uohpmd/blob/main/code/HadoopII.ipynb)
+
 ## PMD-W10-C02 (10/11/2026)
 
 Nextflow I
@@ -161,6 +165,33 @@ Nextflow I
 
 Las slides de nextflow  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W6-C01/PMD-W6-C01-Nextflow-beamer-handout.pdf)
 
+### Codigo
+
+ [Nextflow1](https://github.com/adigenova/uohpmd/blob/main/code/Haddop_nextflow.ipynb)
+
+## PMD-W11-C01 (12/11/2026)
+
+NoSQL
+
+### slides
+
+Las slides de NOSQL  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W7-C02/PMD-W7-C02-noSQL.pdf)
 
 
+### Codigo 
+
+El código de ejemplos de NOSEQ se encuentra disponible [nosql1](https://github.com/adigenova/uohpmd/blob/main/code/Arango_GraphDB.ipynb) y [nosql2](https://github.com/adigenova/uohpmd/blob/main/code/NoSQL_ArangoDB_ejemplo.ipynb)
+
+
+## Bases de Datos Distribuidas (24/11/2026)
+
+### slides
+
+
+Las slides de NOSQL  están disponibles [aqui](https://github.com/adigenova/uohpmd/blob/main/catedra/PMD-W9-C01/PMD-W9-C01-ddb.pdf)
+
+### Codigo
+
+
+[RAFT](https://github.com/adigenova/uohpmd/blob/main/code/RQlite.md)
 
